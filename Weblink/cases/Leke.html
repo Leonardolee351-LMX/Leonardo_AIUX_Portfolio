@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>乐刻 · Case Study</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:#08090d;color:#f2f2f2;line-height:1.85;
+}
+.unified-topbar{
+  position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 28px;background:rgba(8,8,10,.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1)
+}
+.unified-brand{font-size:14px;letter-spacing:1.5px;color:rgba(255,255,255,.75);text-decoration:none}
+.unified-nav{display:flex;gap:18px}
+.unified-nav a{font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.48);text-decoration:none}
+.unified-nav a.active{color:#fff}
+.wrap{max-width:960px;margin:0 auto;padding:26px 18px 70px}
+a{color:rgba(255,255,255,.78);text-decoration:none}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:50px;font-weight:400;line-height:1.15;margin:16px 0 8px}
+h2{font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:400;margin:30px 0 14px}
+p{color:rgba(255,255,255,.76);margin-bottom:12px}
+.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0 28px}
+.box{border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;background:rgba(255,255,255,.03)}
+.box b{display:block;color:rgba(255,255,255,.5);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.box span{display:block;margin-top:6px;color:rgba(255,255,255,.82);font-size:14px}
+.callout{border-left:3px solid rgba(255,255,255,.34);background:rgba(255,255,255,.03);padding:12px 14px;border-radius:8px;margin:12px 0}
+.list{padding-left:18px;color:rgba(255,255,255,.78)}
+.list li{margin-bottom:8px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metric{border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;background:rgba(255,255,255,.03)}
+.metric strong{display:block;font-size:24px}
+.metric span{font-size:12px;color:rgba(255,255,255,.56)}
+@media(max-width:900px){.meta,.metrics{grid-template-columns:1fr}h1{font-size:40px}}
+.back-wrap{max-width:980px;margin:14px auto 0;padding:0 18px;}
+.back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:rgba(255,255,255,.62);text-decoration:none;transition:color .2s ease;}
+.back-work:hover{color:#fff;}
+</style>
+</head>
+<body>
+<header class="unified-topbar">
+  <a class="unified-brand" href="../index.html">[Leonardo Li] · Work · Index</a>
+  <nav class="unified-nav">
+    <a href="../index.html">Home</a>
+    <a class="active" href="../works.html">Work</a>
+    <a href="../resume.html">Resume</a>
+  </nav>
+</header>
+<div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
+<main class="wrap">
+  <h1>乐刻新手成长系统</h1>
+  <p>从品牌与服务系统分析，到新手留存体验优化</p>
+
+  <div class="meta">
+    <div class="box"><b>Role</b><span>UX 体验设计师</span></div>
+    <div class="box"><b>Input</b><span>《乐刻品牌分析（长文）》与课程研究材料</span></div>
+    <div class="box"><b>Output</b><span>新手成长策略 + 产品体验改造方向</span></div>
+  </div>
+
+  <h2>Context</h2>
+  <p>基于你提供的 PDF 资料，乐刻被拆解为“线上宣传与销售 + 线下消费与服务”的 O2O 体系，强调 24 小时营业、月付制、无强推等模式特点。研究关注品牌系统、行业对比、用户需求与痛点。</p>
+  <div class="callout">资料标题与框架提取：乐刻介绍、系统分析、哲学抽象、用户吸引机制与留存机制。</div>
+
+  <h2>Core Insights</h2>
+  <ul class="list">
+    <li>用户在健身决策上偏向“低门槛、近距离、灵活付费”的轻量体验。</li>
+    <li>传统健身房痛点集中在高决策成本、价格感知不透明与强推销压力。</li>
+    <li>新式健身场景竞争核心从“器械密度”转向“服务体验与运营机制”。</li>
+  </ul>
+
+  <h2>Design Strategy</h2>
+  <p>围绕新手 7 日流失问题，策略是把“用户第一次行动”变得更轻：从课程路径分层、反馈激励到后续习惯养成，逐步降低中断率。</p>
+  <div class="callout">延续你在简历中的策略方向：L1-L3 分级课程体系 + 游戏化激励 + AI 私教辅助建议。</div>
+
+  <h2>Result (Current)</h2>
+  <div class="metrics">
+    <div class="metric"><strong>O2O</strong><span>线上线下联动服务系统</span></div>
+    <div class="metric"><strong>3层</strong><span>用户吸引 / 日常运营 / 用户留存</span></div>
+    <div class="metric"><strong>30%</strong><span>新手留存提升预估（阶段目标）</span></div>
+  </div>
+  <p style="margin-top:14px;">源文件：<a href="../files/1%20-%20乐刻品牌分析（长文）.pdf" target="_blank" rel="noopener noreferrer">1 - 乐刻品牌分析（长文）.pdf</a></p>
+</main>
+</body>
+</html>

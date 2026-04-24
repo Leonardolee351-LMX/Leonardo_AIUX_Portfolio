@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CO-EVO · Case Study</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:#07080c;color:#f2f4f6;line-height:1.85;
+}
+.unified-topbar{
+  position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 28px;background:rgba(8,8,10,.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1)
+}
+.unified-brand{font-size:14px;letter-spacing:1.5px;color:rgba(255,255,255,.75);text-decoration:none}
+.unified-nav{display:flex;gap:18px}
+.unified-nav a{font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.48);text-decoration:none}
+.unified-nav a.active{color:#fff}
+.wrap{max-width:980px;margin:0 auto;padding:26px 18px 70px}
+a{color:rgba(255,255,255,.78);text-decoration:none}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:50px;font-weight:400;line-height:1.15;margin:16px 0 8px}
+h2{font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:400;margin:30px 0 14px}
+p{color:rgba(255,255,255,.76);margin-bottom:12px}
+.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0 28px}
+.box{border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;background:rgba(255,255,255,.03)}
+.box b{display:block;color:rgba(255,255,255,.5);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.box span{display:block;margin-top:6px;color:rgba(255,255,255,.82);font-size:14px}
+.callout{border-left:3px solid rgba(255,255,255,.34);background:rgba(255,255,255,.03);padding:12px 14px;border-radius:8px;margin:12px 0}
+.list{padding-left:18px;color:rgba(255,255,255,.78)}
+.list li{margin-bottom:8px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.metric{border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;background:rgba(255,255,255,.03)}
+.metric strong{display:block;font-size:24px}
+.metric span{font-size:12px;color:rgba(255,255,255,.56)}
+@media(max-width:900px){.meta,.metrics{grid-template-columns:1fr}h1{font-size:40px}}
+.back-wrap{max-width:980px;margin:14px auto 0;padding:0 18px;}
+.back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:rgba(255,255,255,.62);text-decoration:none;transition:color .2s ease;}
+.back-work:hover{color:#fff;}
+</style>
+</head>
+<body>
+<header class="unified-topbar">
+  <a class="unified-brand" href="../index.html">[Leonardo Li] · Work · Index</a>
+  <nav class="unified-nav">
+    <a href="../index.html">Home</a>
+    <a class="active" href="../works.html">Work</a>
+    <a href="../resume.html">Resume</a>
+  </nav>
+</header>
+<div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
+<main class="wrap">
+  <h1>CO-EVO 智能体互动剧场</h1>
+  <p>从构想走向现实：跨媒介叙事 + 实时交互 + AI 系统协同</p>
+
+  <div class="meta">
+    <div class="box"><b>Role</b><span>互动影像系统开发（序幕）</span></div>
+    <div class="box"><b>Context</b><span>2025 广州美术学院毕业季研究生艺术展演</span></div>
+    <div class="box"><b>Scope</b><span>实时采集、情感识别、多目标追踪与视觉反馈</span></div>
+  </div>
+
+  <h2>Context</h2>
+  <p>CO-EVO 以“共同进化”为主题，将人类与智能体从对立关系转向协同关系，采用五幕结构展开。官方复盘显示，项目从 2 月构思推进到 6 月落地，团队规模超过 30 人，完成了跨媒介的系统化展演。</p>
+
+  <h2>My Contribution</h2>
+  <p>我主要负责序幕「呼吸·感知觉醒」相关实时交互系统：让 AI 在现场“看见”观众并输出可感知的光影反馈，形成展演开场的叙事动机。</p>
+  <div class="callout">
+    技术关键词（官方复盘提及）：计算机视觉、表情识别、多目标跟踪、AnythingLLM 动态语料、实时语言交互与图像生成协同。
+  </div>
+
+  <h2>System Challenges</h2>
+  <ul class="list">
+    <li>跨媒介同步：人声、舞蹈、激光、粒子、实时视觉的触发时机对齐。</li>
+    <li>场地落地：户外草坪空间内实现结构安全与视觉效果平衡。</li>
+    <li>实时稳定性：从模型理解到整合运行，必须在演出现场稳定输出。</li>
+  </ul>
+
+  <h2>Outcome</h2>
+  <div class="metrics">
+    <div class="metric"><strong>30+</strong><span>共创团队规模</span></div>
+    <div class="metric"><strong>5幕</strong><span>完整叙事结构</span></div>
+    <div class="metric"><strong>1次</strong><span>大型户外落地展演</span></div>
+  </div>
+  <div class="callout">官方复盘链接：<a href="https://mp.weixin.qq.com/s/nifP7hlcPVjPP-mVLuYwgQ" target="_blank" rel="noopener noreferrer">从构想走向现实：GAFA AI 团队的「CO-EVO」共创之旅</a></div>
+</main>
+</body>
+</html>

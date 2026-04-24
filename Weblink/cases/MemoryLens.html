@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MemoryLens · Case Study</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #06070a;
+  --text: #f3f4f7;
+  --text-dim: rgba(243,244,247,0.74);
+  --text-muted: rgba(243,244,247,0.45);
+  --border: rgba(255,255,255,0.1);
+  --surface: rgba(255,255,255,0.03);
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: radial-gradient(circle at 70% 0%, #111827 0%, #06070a 50%);
+  color: var(--text);
+  line-height: 1.8;
+}
+.unified-topbar{
+  position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 28px;background:rgba(8,8,10,.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1)
+}
+.unified-brand{font-size:14px;letter-spacing:1.5px;color:rgba(255,255,255,.75);text-decoration:none}
+.unified-nav{display:flex;gap:18px}
+.unified-nav a{font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.48);text-decoration:none}
+.unified-nav a.active{color:#fff}
+.shell { max-width: 980px; margin: 0 auto; padding: 36px 22px 72px; }
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.top a { color: var(--text-muted); text-decoration: none; font-size: 13px; }
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+.subtitle { color: var(--text-dim); margin-bottom: 26px; }
+.meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 30px;
+}
+.meta .box {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  background: var(--surface);
+}
+.meta b {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.meta p { margin-top: 6px; color: var(--text-dim); font-size: 14px; }
+section {
+  margin-bottom: 44px;
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+}
+h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: 30px;
+  margin-bottom: 14px;
+}
+p { color: var(--text-dim); margin-bottom: 12px; }
+.list {
+  color: var(--text-dim);
+  padding-left: 18px;
+}
+.list li { margin-bottom: 8px; }
+.callout {
+  border: 1px solid var(--border);
+  border-left: 3px solid rgba(255,255,255,0.35);
+  background: var(--surface);
+  padding: 14px 16px;
+  border-radius: 8px;
+  margin: 14px 0;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.metric {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  padding: 14px;
+}
+.metric strong {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 3px;
+}
+.metric span { color: var(--text-muted); font-size: 12px; }
+.links a { color: var(--text-dim); text-decoration: none; display: inline-block; margin-right: 14px; }
+@media (max-width: 900px) {
+  .meta, .grid { grid-template-columns: 1fr; }
+  h1 { font-size: 38px; }
+}
+.back-wrap{max-width:980px;margin:14px auto 0;padding:0 18px;}
+.back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:rgba(255,255,255,.62);text-decoration:none;transition:color .2s ease;}
+.back-work:hover{color:#fff;}
+</style>
+</head>
+<body>
+  <header class="unified-topbar">
+    <a class="unified-brand" href="../index.html">[Leonardo Li] · Work · Index</a>
+    <nav class="unified-nav">
+      <a href="../index.html">Home</a>
+      <a class="active" href="../works.html">Work</a>
+      <a href="../resume.html">Resume</a>
+    </nav>
+  </header>
+  <main class="shell">
+    <div class="top"></div>
+
+    <h1>MemoryLens</h1>
+    <p class="subtitle">Apple Vision Pro 智能寻物助手 · AI Native 交互设计与实现</p>
+
+    <div class="meta">
+      <div class="box"><b>Role</b><p>AI Native 产品设计师 / 前端开发</p></div>
+      <div class="box"><b>Time</b><p>2025.07 · 黑客松快速开发</p></div>
+      <div class="box"><b>Platform</b><p>visionOS + Python WebSocket + Coze</p></div>
+    </div>
+
+    <section>
+      <h2>Context</h2>
+      <p>MemoryLens 的切入场景是老年人或高频忙碌用户的“日常物品遗忘”。项目目标是把“看见物体”升级成“理解用户正在找什么”，并给出实时、可执行的定位反馈。</p>
+      <div class="callout">
+        问题定义：不是单纯目标检测，而是“视觉识别 + 语义对话 + 空间反馈”的连续体验。
+      </div>
+    </section>
+
+    <section>
+      <h2>System Design</h2>
+      <ul class="list">
+        <li>前端载体：Vision Pro 端使用 SwiftUI + RealityKit 构建混合现实交互。</li>
+        <li>识别模块：Core ML 执行实时物体检测。</li>
+        <li>通信链路：WebSocket 负责图像与状态实时传输。</li>
+        <li>AI服务：Coze 工作流处理语义理解与对话反馈。</li>
+      </ul>
+      <div class="callout">
+        关键决策：优先把“语音问询 -> 空间定位 -> 音频反馈”闭环打通，再逐步扩充识别类别。
+      </div>
+    </section>
+
+    <section>
+      <h2>Core Iterations</h2>
+      <p>第一版只输出识别框，用户知道“识别到了”，但不知道“与我有什么关系”；第二版加入语音问答后，找物路径变清晰；第三版优化音频提示与视觉高亮同步，提升了在 MR 场景中的可理解性。</p>
+      <p>从工程上看，项目在有限时间内实现跨端协同（VisionOS + Python + AI 服务），证明了架构可扩展。</p>
+    </section>
+
+    <section>
+      <h2>Result</h2>
+      <div class="grid">
+        <div class="metric"><strong>48h+</strong><span>黑客松高压开发节奏</span></div>
+        <div class="metric"><strong>3层</strong><span>视觉 / 语音 / 空间反馈</span></div>
+        <div class="metric"><strong>1套</strong><span>可运行的 Vision Pro Demo</span></div>
+      </div>
+      <div class="links" style="margin-top:14px;">
+        <a href="https://github.com/QiriZ/MemoryLens" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Reflection</h2>
+      <p>这个项目强化了我的一个方法论：AI 交互不该只停在聊天界面，而要结合具体情境形成“动作可执行”的反馈链路。未来如果继续迭代，我会优先补充用户测试与多物体冲突场景策略。</p>
+    </section>
+  </main>
+</body>
+</html>

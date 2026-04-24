@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>简历 · 黎铭晞</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #08080c;
+  --bg-card: rgba(255,255,255,0.02);
+  --text: #e8e6e1;
+  --text-dim: #8a8580;
+  --text-muted: #5a5550;
+  --accent: #5b9e8a;
+  --accent-blue: #5b7ec7;
+  --border: rgba(255,255,255,0.06);
+  --tag-bg: rgba(91,158,138,0.08);
+  --tag-text: #5b9e8a;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.unified-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  background: rgba(8,8,10,0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.unified-brand {
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+}
+
+.unified-nav {
+  display: flex;
+  gap: 18px;
+}
+
+.unified-nav a {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.48);
+  text-decoration: none;
+}
+
+.unified-nav a.active { color: #ffffff; }
+
+/* ===== OS FRAME ===== */
+.os-window {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== TITLE BAR ===== */
+.title-bar {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,12,0.95);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.window-controls { display: flex; gap: 8px; }
+.window-btn {
+  width: 12px; height: 12px; border-radius: 50%; border: none; cursor: pointer;
+}
+.window-btn.close { background: #ff5f56; }
+.window-btn.minimize { background: #ffbd2e; }
+.window-btn.maximize { background: #27c93f; }
+
+.window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+.window-title span { color: var(--accent); font-weight: 500; }
+
+/* ===== MAIN ===== */
+.main-area {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ===== DOCK ===== */
+.dock {
+  width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  border-right: 1px solid var(--border);
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.dock-item {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 10px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dock-item svg { width: 20px; height: 20px; }
+.dock-item span { font-size: 9px; letter-spacing: 0.5px; }
+.dock-item:hover { color: var(--text-dim); background: rgba(255,255,255,0.03); }
+.dock-item.active { color: var(--accent); background: rgba(91,158,138,0.08); }
+.dock-item.active::before {
+  content: '';
+  position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 3px; height: 20px;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ===== CONTENT ===== */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 48px 48px;
+  max-width: 900px;
+}
+
+/* ===== HEADER ===== */
+.resume-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.resume-header h1 {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 6px;
+  margin-bottom: 6px;
+}
+
+.resume-header .ename {
+  font-size: 14px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.resume-header .contact-row {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.resume-header .contact-row a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.resume-header .contact-row a:hover { color: var(--accent); }
+
+/* ===== SECTION ===== */
+.section { margin-bottom: 24px; }
+
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ===== EDU ===== */
+.edu-item { margin-bottom: 10px; }
+.edu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3px;
+}
+
+.edu-school {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.edu-detail {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 2px;
+}
+
+.edu-time {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.edu-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.edu-tag {
+  font-size: 11px;
+  color: var(--tag-text);
+  background: var(--tag-bg);
+  padding: 2px 10px;
+  border-radius: 10px;
+}
+
+/* ===== EXP ===== */
+.exp-item { margin-bottom: 20px; }
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.exp-company {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.exp-role {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.exp-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.exp-body {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.85;
+}
+
+.exp-body .tag-label {
+  display: inline;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.exp-body a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.exp-body a:hover { text-decoration: underline; }
+
+/* ===== PROJECT ===== */
+.proj-item { margin-bottom: 16px; }
+
+.proj-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.proj-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.proj-role {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.proj-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.proj-body {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.85;
+}
+
+.proj-body a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ===== SKILLS ===== */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 32px;
+}
+
+.skill-row {
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.skill-cat {
+  font-weight: 600;
+  color: var(--text);
+  margin-right: 4px;
+}
+
+/* ===== HONORS ===== */
+.honors-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+
+.honor-item {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .dock { display: none; }
+  .content { padding: 24px; }
+  .skills-grid { grid-template-columns: 1fr; }
+}
+
+@page { size: A4; margin: 15mm; }
+@media print {
+  .title-bar, .dock, .status-bar { display: none; }
+  .content { overflow: visible; padding: 0; }
+  body { background: white; color: #1a1a1a; }
+}
+
+.title-bar, .dock, .status-bar {
+  display: none;
+}
+
+.main-area {
+  display: block;
+  overflow: visible;
+}
+
+.content {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 22px 64px;
+  overflow: visible;
+}
+</style>
+</head>
+<body>
+
+<div class="os-window">
+  <header class="unified-topbar">
+    <a class="unified-brand" href="./index.html">[Leonardo Li] · Work · Index</a>
+    <nav class="unified-nav">
+      <a href="./index.html">Home</a>
+      <a href="./works.html">Work</a>
+      <a class="active" href="./resume.html">Resume</a>
+    </nav>
+  </header>
+
+  <!-- TITLE BAR -->
+  <div class="title-bar">
+    <div class="window-controls">
+      <div class="window-btn close"></div>
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+    </div>
+    <div class="window-title">limingxi <span>&lt;resume&gt;</span></div>
+    <div style="width:60px;"></div>
+  </div>
+
+  <div class="main-area">
+
+    <!-- DOCK -->
+    <nav class="dock">
+      <a href="./index.html" class="dock-item" title="首页">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>首页</span>
+      </a>
+      <a href="./works.html" class="dock-item" title="作品">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        <span>作品</span>
+      </a>
+      <a href="./resume.html" class="dock-item active" title="简历">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>简历</span>
+      </a>
+      <a href="./resume.html" class="dock-item" title="关于">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span>关于</span>
+      </a>
+    </nav>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- HEADER -->
+      <div class="resume-header">
+        <h1>黎 铭 晞</h1>
+        <div class="ename">Leonardo Li · AI交互设计师</div>
+        <div class="contact-row">
+          <a href="tel:13827019933">138-2701-9933</a> · 
+          <a href="mailto:919452364@qq.com">919452364@qq.com</a> · 
+          WeChat: Working_Lee007 · 
+          小红书: 310709340
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-muted);line-height:1.6;">
+          <p>① 个人作品集网站仍在持续开发中，欢迎随时回访查看最新进展。</p>
+          <p>② 基础的自我介绍与补充资料已整理至飞书文档，建议面试官点击查阅：<a href="https://my.feishu.cn/docx/TzDZdqGRqocEqqxW3ACcRkhsncu?from=from_copylink" target="_blank" rel="noopener noreferrer">飞书在线文档</a>。</p>
+        </div>
+      </div>
+
+      <!-- 教育背景 -->
+      <div class="section">
+        <div class="section-title">教育背景</div>
+
+        <div class="edu-item">
+          <div class="edu-header">
+            <span class="edu-school">香港城市大学 City University of Hong Kong</span>
+            <span class="edu-time">2025.09 – 2027（预计）</span>
+          </div>
+          <div class="edu-detail">创意媒体学院 MFACM 人机交互方向硕士</div>
+          <div class="edu-tags">
+            <span class="edu-tag">人机协作</span>
+            <span class="edu-tag">AI产品设计</span>
+            <span class="edu-tag">数据可视化</span>
+          </div>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-header">
+            <span class="edu-school">广州美术学院 Guangzhou Academy of Fine Arts</span>
+            <span class="edu-time">2023.09 – 2025.06</span>
+          </div>
+          <div class="edu-detail">信息与交互设计 硕士 · GPA 3.5/4.0</div>
+          <div class="edu-tags">
+            <span class="edu-tag">影像装置</span>
+            <span class="edu-tag">交互设计</span>
+            <span class="edu-tag">视觉系统</span>
+            <span class="edu-tag">设计理论</span>
+          </div>
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-header">
+            <span class="edu-school">广州美术学院 Guangzhou Academy of Fine Arts</span>
+            <span class="edu-time">2018.09 – 2023.06</span>
+          </div>
+          <div class="edu-detail">建筑学 学士 · 荣誉毕业设计奖</div>
+          <div class="edu-tags">
+            <span class="edu-tag">空间叙事</span>
+            <span class="edu-tag">城市界面设计</span>
+            <span class="edu-tag">First Class Honours</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 实习经历 -->
+      <div class="section">
+        <div class="section-title">实习经历</div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <span class="exp-company">简职（AI Agent求职产品）</span>
+              <span class="exp-role"> — 体验设计师</span>
+            </div>
+            <span class="exp-time">2025.08 – 2026.01</span>
+          </div>
+          <div class="exp-body">
+            <span class="tag-label">【AI对话界面】</span>独立负责AI Mentor（AI职业导师）的界面系统设计与前端实现，通过Lovable完成Vibe Coding开发，将AI对话能力融入求职辅导场景——通过引导式对话帮助用户挖掘自身优势、分析职业匹配度、推荐成长路径。<br>
+            <span class="tag-label">【设计系统】</span>使用Miro梳理产品体验工作流，从0搭建设计规范体系，独立完成40+页Figma高保真原型（覆盖官网、注册登录、浏览器插件端、Dashboard、求职分析、社区）。同时搭建组件库，为后续网站落地建立可复用资产。<br>
+            <span class="tag-label">【执行对接】</span>拆解PRD需求目标，制定交互设计策略，协助PM完成需求上线。负责AI Agent 2025创业比赛PPT动画与页面制作，项目进入<a href="https://mp.weixin.qq.com/s/Tf6GWCBPjbFjZlHTVH3MNQ">toC软件榜单TOP 10%、伯乐与千里马分榜TOP 1</a>。<br>
+            <span class="tag-label">【相关链接】</span><a href="https://jiancareer.com/">官网</a> · <a href="./cases/Jiancareer.html">案例详情页</a> · <a href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1&t=0TkLYv2ivkakbyUG-1">Figma组件库与网页工程</a>
+          </div>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <span class="exp-company">将心注入（AI教育硬件初创）</span>
+              <span class="exp-role"> — AI产品体验设计实习生</span>
+            </div>
+            <span class="exp-time">2024.07 – 2024.10</span>
+          </div>
+          <div class="exp-body">
+            <span class="tag-label">【用户研究】</span>独立owner用户研究模块，通过500+份家长问卷与20+款产品竞品分析，定位68%家长"教育效果可视化"需求与儿童"趣味互动"偏好的核心矛盾。<br>
+            <span class="tag-label">【产品定义】</span>构建4类典型用户画像，运用Kano模型划分功能优先级，整合通义大模型提出"场景化交互+情感反馈"多模态交互框架，以"模拟行为+过家家"为锚点设计AI玩具鸭机器人。<br>
+            <span class="tag-label">【设计验证】</span>完成17位家长+10名儿童深度访谈验证方案可行性（80%用户认可），使用Midjourney生成高保真产品概念原型，输出完整PRD推动开发落地，助力团队获Xbot科创夏令营"最佳用户洞察奖"及5万元创业启动资金。<br>
+            <span class="tag-label">【相关链接】</span><a href="https://my.feishu.cn/docx/TzDZdqGRqocEqqxW3ACcRkhsncu?from=from_copylink">飞书自我介绍与补充资料</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 项目经历 -->
+      <div class="section">
+        <div class="section-title">项目经历</div>
+
+        <div class="proj-item">
+          <div class="proj-header">
+            <div>
+              <span class="proj-name">StoryVibe（ON GOING）</span>
+              <span class="proj-role"> — AI叙事视频产品 / 体验设计与原型验证</span>
+            </div>
+            <span class="proj-time">2026</span>
+          </div>
+          <div class="proj-body">
+            <span class="tag-label">【S 情境】</span>面向内容创作者“从灵感到视频产出链路割裂、脚本组织成本高”的痛点，发起 StoryVibe 方向验证，目标是把创意输入转为结构化叙事资产。<br>
+            <span class="tag-label">【T 任务】</span>在短周期内完成可演示的产品策略与交互原型，验证“低门槛创作 + 快速反馈 + 可迭代产出”的核心价值。<br>
+            <span class="tag-label">【A 行动】</span>基于 Slides 策划案定义产品路径与关键场景；结合原型测试页面搭建主流程，聚焦输入引导、剧情发散、脚本组织与后续资产衔接，持续迭代交互细节。<br>
+            <span class="tag-label">【R 结果】</span>目前已形成可体验的 on going 原型与完整叙事方案，用于后续用户测试与数据化验证，项目进入持续打磨阶段。<br>
+            <span class="tag-label">【相关链接】</span><a href="https://www.figma.com/slides/jmCqNCgZT7x1l9PlDkzcpu">Figma Slides 策划案</a> · <a href="https://xyk4vninj5wnq.ok.kimi.link">原型测试界面</a> · <a href="./cases/StoryVibe.html">案例详情页</a>
+          </div>
+        </div>
+        
+        <div class="proj-item">
+          <div class="proj-header">
+            <div>
+              <span class="proj-name">Twin City Tales: Shenzhen-Hong Kong Border</span>
+              <span class="proj-role"> — 数据可视化设计师 / 前端开发</span>
+            </div>
+            <span class="proj-time">2025</span>
+          </div>
+          <div class="proj-body">
+            深港边境通勤信息可视化叙事网站（<a href="https://twincitytale-visstory2026.netlify.app/">twincitytale-visstory2026.netlify.app</a>）。基于2021-2025年香港政府日客流量数据，结合建筑学城市界面叙事方法与田野调查，构建四章节线性叙事。负责整个前端代码实现（D3.js）、叙事框架搭建与技术栈选型，组员负责艺术表达。入选IEEE PacificVis 2026 Sydney Shortlist。<br>
+            <span class="tag-label">【相关链接】</span><a href="https://twincitytale-visstory2026.netlify.app/">Demo</a> · <a href="https://visstory.github.io/">PacificVis 2026 Contest 官方站</a> · <a href="./cases/Twin-City-Tale.html">案例详情页</a>
+          </div>
+        </div>
+
+        <div class="proj-item">
+          <div class="proj-header">
+            <div>
+              <span class="proj-name">渡星河交互界面设计</span>
+              <span class="proj-role"> — 交互界面设计 / IP形象快设</span>
+            </div>
+            <span class="proj-time">2025</span>
+          </div>
+          <div class="proj-body">
+            面向玄学内容咨询场景，负责高保真界面与核心流程交互设计，并同步推进IP形象方向的初步快速设计。通过“关键路径先行”策略优先完成可评审可交付的核心页面，输出可直接对接开发与内容团队的视觉资产。官网：<a href="https://stariver.me/">stariver.me</a>，Figma交付稿：<a href="https://www.figma.com/design/rx3fASf9UORfWOYpYWEqkd/%E6%B8%A1%E6%98%9F%E6%B2%B3%E9%AB%98%E4%BF%9D%E7%9C%9F%E3%80%90%E4%BA%A4%E4%BB%98%E3%80%91?node-id=73-4495&t=MHO2CWudVzccZL6I-1">点击查看</a>。<br>
+            <span class="tag-label">【相关链接】</span><a href="https://stariver.me/">官网</a> · <a href="https://www.figma.com/design/rx3fASf9UORfWOYpYWEqkd/%E6%B8%A1%E6%98%9F%E6%B2%B3%E9%AB%98%E4%BF%9D%E7%9C%9F%E3%80%90%E4%BA%A4%E4%BB%98%E3%80%91?node-id=73-4495&t=MHO2CWudVzccZL6I-1">Figma</a> · <a href="./cases/Stariver.html">案例详情页</a>
+          </div>
+        </div>
+
+        <div class="proj-item">
+          <div class="proj-header">
+            <div>
+              <span class="proj-name">MemoryLens MR寻物程序</span>
+              <span class="proj-role"> — AI Native产品设计师 / 前端开发</span>
+            </div>
+            <span class="proj-time">2025.07</span>
+          </div>
+          <div class="proj-body">
+            AdventureX杭州黑客松项目。聚焦老年人"日常物品遗忘"痛点，选择Apple VisionPro为载体。独立负责产品体验设计与品牌视觉系统，基于VisionPro完成可交互原型，通过TRAE实现Vibe Coding快速开发。后端整合YOLO视觉识别+Dify LLM工作流，构建"视觉定位+语音引导+情感陪伴"多模态交互体验。五天完成从概念到可运行Demo，项目开源：<a href="https://github.com/QiriZ/MemoryLens">github.com/QiriZ/MemoryLens</a>。<br>
+            <span class="tag-label">【相关链接】</span><a href="https://github.com/QiriZ/MemoryLens">GitHub开源</a> · <a href="./cases/MemoryLens.html">案例详情页</a>
+          </div>
+        </div>
+
+        <div class="proj-item">
+          <div class="proj-header">
+            <div>
+              <span class="proj-name">CO-EVO 智能体互动剧场</span>
+              <span class="proj-role"> — 互动影像系统开发</span>
+            </div>
+            <span class="proj-time">2025.06</span>
+          </div>
+          <div class="proj-body">
+            广州美术学院2025毕业季沉浸式光影秀——昌岗校区中心花园50米尺度户外展演。负责序幕"呼吸·感知觉醒"实时交互影像系统开发，使用TouchDesigner构建交互影像管线，整合YOLO视觉识别+AnythingLLM千问嵌入+大模型图像语义理解，AI作为决策中枢实时采集观众面部表情情绪并转化为动态光影投射。<br>
+            <span class="tag-label">【相关链接】</span><a href="https://mp.weixin.qq.com/s/nifP7hlcPVjPP-mVLuYwgQ">官方复盘报道</a> · <a href="./cases/CO-EVO.html">案例详情页</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 专业技能 -->
+      <div class="section">
+        <div class="section-title">专业技能</div>
+        <div class="skills-grid">
+          <div class="skill-row"><span class="skill-cat">AI编程工作流</span> — TRAE（主力Vibe Coding）/ Cursor / Lovable / Python</div>
+          <div class="skill-row"><span class="skill-cat">AI视觉与对话</span> — Midjourney / ComfyUI / 即梦AI / Runway / Dify / AnythingLLM</div>
+          <div class="skill-row"><span class="skill-cat">设计与原型</span> — Figma（设计系统/高保真原型）/ Miro / HTML & CSS / D3.js</div>
+          <div class="skill-row"><span class="skill-cat">实时交互视觉</span> — TouchDesigner（资深）/ MediaPipe（手势/肢体/眼动）/ YOLO（多人追踪）</div>
+          <div class="skill-row"><span class="skill-cat">三维与引擎</span> — Blender / TripoAI / Rhino / Unreal Engine</div>
+          <div class="skill-row"><span class="skill-cat">用户研究</span> — 用户访谈 / 可用性测试 / 用户旅程地图 / 竞品分析 / Kano模型</div>
+        </div>
+      </div>
+
+      <!-- 荣誉奖项 -->
+      <div class="section">
+        <div class="section-title">荣誉奖项</div>
+        <div class="honors-list">
+          <span class="honor-item">IEEE PacificVis 2026 Shortlist</span>
+          <span class="honor-item">AI Agent 2025 toC榜单TOP 10% + 伯乐与千里马分榜TOP 1</span>
+          <span class="honor-item">IEEE VIS Shortlist</span>
+          <span class="honor-item">G-Cross国际工业设计奖</span>
+          <span class="honor-item">"包豪斯"国际设计大赛银奖</span>
+          <span class="honor-item">广东省环境艺术设计大赛金奖</span>
+          <span class="honor-item">Xbot科创夏令营"最佳用户洞察奖"（5万启动资金）</span>
+        </div>
+      </div>
+
+      <!-- 个人优势 -->
+      <div class="section">
+        <div class="section-title">个人优势</div>
+        <div class="exp-body">
+          具备AI产品全链路设计能力，涵盖用户研究、需求拆解与交互落地。擅长使用AI工具链（TRAE/ComfyUI/TouchDesigner/LLM）完成从概念到前端实现的全流程，具备实时交互影像开发与数据可视化叙事能力。建筑学背景赋予空间思维与跨媒介创意表达能力，乐于在团队协作中推动高质量项目完成。
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar" style="height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-top:1px solid var(--border);background:rgba(8,8,12,0.95);font-size:12px;color:var(--text-muted);flex-shrink:0;">
+    <div>Hong Kong, China</div>
+    <a href="./index.html" style="color:var(--text-muted);text-decoration:none;">← back to home</a>
+  </div>
+
+</div>
+
+</body>
+</html>

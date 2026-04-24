@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Twin City Tale · Case Study</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #07080a;
+  --text: #f2f2f2;
+  --text-dim: rgba(255,255,255,0.72);
+  --text-muted: rgba(255,255,255,0.45);
+  --border: rgba(255,255,255,0.1);
+  --card: rgba(255,255,255,0.03);
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+}
+.unified-topbar{
+  position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 28px;background:rgba(8,8,10,.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1)
+}
+.unified-brand{font-size:14px;letter-spacing:1.5px;color:rgba(255,255,255,.75);text-decoration:none}
+.unified-nav{display:flex;gap:18px}
+.unified-nav a{font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.48);text-decoration:none}
+.unified-nav a.active{color:#fff}
+.wrap { display: flex; min-height: 100vh; }
+.toc {
+  width: 270px;
+  position: fixed;
+  left: 0;
+  top: 63px;
+  bottom: 0;
+  border-right: 1px solid var(--border);
+  padding: 28px 20px;
+  background: rgba(7,8,10,0.96);
+}
+.toc a { color: var(--text-muted); text-decoration: none; font-size: 13px; }
+.toc ul { list-style: none; margin-top: 18px; }
+.toc li { margin: 8px 0; }
+.main {
+  margin-left: 270px;
+  width: calc(100% - 270px);
+  max-width: 980px;
+  padding: 74px 56px 80px;
+}
+.hero h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.sub { color: var(--text-dim); font-size: 16px; margin-bottom: 26px; }
+.meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  padding: 18px 0 22px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 34px;
+}
+.meta b {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.meta span { font-size: 14px; color: var(--text-dim); }
+section { margin-bottom: 54px; }
+h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 31px;
+  font-weight: 400;
+  margin-bottom: 18px;
+}
+p { color: var(--text-dim); margin-bottom: 14px; }
+.callout {
+  border-left: 3px solid rgba(255,255,255,0.35);
+  background: var(--card);
+  padding: 16px 18px;
+  border-radius: 6px;
+  margin: 18px 0;
+}
+.image {
+  margin: 24px 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.image img { width: 100%; display: block; }
+.caption { font-size: 12px; color: var(--text-muted); padding: 10px 12px; background: var(--card); }
+.results {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.result {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--card);
+}
+.result strong { font-size: 24px; display: block; margin-bottom: 4px; }
+.foot {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 16px;
+}
+.foot a { color: var(--text-dim); text-decoration: none; font-size: 14px; }
+@media (max-width: 900px) {
+  .toc { display: none; }
+  .main { margin-left: 0; width: 100%; padding: 24px 16px 60px; }
+  .meta { grid-template-columns: 1fr; }
+  .results { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 34px; }
+}
+.back-wrap{max-width:980px;margin:14px auto 0;padding:0 18px;}
+.back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:rgba(255,255,255,.62);text-decoration:none;transition:color .2s ease;}
+.back-work:hover{color:#fff;}
+</style>
+</head>
+<body>
+<header class="unified-topbar">
+  <a class="unified-brand" href="../index.html">[Leonardo Li] · Work · Index</a>
+  <nav class="unified-nav">
+    <a href="../index.html">Home</a>
+    <a class="active" href="../works.html">Work</a>
+    <a href="../resume.html">Resume</a>
+  </nav>
+</header>
+<div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
+<div class="wrap">
+  <aside class="toc">
+    <a href="../works.html">&larr; Back to Index</a>
+    <ul>
+      <li><a href="#context">Context</a></li>
+      <li><a href="#strategy">How It Works</a></li>
+      <li><a href="#iterations">Core Iterations</a></li>
+      <li><a href="#result">Result</a></li>
+      <li><a href="#reflection">Reflection</a></li>
+    </ul>
+  </aside>
+  <main class="main">
+    <header class="hero">
+      <h1>Twin City Tale</h1>
+      <p class="sub">Shenzhen-Hong Kong Border Chronicle · 数据叙事可视化案例</p>
+      <div class="meta">
+        <div><b>Role</b><span>数据可视化设计师 / 前端开发</span></div>
+        <div><b>Credits</b><span>组员负责艺术表达，我负责叙事与实现</span></div>
+        <div><b>Time</b><span>2025 · PacificVis 2026 Shortlist</span></div>
+      </div>
+    </header>
+
+    <section id="context">
+      <h2>Context</h2>
+      <p>这个项目聚焦 2023-2025 年深港通勤体验。目标不是“做一张漂亮图”，而是把跨境生活中的人群迁徙、时间节奏与空间分层，转成可以被普通观众理解的叙事结构。</p>
+      <div class="callout">
+        核心问题：如何把“跨境数据”从抽象统计，转成“有情境、有情绪、有决策价值”的可视化故事。
+      </div>
+      <div class="image">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1400&q=80" alt="Twin City Tale">
+        <div class="caption">公开站点标题信息：2023 - 2025 BORDER CHRONICLE</div>
+      </div>
+    </section>
+
+    <section id="strategy">
+      <h2>How It Works</h2>
+      <p>我把叙事拆成“时间层、地点层、行为层”三条并行主线，让用户通过滚动逐步进入：先看到趋势，再看到结构，最后看到具体群体行为。</p>
+      <p>技术上采用前端叙事页面 + 可视化图层联动，保证交互轻量但信息密度足够高，适配评审快速浏览场景。</p>
+    </section>
+
+    <section id="iterations">
+      <h2>Core Iterations</h2>
+      <p>第一轮重点是“把数据讲明白”，但页面像报告；第二轮把章节变成故事节奏；第三轮将叙事锚点与视觉锚点绑定，降低用户迷失感。</p>
+      <div class="callout">
+        关键决策：牺牲部分炫技动效，优先保证读者在 10 秒内知道“这页在讲什么变化”。
+      </div>
+    </section>
+
+    <section id="result">
+      <h2>Result</h2>
+      <div class="results">
+        <div class="result"><strong>Shortlist</strong><span>IEEE PacificVis 2026 Sydney</span></div>
+        <div class="result"><strong>3层叙事</strong><span>时间 / 空间 / 行为联动</span></div>
+        <div class="result"><strong>1个站点</strong><span>可直接在线演示与投递</span></div>
+      </div>
+      <div class="callout">外链演示：<a href="https://twincitytale-visstory2026.netlify.app/" target="_blank" rel="noopener noreferrer">twincitytale-visstory2026.netlify.app</a></div>
+    </section>
+
+    <section id="reflection">
+      <h2>Reflection</h2>
+      <p>这个项目让我进一步确认：数据可视化投递场景里，叙事节奏比图形复杂度更关键。面试官更在意你如何定义问题、如何做取舍、如何验证信息传达，而不是只看视觉奇观。</p>
+    </section>
+
+    <div class="foot">
+      <a href="../works.html">&larr; 返回作品总览</a>
+      <a href="./MemoryLens.html">下一个案例：MemoryLens &rarr;</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

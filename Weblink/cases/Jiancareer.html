@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>简职 JianCareer · 黎铭晞</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: rgba(255,255,255,0.03);
+  --text: #e8e6e1;
+  --text-dim: #8a8580;
+  --text-muted: #5a5550;
+  --accent: #7c6fae;
+  --accent-soft: rgba(124,111,174,0.15);
+  --border: rgba(255,255,255,0.06);
+  --g-1: #1a0a2e;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+/* ===== LAYOUT ===== */
+.page { display: flex; min-height: 100vh; }
+
+/* ===== LEFT SIDEBAR (TOC) ===== */
+.sidebar {
+  width: 260px;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  background: linear-gradient(to right, rgba(10,10,15,0.98), rgba(10,10,15,0.95));
+  border-right: 1px solid var(--border);
+  padding: 32px 24px;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 32px;
+  transition: color 0.3s;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 16px; height: 16px; }
+
+.toc-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 4px; }
+.toc-list a {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-left: 2px solid transparent;
+}
+.toc-list a:hover { color: var(--text); background: var(--bg-elevated); }
+.toc-list a.active { color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); }
+.toc-list a.sub { padding-left: 24px; font-size: 12px; }
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 48px 64px 120px;
+}
+
+/* ===== HERO BANNER ===== */
+.project-hero {
+  margin: -48px -64px 48px;
+  padding: 80px 64px 48px;
+  background: linear-gradient(135deg, rgba(26,10,46,0.6), rgba(10,10,15,0.9));
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.project-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+  filter: blur(60px);
+}
+.project-hero h1 {
+  font-size: 42px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.project-hero .subtitle {
+  font-size: 16px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  position: relative;
+}
+
+/* ===== META BAR ===== */
+.meta-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.meta-group h4 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.meta-group p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+.meta-group a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* ===== CONTENT BLOCKS ===== */
+.section-block { margin-bottom: 64px; }
+
+.section-block h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.section-block h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 32px 0 16px;
+  letter-spacing: 1px;
+}
+
+.section-block p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.section-block p strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.section-block p a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-soft);
+  transition: border-color 0.3s;
+}
+.section-block p a:hover { border-bottom-color: var(--accent); }
+
+/* ===== CALLOUT (Notion style) ===== */
+.callout {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.callout-icon { font-size: 20px; flex-shrink: 0; }
+.callout-content { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+/* ===== IMAGE BLOCKS ===== */
+.img-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.img-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.img-block img {
+  width: 100%;
+  display: block;
+}
+.img-caption {
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+}
+
+/* ===== BEFORE/AFTER COMPARISON ===== */
+.compare-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 32px 0;
+}
+.compare-item {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.compare-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.compare-item img { width: 100%; display: block; }
+.compare-label {
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.compare-label.before { background: rgba(255,255,255,0.03); color: var(--text-muted); }
+.compare-label.after { background: var(--accent-soft); color: var(--accent); }
+
+/* ===== VIDEO BLOCK ===== */
+.video-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+  padding-bottom: 56.25%;
+  background: var(--bg-elevated);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.video-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.video-block iframe,
+.video-block video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.video-placeholder {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ===== QUOTE ===== */
+.quote-block {
+  border-left: 3px solid var(--accent);
+  padding: 16px 24px;
+  margin: 32px 0;
+  font-style: italic;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ===== TAG LIST ===== */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+.tag-list span {
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+
+/* ===== RESULTS GRID ===== */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+.result-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.result-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.result-number {
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.result-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* ===== FOOTER NAV ===== */
+.footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 48px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+}
+.footer-nav a {
+  font-size: 14px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-nav a:hover { color: var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
+  .project-hero h1 { font-size: 28px; }
+  .meta-bar { grid-template-columns: 1fr; gap: 16px; }
+  .compare-block { grid-template-columns: 1fr; }
+  .results-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.back-wrap{max-width:980px;margin:14px auto 0;padding:0 18px;}
+.back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:rgba(255,255,255,.62);text-decoration:none;transition:color .2s ease;}
+.back-work:hover{color:#fff;}
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav style="position: fixed; top: 0; left: 0; right: 0; padding: 18px 28px; display: flex; justify-content: space-between; align-items: center; z-index: 200; background: rgba(8,8,10,0.88); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1);">
+  <a href="../index.html" style="font-size: 14px; letter-spacing: 1.5px; color: rgba(255,255,255,0.75); text-decoration: none;">[Leonardo Li] · Work · Index</a>
+  <div style="display: flex; gap: 18px;">
+    <a href="../index.html" style="font-size: 13px; color: rgba(255,255,255,0.48); text-decoration: none; letter-spacing: 1px;">Home</a>
+    <a href="../works.html" style="font-size: 13px; color: #fff; text-decoration: none; letter-spacing: 1px; font-weight: 600;">Work</a>
+    <a href="../resume.html" style="font-size: 13px; color: rgba(255,255,255,0.48); text-decoration: none; letter-spacing: 1px;">Resume</a>
+  </div>
+</nav>
+
+<!-- Spacer for nav -->
+<div style="height: 56px;"></div>
+<div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
+
+<div class="page">
+
+<!-- SIDEBAR TOC -->
+<aside class="sidebar">
+  <a href="../works.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to Index
+  </a>
+
+  <div class="toc-title">目录</div>
+  <ul class="toc-list">
+    <li><a href="#assets">补充工程资料</a></li>
+    <li><a href="#context" class="active">背景与问题</a></li>
+    <li><a href="#role">我的角色</a></li>
+    <li><a href="#process">设计过程</a></li>
+    <li><a href="#process-1" class="sub">阶段一：工作流梳理</a></li>
+    <li><a href="#process-2" class="sub">阶段二：设计规范与原型</a></li>
+    <li><a href="#process-3" class="sub">阶段三：AI Mentor</a></li>
+    <li><a href="#process-4" class="sub">阶段四：设计系统</a></li>
+    <li><a href="#outcome">最终产出</a></li>
+    <li><a href="#reflection">反思与收获</a></li>
+  </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- HERO -->
+<div class="project-hero">
+  <h1>简职 JianCareer</h1>
+  <div class="subtitle">AI Agent驱动的求职助手产品 · Case Study</div>
+</div>
+
+<!-- META BAR -->
+<div class="meta-bar">
+  <div class="meta-group">
+    <h4>Role</h4>
+    <p>体验设计师<br>前端开发（Vibe Coding）</p>
+  </div>
+  <div class="meta-group">
+    <h4>Credits</h4>
+    <p>产品经理 · 后端开发 · 2位设计实习生</p>
+  </div>
+  <div class="meta-group">
+    <h4>Time</h4>
+    <p>2025.08 – 2026.01<br><a href="https://jiancareer.com/">jiancareer.com</a></p>
+  </div>
+</div>
+
+<section id="assets" class="section-block">
+  <h2>补充工程资料</h2>
+  <p>补充：简职后期组件库与网页工程文件（烂尾楼版本归档）。该链接可用于面试追问时展示后期工程推进痕迹与组件化沉淀。</p>
+  <div class="callout">
+    <div class="callout-icon">🧩</div>
+    <div class="callout-content">
+      <strong>Figma 工程文件</strong>：
+      <a href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1&t=0TkLYv2ivkakbyUG-1" target="_blank" rel="noopener noreferrer">简职烂尾楼（组件库 + 网页工程）</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEXT -->
+<section id="context" class="section-block">
+  <h2>背景与问题</h2>
+  <p>中国每年有上千万应届毕业生涌入就业市场，求职过程中的信息不对称、简历重复填写、职业规划缺乏个性化指导是普遍痛点。</p>
+
+  <div class="callout">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>核心洞察</strong>：求职者在网申过程中需要反复填写相同信息（姓名、电话、教育经历等），而中国人工智能协会正在推动AI技术在就业服务领域的应用——这意味着<strong>AI求职助手</strong>是一个有政策背书、有真实需求的产品方向。
+    </div>
+  </div>
+
+  <p>简职的产品定位是<strong>"AI Agent驱动的求职助手"</strong>：用户只需填写一次简历信息，即可一键填写所有网申表单；AI Mentor通过对话方式帮助用户挖掘自身优势、分析职业匹配度。产品形态以<strong>浏览器插件为主</strong>，覆盖主流的网申页面；同时配备<strong>网页端</strong>，提供完整的求职分析和社区功能。</p>
+
+  <div class="img-block">
+    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80" alt="简职产品概览">
+    <div class="img-caption">简职产品架构：浏览器插件 + 网页端（Dashboard、求职分析、社区）</div>
+  </div>
+</section>
+
+<!-- ROLE -->
+<section id="role" class="section-block">
+  <h2>我的角色</h2>
+  <p>作为团队的<strong>唯一体验设计师</strong>，我从0到1负责产品的全链路体验设计。同时，我使用Lovable和TRAE完成了AI Mentor界面的<strong>Vibe Coding前端实现</strong>——实践"设计即开发"的工作方式。</p>
+
+  <div class="tag-list">
+    <span>产品定义</span>
+    <span>信息架构</span>
+    <span>交互设计</span>
+    <span>UI设计</span>
+    <span>Vibe Coding</span>
+    <span>设计系统</span>
+    <span>团队管理</span>
+  </div>
+
+  <div class="quote-block">
+    "设计师交付的不只是Figma页面，而是带有交互逻辑的前端壳子 + 设计规则 + 组件系统。"
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" class="section-block">
+  <h2>设计过程</h2>
+
+  <!-- Phase 1 -->
+  <h3 id="process-1">阶段一：工作流梳理（Miro → Figma）</h3>
+  <p>项目初期，我使用<strong>Miro</strong>梳理了完整的用户体验工作流：从用户注册→填写简历→一键投递→AI辅导的完整链路。通过这种方式，团队对产品流程达成了统一认知，也为后续的信息架构设计奠定了基础。</p>
+
+  <div class="img-block">
+    <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=1200&q=80" alt="Miro工作流梳理">
+    <div class="img-caption">使用Miro梳理的用户体验工作流 — 从注册到求职成功的完整链路</div>
+  </div>
+
+  <p>在Miro的基础上，我从0搭建了<strong>设计规范体系</strong>，包括色彩系统、字体层级、组件规范等，确保后续40+页Figma原型的一致性。</p>
+
+  <!-- Phase 2 -->
+  <h3 id="process-2">阶段二：40+页Figma高保真原型</h3>
+  <p>基于梳理好的工作流，我独立完成了<strong>40+页Figma高保真原型</strong>，覆盖以下核心模块：</p>
+  <p>• <strong>官网</strong>（<a href="https://jian-career.lovable.app/">jian-career.lovable.app</a>）：产品价值传达、功能介绍<br>
+     • <strong>注册登录</strong>：手机号+验证码+微信授权多方式登录<br>
+     • <strong>个人信息填写</strong>：渐进式披露，降低填写门槛<br>
+     • <strong>浏览器插件端</strong>：一键填写网申表单的核心场景<br>
+     • <strong>Dashboard工作台</strong>：求职进度可视化、数据分析<br>
+     • <strong>求职分析</strong>：AI生成的求职报告<br>
+     • <strong>社区</strong>：求职者交流互动空间</p>
+
+  <div class="compare-block">
+    <div class="compare-item">
+      <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80" alt="插件端界面">
+      <div class="compare-label before">浏览器插件端</div>
+    </div>
+    <div class="compare-item">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Dashboard界面">
+      <div class="compare-label after">Dashboard工作台</div>
+    </div>
+  </div>
+
+  <!-- Phase 3 -->
+  <h3 id="process-3">阶段三：AI Mentor — 从设计到代码</h3>
+  <p>AI Mentor（AI职业导师）是简职最具创新性的功能。通过<strong>对话式交互</strong>，AI Mentor帮助用户：</p>
+  <p>1. <strong>挖掘自身优势</strong>：通过引导式提问，帮助用户发现自己简历中的亮点<br>
+     2. <strong>分析职业匹配度</strong>：对比用户简历与目标JD的匹配程度<br>
+     3. <strong>推荐成长路径</strong>：基于用户背景推荐适合的职业发展方向</p>
+
+  <div class="callout">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-content">
+      <strong>设计决策</strong>：为什么不直接用ChatGPT式的对话框？因为求职场景需要<strong>结构化的引导</strong>而非开放式对话。我采用了"渐进式披露"的交互模式——每次对话只聚焦一个维度（技能、经历、目标），降低用户的认知负担。
+    </div>
+  </div>
+
+  <p>我使用<strong>Lovable</strong>完成了AI Mentor界面的Vibe Coding开发——将Figma设计稿直接转化为可交互的前端原型。这种"设计即开发"的方式，让我可以在设计的同时验证交互可行性，大大缩短了设计-开发的迭代周期。</p>
+
+  <div class="img-block">
+    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80" alt="AI Mentor界面">
+    <div class="img-caption">AI Mentor对话界面 — 通过引导式对话帮助用户挖掘职业优势</div>
+  </div>
+
+  <!-- Phase 4 -->
+  <h3 id="process-4">阶段四：设计系统与团队管理</h3>
+  <p>在产品进入稳定迭代期后，我带领<strong>2位实习生</strong>搭建了简职的<strong>组件库（Design System）</strong>。这项工作包括：</p>
+  <p>• 将40+页原型中的通用组件（按钮、输入框、卡片、导航等）抽取为可复用组件<br>
+     • 制定组件使用规范文档<br>
+     • 推动插件端与网页端的界面统一重建<br>
+     • 为后续<strong>A2UI（AI to UI）</strong>的落地建立可复用的设计资产</p>
+
+  <div class="quote-block">
+    "组件库对于设计来说是基础中的基础，它决定了后续AI能否理解并正确使用我们的设计语言。"
+  </div>
+</section>
+
+<!-- OUTCOME -->
+<section id="outcome" class="section-block">
+  <h2>最终产出</h2>
+
+  <div class="results-grid">
+    <div class="result-item">
+      <div class="result-number">40+</div>
+      <div class="result-label">Figma高保真页面</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">TOP 10%</div>
+      <div class="result-label">AI Agent 2025 toC榜单</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">TOP 1</div>
+      <div class="result-label">伯乐与千里马分榜</div>
+    </div>
+  </div>
+
+  <p>简职项目获得<strong>中国人工智能协会推荐</strong>，进入<a href="https://mp.weixin.qq.com/s/Tf6GWCBPjbFjZlHTVH3MNQ">AI Agent 2025创业大赛toC软件榜单TOP 10%</a>，并在伯乐与千里马分榜中夺得<strong>TOP 1</strong>的成绩。</p>
+
+  <div class="video-block">
+    <div class="video-placeholder">🎬 AI Mentor 交互演示视频（请替换为实际视频）</div>
+  </div>
+
+  <p>我负责了比赛的<strong>PPT动画和页面制作</strong>，将产品的设计理念、技术架构和商业价值以清晰有力的方式呈现给评委。</p>
+</section>
+
+<!-- RELATED FILES -->
+<section id="files" class="section-block">
+  <h2>相关文件</h2>
+  <p>以下 PDF 为简职项目完整技术报告，涵盖大模型多 Agent 架构、职业决策算法与系统实现细节，可直接在线预览或下载。</p>
+  <div style="margin-top:16px;">
+    <embed src="../files/B07 0662 简职：基于大模型多Agent架构的职业决策与智能行动系统_20260424193803.pdf" 
+           type="application/pdf" 
+           width="100%" 
+           height="600px" 
+           style="border:1px solid var(--border); border-radius:8px;" />
+  </div>
+  <p style="margin-top:8px; font-size:12px; color:var(--text-muted);">
+    若浏览器无法预览，可<a href="../files/B07 0662 简职：基于大模型多Agent架构的职业决策与智能行动系统_20260424193803.pdf" download="简职_技术报告.pdf">点此下载</a>。
+  </p>
+</section>
+
+<!-- REFLECTION -->
+<section id="reflection" class="section-block">
+  <h2>反思与收获</h2>
+
+  <p><strong>关于"设计即开发"</strong>：通过Lovable/TRAE进行Vibe Coding，让我深刻理解了设计师掌握前端能力的价值。不再是"设计稿丢给开发"的线性流程，而是设计-开发一体化的敏捷迭代。这不仅是效率的提升，更是设计思维的延伸。</p>
+
+  <p><strong>关于AI产品的设计</strong>：AI Mentor的设计让我意识到，AI对话产品的核心挑战不是技术实现，而是<strong>如何让AI的回应既有用又有温度</strong>。过于结构化的引导会显得机械，过于开放又会让用户迷茫。找到这个平衡点，是AI交互设计的关键。</p>
+
+  <p><strong>如果再做一次</strong>：我希望能在更早的阶段引入<strong>用户测试</strong>。虽然项目节奏很快（创业团队的常态），但如果在AI Mentor的设计阶段能邀请3-5位应届生进行可用性测试，可能会在对话流程和交互细节上做出更精准的优化。</p>
+
+  <div class="callout">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-content">
+      <strong>核心 takeaway</strong>：AI时代的设计师，需要同时具备<strong>产品思维</strong>（理解业务和用户）、<strong>设计能力</strong>（创造优秀的体验）和<strong>技术实现能力</strong>（用AI工具快速验证想法）。简职项目是我在这三个维度上一次完整的实践。
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER NAV -->
+<div class="footer-nav">
+  <a href="../works.html">← 返回作品列表</a>
+  <a href="../resume.html">查看简历</a>
+</div>
+
+</main>
+</div>
+
+<script>
+// TOC Active State on Scroll
+const sections = document.querySelectorAll('section[id], h3[id]');
+const tocLinks = document.querySelectorAll('.toc-list a');
+
+function updateActiveToc() {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.getBoundingClientRect().top;
+    if (top < 200) current = section.id;
+  });
+  tocLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateActiveToc);
+
+// Scroll Animation (Intersection Observer)
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.img-block, .compare-item, .video-block, .result-item').forEach(el => {
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

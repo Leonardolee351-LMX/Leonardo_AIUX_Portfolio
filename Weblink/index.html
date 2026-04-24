@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黎铭晞 · Leonardo Li · AI交互设计师</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #08080c;
+  --text: #e8e6e1;
+  --text-dim: #8a8580;
+  --text-muted: #5a5550;
+  --accent: #5b9e8a;
+  --accent-blue: #5b7ec7;
+  --border: rgba(255,255,255,0.06);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.unified-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  background: rgba(8,8,10,0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.unified-brand {
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+}
+
+.unified-nav {
+  display: flex;
+  gap: 18px;
+}
+
+.unified-nav a {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.48);
+  text-decoration: none;
+}
+
+.unified-nav a.active { color: #ffffff; }
+
+/* ===== OS WINDOW FRAME ===== */
+.os-window {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ===== TITLE BAR ===== */
+.title-bar {
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,8,12,0.9);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.window-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.window-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.window-btn:hover { transform: scale(1.15); }
+.window-btn.close { background: #ff5f56; }
+.window-btn.minimize { background: #ffbd2e; }
+.window-btn.maximize { background: #27c93f; }
+
+.window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+}
+
+.window-title span { color: var(--accent); font-weight: 500; }
+
+.window-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.window-actions svg {
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.window-actions svg:hover { color: var(--text-dim); }
+
+/* ===== MAIN AREA ===== */
+.main-area {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ===== LEFT DOCK ===== */
+.dock {
+  width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  border-right: 1px solid var(--border);
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.dock-item {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 10px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.dock-item svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dock-item span {
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+.dock-item:hover {
+  color: var(--text-dim);
+  background: rgba(255,255,255,0.03);
+}
+
+.dock-item.active {
+  color: var(--accent);
+  background: rgba(91,158,138,0.08);
+}
+
+.dock-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ===== CONTENT AREA ===== */
+.content-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-name {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.bg-name-track {
+  display: inline-flex;
+  white-space: nowrap;
+  font-size: clamp(72px, 14vw, 240px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: rgba(255,255,255,0.04);
+  animation: marqueeName 22s linear infinite;
+}
+
+@keyframes marqueeName {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ===== BACKGROUND ORBS - BIGGER & MORE VISIBLE ===== */
+.gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.orb-left {
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(91,158,138,0.55), rgba(91,158,138,0.15) 40%, transparent 70%);
+  bottom: -150px;
+  left: -150px;
+  animation: orbMove1 20s ease-in-out infinite;
+}
+
+.orb-right {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(91,126,199,0.45), rgba(91,126,199,0.12) 40%, transparent 70%);
+  top: -50px;
+  right: -100px;
+  animation: orbMove2 25s ease-in-out infinite;
+}
+
+.orb-bottom {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(139,110,180,0.35), transparent 70%);
+  bottom: 10%;
+  right: 30%;
+  animation: orbMove3 30s ease-in-out infinite;
+}
+
+@keyframes orbMove1 {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(40px,-50px) scale(1.2); }
+  66% { transform: translate(-20px,30px) scale(1.1); }
+}
+
+@keyframes orbMove2 {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(-30px,40px) scale(1.15); }
+  66% { transform: translate(20px,-20px) scale(1.05); }
+}
+
+@keyframes orbMove3 {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-40px,-30px) scale(1.25); }
+}
+
+/* ===== 3D FLOATING SYMBOLS - BIGGER ===== */
+.scene-3d {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  perspective: 800px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.float-sym {
+  position: absolute;
+  font-weight: 900;
+  transform-style: preserve-3d;
+  animation: symFloat linear infinite;
+  user-select: none;
+  font-family: 'Courier New', monospace;
+  letter-spacing: -2px;
+  text-shadow: 0 4px 18px rgba(0,0,0,0.45);
+  -webkit-text-stroke: 1px rgba(255,255,255,0.07);
+}
+
+.sym-1 {
+  top: 8%;
+  left: 10%;
+  font-size: 140px;
+  color: rgba(91,158,138,0.18);
+  animation-duration: 22s;
+  animation-delay: 0s;
+}
+
+.sym-2 {
+  top: 5%;
+  right: 15%;
+  font-size: 100px;
+  color: rgba(91,126,199,0.15);
+  animation-duration: 28s;
+  animation-delay: -7s;
+}
+
+.sym-3 {
+  top: 55%;
+  left: 5%;
+  font-size: 120px;
+  color: rgba(139,110,180,0.13);
+  animation-duration: 24s;
+  animation-delay: -12s;
+}
+
+.sym-4 {
+  top: 65%;
+  right: 8%;
+  font-size: 90px;
+  color: rgba(91,158,138,0.12);
+  animation-duration: 20s;
+  animation-delay: -4s;
+}
+
+.sym-5 {
+  top: 35%;
+  left: 25%;
+  font-size: 80px;
+  color: rgba(91,126,199,0.10);
+  animation-duration: 26s;
+  animation-delay: -9s;
+}
+
+.sym-6 {
+  top: 75%;
+  right: 35%;
+  font-size: 110px;
+  color: rgba(139,110,180,0.12);
+  animation-duration: 30s;
+  animation-delay: -16s;
+}
+
+.sym-7 {
+  top: 20%;
+  left: 55%;
+  font-size: 70px;
+  color: rgba(91,158,138,0.09);
+  animation-duration: 18s;
+  animation-delay: -2s;
+}
+
+@keyframes symFloat {
+  0% { transform: translateY(0) rotateX(0deg) rotateY(0deg) translateZ(0); }
+  25% { transform: translateY(-25px) rotateX(12deg) rotateY(90deg) translateZ(40px); }
+  50% { transform: translateY(-15px) rotateX(-8deg) rotateY(180deg) translateZ(-30px); }
+  75% { transform: translateY(-35px) rotateX(18deg) rotateY(270deg) translateZ(50px); }
+  100% { transform: translateY(0) rotateX(0deg) rotateY(360deg) translateZ(0); }
+}
+
+/* ===== PARTICLES ===== */
+#particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ===== HERO CENTER ===== */
+.hero-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.hero-label {
+  font-size: 11px;
+  letter-spacing: 6px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.hero-title {
+  font-size: clamp(36px, 5.5vw, 72px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 24px;
+}
+
+.hero-title .name {
+  color: var(--text);
+}
+
+.hero-title .role-highlight {
+  background: linear-gradient(135deg, var(--accent), var(--accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-title .role-plain {
+  color: var(--text);
+}
+
+.hero-desc {
+  max-width: 520px;
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 2;
+  letter-spacing: 0.3px;
+}
+
+.hero-cta {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  color: #0b0f0e;
+  background: linear-gradient(135deg, #73d8bb, #78a4ea);
+}
+
+.btn-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+.btn-ghost {
+  color: var(--text-dim);
+  border-color: var(--border);
+  background: rgba(255,255,255,0.02);
+}
+
+.btn-ghost:hover {
+  color: var(--text);
+  border-color: rgba(255,255,255,0.16);
+}
+
+.launch-note {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: float 3s ease-in-out infinite;
+}
+
+.hero-scroll span {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  margin: 0 auto;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
+/* ===== STATUS BAR ===== */
+.status-bar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-top: 1px solid var(--border);
+  background: rgba(8,8,12,0.9);
+  font-size: 12px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-sep { margin: 0 4px; }
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.status-right a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.status-right a:hover { color: var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .dock { display: none; }
+  .hero-title { font-size: 40px; }
+  .float-sym { font-size: 50px !important; }
+  .orb-left { width: 300px; height: 300px; }
+  .orb-right { width: 250px; height: 250px; }
+}
+
+.title-bar, .dock, .status-bar {
+  display: none;
+}
+
+.main-area {
+  display: block;
+}
+
+.content-area {
+  height: calc(100vh - 64px);
+}
+</style>
+</head>
+<body>
+
+<div class="os-window">
+  <header class="unified-topbar">
+    <a class="unified-brand" href="./index.html">[Leonardo Li] · Work · Index</a>
+    <nav class="unified-nav">
+      <a class="active" href="./index.html">Home</a>
+      <a href="./works.html">Work</a>
+      <a href="./resume.html">Resume</a>
+    </nav>
+  </header>
+
+  <!-- TITLE BAR -->
+  <div class="title-bar">
+    <div class="window-controls">
+      <div class="window-btn close"></div>
+      <div class="window-btn minimize"></div>
+      <div class="window-btn maximize"></div>
+    </div>
+    <div class="window-title">limingxi <span>&lt;AI交互设计师&gt;</span></div>
+    <div class="window-actions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+    </div>
+  </div>
+
+  <!-- MAIN AREA -->
+  <div class="main-area">
+
+    <!-- LEFT DOCK -->
+    <nav class="dock">
+      <a href="./index.html" class="dock-item active" title="首页">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>首页</span>
+      </a>
+      <a href="./works.html" class="dock-item" title="作品">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        <span>作品</span>
+      </a>
+      <a href="./resume.html" class="dock-item" title="简历">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>简历</span>
+      </a>
+      <a href="./resume.html" class="dock-item" title="关于">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span>关于</span>
+      </a>
+    </nav>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+
+      <!-- Background Effects -->
+      <div class="gradient-orb orb-left"></div>
+      <div class="gradient-orb orb-right"></div>
+      <div class="gradient-orb orb-bottom"></div>
+      <canvas id="particles"></canvas>
+      <div class="bg-name">
+        <div class="bg-name-track">LEONARDO LI · AI INTERACTION DESIGNER · LEONARDO LI · AI INTERACTION DESIGNER · </div>
+      </div>
+
+      <!-- 3D Floating Symbols -->
+      <div class="scene-3d">
+        <div class="float-sym sym-1">{ }</div>
+        <div class="float-sym sym-2">&lt;/&gt;</div>
+        <div class="float-sym sym-3">[ ]</div>
+        <div class="float-sym sym-4">&lt; &gt;</div>
+        <div class="float-sym sym-5">/ /</div>
+        <div class="float-sym sym-6">( )</div>
+        <div class="float-sym sym-7">#</div>
+      </div>
+
+      <!-- Hero Center -->
+      <div class="hero-center">
+        <div class="hero-label">HOME</div>
+        <h1 class="hero-title">
+          <span class="name">Hi, I'm 黎铭晞,</span><br>
+          <span class="role-highlight">AI交互</span><span class="role-plain">设计师</span>
+        </h1>
+        <p class="hero-desc">
+          我融合人机交互专业背景与AI Native全链路设计能力，<br>
+          从用户洞察到Vibe Coding前端实现，创造有温度的智能体验。
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="./works.html">浏览项目</a>
+          <a class="btn btn-ghost" href="./resume.html">查看简历</a>
+        </div>
+        <div class="launch-note">StoryVibe 正在制作中，当前优先展示已完成主打案例。</div>
+        <div style="margin-top:12px;font-size:12px;color:var(--text-muted);line-height:1.6;">
+          <p>① 个人作品集网站仍在持续开发中，欢迎随时回访查看最新进展。</p>
+          <p>② 完整自我介绍与补充资料已整理至飞书文档，建议面试官点击查阅：<a href="https://my.feishu.cn/docx/TzDZdqGRqocEqqxW3ACcRkhsncu?from=from_copylink" target="_blank" rel="noopener noreferrer">飞书在线文档</a>。</p>
+        </div>
+        <div class="hero-scroll"><span></span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-left">
+      <span>Hong Kong, China</span>
+      <span class="status-sep">·</span>
+      <span id="local-time">--:--</span>
+      <span class="status-sep">·</span>
+      <a href="mailto:919452364@qq.com" style="color:inherit;text-decoration:none;">919452364@qq.com</a>
+    </div>
+    <div class="status-right">
+      <a href="./cases/Jiancareer.html">简职</a>
+      <a href="https://github.com/QiriZ/MemoryLens" target="_blank">GitHub</a>
+      <a href="./resume.html">resume & contact →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Local time
+function updateTime() {
+  const now = new Date();
+  const hkTime = now.toLocaleTimeString('en-US', {
+    timeZone: 'Asia/Hong_Kong',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+  document.getElementById('local-time').textContent = 'Local time ' + hkTime;
+}
+updateTime();
+setInterval(updateTime, 60000);
+
+// Particles
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let w, h, particles = [];
+
+function resize() {
+  w = canvas.width = canvas.parentElement.offsetWidth;
+  h = canvas.height = canvas.parentElement.offsetHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+    this.vx = (Math.random() - 0.5) * 0.25;
+    this.vy = (Math.random() - 0.5) * 0.25;
+    this.r = Math.random() * 1.8 + 0.3;
+    this.alpha = Math.random() * 0.4 + 0.1;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(120,160,200,${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+function animate() {
+  ctx.clearRect(0, 0, w, h);
+  particles.forEach(p => { p.update(); p.draw(); });
+  // Connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 140) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(120,160,200,${0.06 * (1 - dist / 140)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>

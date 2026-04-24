@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>渡星河交互界面设计 · Leonardo Li</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:#08090d;color:#f1f3f5;line-height:1.85;
+}
+.unified-topbar{
+  position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 28px;background:rgba(8,8,10,.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1)
+}
+.unified-brand{font-size:14px;letter-spacing:1.5px;color:rgba(255,255,255,.75);text-decoration:none}
+.unified-nav{display:flex;gap:18px}
+.unified-nav a{font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.48);text-decoration:none}
+.unified-nav a.active{color:#fff}
+.wrap{max-width:980px;margin:0 auto;padding:28px 18px 70px}
+h1{
+  font-family:"Times New Roman",Georgia,serif;font-size:52px;line-height:1.14;font-weight:400;letter-spacing:-.02em;
+  margin:8px 0 10px;
+}
+.subtitle{font-size:19px;color:#d0d4d8;max-width:760px}
+.meta{
+  margin:34px 0 44px;padding:18px 0;border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;
+}
+.meta h4{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#7e8790;margin-bottom:8px}
+.meta p{font-size:15px;color:#cfd4da}
+h2{
+  margin:44px 0 16px;font-family:"Times New Roman",Georgia,serif;font-size:33px;font-weight:400;line-height:1.2;letter-spacing:-.01em;
+}
+p{font-size:16px;color:#d6dbe1}
+.callout{
+  margin:22px 0;padding:16px 18px;border-left:3px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.04);border-radius:6px;
+}
+.cover{margin:24px 0;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.1)}
+.cover img{width:100%;display:block;object-fit:cover;max-height:440px}
+a{color:#9cc3ff}
+ul{padding-left:20px}
+li{margin:10px 0;color:#d6dbe1}
+.links{margin-top:16px}
+.links a{display:block;margin:8px 0}
+.tag{
+  display:inline-block;margin-top:10px;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.22);
+  font-size:11px;letter-spacing:.08em;color:#dce2e9;text-transform:uppercase;
+}
+@media (max-width:860px){
+  h1{font-size:38px}
+  .meta{grid-template-columns:1fr}
+}
+.back-wrap{max-width:980px;margin:14px auto 0;padding:0 18px;}
+.back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:rgba(255,255,255,.62);text-decoration:none;transition:color .2s ease;}
+.back-work:hover{color:#fff;}
+</style>
+</head>
+<body>
+<header class="unified-topbar">
+  <a class="unified-brand" href="../index.html">[Leonardo Li] · Work · Index</a>
+  <nav class="unified-nav">
+    <a href="../index.html">Home</a>
+    <a class="active" href="../works.html">Work</a>
+    <a href="../resume.html">Resume</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <h1>渡星河交互界面设计</h1>
+  <p class="subtitle">围绕玄学内容产品的数字化体验，从高保真界面到IP形象快设并行推进，快速形成可交付的产品视觉与交互资产。</p>
+  <span class="tag">Interface + IP Rapid Design</span>
+
+  <section class="meta">
+    <div><h4>Role</h4><p>交互界面设计 / 视觉设计</p></div>
+    <div><h4>Scope</h4><p>高保真界面 · 核心流程 · IP初步形象</p></div>
+    <div><h4>Time</h4><p>项目阶段性产出（快速交付）</p></div>
+  </section>
+
+  <div class="cover">
+    <img src="../project_cover/stariver.jpg" alt="渡星河项目封面">
+  </div>
+
+  <h2>Context</h2>
+  <p>项目面向“内容咨询 + 角色叙事”体验，目标是在较短交付周期内形成可展示、可评审、可继续迭代的高保真界面方案。产品表达兼顾东方叙事语境与现代数字界面语法。</p>
+
+  <h2>Design Focus</h2>
+  <ul>
+    <li>建立首页到核心咨询流程的视觉一致性，统一信息层级与动线节奏。</li>
+    <li>将“镜像自我、星河叙事”等抽象概念转化为可交互界面表达。</li>
+    <li>并行探索IP角色气质，提供产品品牌感的快速方向验证。</li>
+  </ul>
+
+  <h2>Key Decisions</h2>
+  <div class="callout">
+    <strong>决策 1：</strong>优先做“关键路径高保真”而非全量铺开，先确保用户第一屏、提问入口、FAQ与咨询流程可连续讲清。<br>
+    <strong>决策 2：</strong>IP与UI同步推进，避免后期“界面完成但品牌感缺位”的返工。
+  </div>
+
+  <h2>Outcome</h2>
+  <p>输出了可交付的高保真界面资产与IP方向草案，为后续工程实现、内容接入与视觉深化打下基础。该项目也成为“快速定义风格 + 快速验证体验”的方法实践样本。</p>
+
+  <h2>Reference Links</h2>
+  <div class="links">
+    <a href="https://stariver.me/" target="_blank" rel="noopener noreferrer">官网：stariver.me</a>
+    <a href="https://www.figma.com/design/rx3fASf9UORfWOYpYWEqkd/%E6%B8%A1%E6%98%9F%E6%B2%B3%E9%AB%98%E4%BF%9D%E7%9C%9F%E3%80%90%E4%BA%A4%E4%BB%98%E3%80%91?node-id=73-4495&t=MHO2CWudVzccZL6I-1" target="_blank" rel="noopener noreferrer">Figma：渡星河高保真（交付）</a>
+  </div>
+</main>
+</body>
+</html>
