@@ -434,6 +434,40 @@ body {
 .back-wrap{max-width:980px;margin:14px auto 0;padding:0 18px;}
 .back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:var(--text-muted);text-decoration:none;transition:color .2s ease;}
 .back-work:hover{color:var(--text);}
+
+/* Top Navigation Bar */
+.unified-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 56px;
+  background: var(--sidebar-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+.unified-brand {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  text-decoration: none;
+}
+.unified-nav {
+  display: flex;
+  gap: 24px;
+}
+.unified-nav a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.unified-nav a:hover, .unified-nav a.active {
+  color: var(--text);
+}
 </style>
 </head>
 <body>
