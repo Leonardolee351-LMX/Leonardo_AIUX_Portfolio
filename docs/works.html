@@ -273,14 +273,14 @@ body {
 }
 
 .grid.view-list .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
   box-shadow: none;
-  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.1), transparent 70%);
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.15), transparent 80%);
   z-index: 5;
 }
 
 [data-theme="light"] .grid.view-list .card:hover {
-  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.05), transparent 70%);
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08), transparent 80%);
 }
 
 .grid.view-list .thumb {
@@ -291,10 +291,10 @@ body {
   position: static;
   opacity: 1;
   transform: none;
-  background: transparent;
-  backdrop-filter: none;
-  border: none;
-  padding: 0;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  padding: 40px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -303,17 +303,19 @@ body {
 }
 
 .grid.view-list .title {
-  font-size: clamp(32px, 5vw, 64px);
-  font-weight: 700;
-  margin-bottom: 12px;
-  letter-spacing: -0.02em;
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -0.04em;
   color: var(--text);
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+  line-height: 1;
 }
 
 .grid.view-list .card:hover .title {
-  color: var(--accent);
-  text-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+  color: var(--text);
+  transform: scale(1.05);
+  text-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
 }
 
 .grid.view-list .desc {
