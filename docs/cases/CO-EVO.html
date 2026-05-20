@@ -3,99 +3,566 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CO-EVO · Case Study</title>
+<title>CO-EVO 智能体互动剧场 · 黎铭晞</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#07080c;--bg-elevated:rgba(8,8,10,.88);--text:#f2f4f6;--text-dim:rgba(255,255,255,.78);--text-muted:rgba(255,255,255,.48);--border:rgba(255,255,255,.1);--accent:#7c6fae}
-[data-theme="light"]{--bg:#f5f3ef;--bg-elevated:rgba(245,243,239,.9);--text:#1a1a1a;--text-dim:#5a5a5a;--text-muted:#8a8a8a;--border:rgba(0,0,0,.1);--accent:#5b4fa0}
-body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.85;transition:background .3s,color .3s}
-.unified-topbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:var(--bg-elevated);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);transition:background .3s,border-color .3s}
-.unified-brand{font-size:14px;letter-spacing:1.5px;color:var(--text-dim);text-decoration:none}
-.unified-nav{display:flex;align-items:center;gap:18px}
-.unified-nav a{font-size:13px;letter-spacing:1px;color:var(--text-muted);text-decoration:none;transition:color .3s}
-.unified-nav a.active{color:var(--text)}
-.theme-toggle{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg-elevated);cursor:pointer;transition:all .3s;color:var(--text-muted)}
-.theme-toggle:hover{background:var(--bg);color:var(--text-dim);border-color:var(--text-muted)}
-.theme-toggle svg{width:16px;height:16px}
-.theme-toggle .sun{display:none}.theme-toggle .moon{display:block}
-[data-theme="light"] .theme-toggle .sun{display:block}
-[data-theme="light"] .theme-toggle .moon{display:none}
-.wrap{max-width:980px;margin:0 auto;padding:26px 18px 70px}
-a{color:var(--text-dim);text-decoration:none}
-h1{font-family:Georgia,"Times New Roman",serif;font-size:50px;font-weight:400;line-height:1.15;margin:16px 0 8px}
-h2{font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:400;margin:30px 0 14px}
-p{color:var(--text-dim);margin-bottom:12px}
-.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
-.box{border:1px solid var(--border);border-radius:10px;padding:12px;background:var(--bg-elevated)}
-.box b{display:block;color:var(--text-muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
-.box span{display:block;margin-top:6px;color:var(--text-dim);font-size:14px}
-.img-block{margin:32px 0;text-align:center}
-.callout{border-left:3px solid var(--border);background:var(--bg-elevated);padding:12px 14px;border-radius:8px;margin:12px 0}
-.list{padding-left:18px;color:var(--text-dim)}
-.list li{margin-bottom:8px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-.metric{border:1px solid var(--border);padding:14px;border-radius:12px;text-align:center;background:var(--bg-elevated)}
-.metric strong{display:block;font-size:20px;color:var(--accent);margin-bottom:4px}
-.metric span{font-size:12px;color:var(--text-muted)}
-@media(max-width:900px){.meta,.metrics{grid-template-columns:1fr}h1{font-size:40px}}
-.back-wrap{max-width:980px;margin:14px auto 0;padding:0 18px;}
-.back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:var(--text-muted);text-decoration:none;transition:color .2s ease;}
-.back-work:hover{color:var(--text);}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: rgba(255,255,255,0.03);
+  --text: #e8e6e1;
+  --text-dim: #8a8580;
+  --text-muted: #5a5550;
+  --accent: #7c6fae;
+  --accent-soft: rgba(124,111,174,0.15);
+  --border: rgba(255,255,255,0.06);
+  --g-1: #1a0a2e;
+  --sidebar-bg: linear-gradient(to right, rgba(10,10,15,0.98), rgba(10,10,15,0.95));
+  --card-bg: rgba(255,255,255,0.02);
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ef;
+  --bg-elevated: rgba(0,0,0,0.03);
+  --text: #1a1a1a;
+  --text-dim: #5a5a5a;
+  --text-muted: #8a8a8a;
+  --accent: #5b4fa0;
+  --accent-soft: rgba(91,79,160,0.1);
+  --border: rgba(0,0,0,0.08);
+  --g-1: #e8e0f0;
+  --sidebar-bg: linear-gradient(to right, rgba(245,243,239,0.98), rgba(245,243,239,0.95));
+  --card-bg: rgba(0,0,0,0.03);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+/* ===== LAYOUT ===== */
+.page { display: flex; min-height: 100vh; }
+
+/* ===== LEFT SIDEBAR (TOC) ===== */
+.sidebar {
+  width: 260px;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  padding: 32px 24px;
+  overflow-y: auto;
+  z-index: 100;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.theme-toggle:hover {
+  background: var(--card-bg);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.theme-toggle .sun { display: none; }
+.theme-toggle .moon { display: block; }
+[data-theme="light"] .theme-toggle .sun { display: block; }
+[data-theme="light"] .theme-toggle .moon { display: none; }
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 32px;
+  transition: color 0.3s;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 16px; height: 16px; }
+
+.toc-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 4px; }
+.toc-list a {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-left: 2px solid transparent;
+}
+.toc-list a:hover { color: var(--text); background: var(--bg-elevated); }
+.toc-list a.active { color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); }
+.toc-list a.sub { padding-left: 24px; font-size: 12px; }
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 48px 64px 120px;
+}
+
+/* ===== HERO BANNER ===== */
+.project-hero {
+  margin: -48px -64px 48px;
+  padding: 80px 64px 48px;
+  background: linear-gradient(135deg, rgba(26,10,46,0.6), rgba(10,10,15,0.9));
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.project-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+  filter: blur(60px);
+}
+.project-hero h1 {
+  font-size: 42px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.project-hero .subtitle {
+  font-size: 16px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  position: relative;
+}
+
+/* ===== META BAR ===== */
+.meta-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.meta-group h4 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.meta-group p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+/* ===== CONTENT BLOCKS ===== */
+.section-block { margin-bottom: 64px; }
+
+.section-block h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.section-block p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.section-block ul {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.section-block li {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+/* ===== CALLOUT ===== */
+.callout {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.callout-icon { font-size: 20px; flex-shrink: 0; }
+.callout-content { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+.callout-content a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+
+/* ===== IMAGE BLOCKS ===== */
+.img-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.img-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.img-block img {
+  width: 100%;
+  display: block;
+}
+.img-caption {
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+}
+
+/* ===== RESULTS GRID ===== */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+.result-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.result-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.result-number {
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.result-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* ===== FOOTER NAV ===== */
+.footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 48px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+}
+.footer-nav a {
+  font-size: 14px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-nav a:hover { color: var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
+  .project-hero h1 { font-size: 28px; }
+  .meta-bar { grid-template-columns: 1fr; gap: 16px; }
+  .results-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.back-wrap { max-width: 980px; margin: 14px auto 0; padding: 0 18px; }
+.back-work { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; letter-spacing: .02em; color: var(--text-muted); text-decoration: none; transition: color .2s ease; }
+.back-work:hover { color: var(--text); }
+
+/* Top Navigation Bar */
+.unified-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 56px;
+  background: var(--sidebar-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+.unified-brand {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  text-decoration: none;
+}
+.unified-nav {
+  display: flex;
+  gap: 24px;
+}
+.unified-nav a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.unified-nav a:hover, .unified-nav a.active {
+  color: var(--text);
+}
 </style>
 </head>
 <body>
-<header class="unified-topbar">
-  <a class="unified-brand" href="../index.html">[Leonardo Li] · Work · Index</a>
-  <nav class="unified-nav">
+
+<!-- Top Navigation -->
+<nav class="unified-topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 200;">
+  <a href="../index.html" class="unified-brand">[Leonardo Li] · Work · Index</a>
+  <div class="unified-nav">
     <a href="../index.html">Home</a>
-    <a class="active" href="../works.html">Work</a>
+    <a href="../works.html" class="active">Work</a>
     <a href="../resume.html">Resume</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-    </button>
-  </nav>
-</header>
+  </div>
+</nav>
+
+<!-- Spacer for nav -->
+<div style="height: 56px;"></div>
 <div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
-<main class="wrap">
-  <h1>CO-EVO 智能体互动剧场</h1>
-  <p>从构想走向现实：跨媒介叙事 + 实时交互 + AI 系统协同</p>
 
-  <div class="meta">
-    <div class="box"><b>Role</b><span>互动影像系统开发（序幕）</span></div>
-    <div class="box"><b>Context</b><span>2025 广州美术学院毕业季研究生艺术展演</span></div>
-    <div class="box"><b>Scope</b><span>实时采集、情感识别、多目标追踪与视觉反馈</span></div>
-  </div>
+<div class="page">
 
-  <div class="img-block" style="margin: 24px 0;">
-    <img src="../project_cover/coevo.jpg" alt="CO-EVO 现场展演预览" style="width:100%; border-radius:12px; border:1px solid var(--border);">
-  </div>
+<!-- SIDEBAR TOC -->
+<aside class="sidebar">
+  <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+    <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+    <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </button>
+  <a href="../works.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to Index
+  </a>
 
-  <h2>Context</h2>
-  <p>CO-EVO 以“共同进化”为主题，将人类与智能体从对立关系转向协同关系，采用五幕结构展开。官方复盘显示，项目从 2 月构思推进到 6 月落地，团队规模超过 30 人，完成了跨媒介的系统化展演。</p>
-
-  <h2>My Contribution</h2>
-  <p>我主要负责序幕「呼吸·感知觉醒」相关实时交互系统：让 AI 在现场“看见”观众并输出可感知的光影反馈，形成展演开场的叙事动机。</p>
-  <div class="callout">
-    技术关键词（官方复盘提及）：计算机视觉、表情识别、多目标跟踪、AnythingLLM 动态语料、实时语言交互与图像生成协同。
-  </div>
-
-  <h2>System Challenges</h2>
-  <ul class="list">
-    <li>跨媒介同步：人声、舞蹈、激光、粒子、实时视觉的触发时机对齐。</li>
-    <li>场地落地：户外草坪空间内实现结构安全与视觉效果平衡。</li>
-    <li>实时稳定性：从模型理解到整合运行，必须在演出现场稳定输出。</li>
+  <div class="toc-title">目录</div>
+  <ul class="toc-list">
+    <li><a href="#context" class="active">项目背景</a></li>
+    <li><a href="#contribution">核心贡献</a></li>
+    <li><a href="#challenges">技术挑战</a></li>
+    <li><a href="#outcome">项目产出</a></li>
   </ul>
+</aside>
 
-  <h2>Outcome</h2>
-  <div class="metrics">
-    <div class="metric"><strong>30+</strong><span>共创团队规模</span></div>
-    <div class="metric"><strong>5幕</strong><span>完整叙事结构</span></div>
-    <div class="metric"><strong>1次</strong><span>大型户外落地展演</span></div>
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- HERO -->
+<div class="project-hero">
+  <h1>CO-EVO 智能体互动剧场</h1>
+  <div class="subtitle">从构想走向现实：跨媒介叙事 + 实时交互 + AI 系统协同</div>
+</div>
+
+<!-- META BAR -->
+<div class="meta-bar">
+  <div class="meta-group">
+    <h4>角色</h4>
+    <p>互动影像系统开发 (序幕)</p>
   </div>
-  <div class="callout">官方复盘链接：<a href="https://mp.weixin.qq.com/s/nifP7hlcPVjPP-mVLuYwgQ" target="_blank" rel="noopener noreferrer">从构想走向现实：GAFA AI 团队的「CO-EVO」共创之旅</a></div>
+  <div class="meta-group">
+    <h4>背景</h4>
+    <p>2025 广州美术学院研究生艺术展演</p>
+  </div>
+  <div class="meta-group">
+    <h4>范畴</h4>
+    <p>实时采集 / 情感识别 / 多目标追踪</p>
+  </div>
+</div>
+
+<!-- CONTENT SECTIONS -->
+<section id="context" class="section-block">
+  <h2>项目背景</h2>
+  <p>CO-EVO 以“共同进化”为主题，将人类与智能体从对立关系转向协同关系，采用五幕结构展开。项目从 2 月构思推进到 6 月落地，团队规模超过 30 人，完成了跨媒介的系统化展演。</p>
+  
+  <div class="img-block">
+    <img src="../project_cover/coevo.jpg" alt="CO-EVO 现场展演预览">
+    <div class="img-caption">CO-EVO 大型户外艺术展演现场</div>
+  </div>
+</section>
+
+<section id="contribution" class="section-block">
+  <h2>核心贡献</h2>
+  <p>我主要负责序幕「呼吸·感知觉醒」相关实时交互系统：让 AI 在现场“看见”观众并输出可感知的光影反馈，形成展演开场的叙事动机。</p>
+  
+  <div class="callout">
+    <div class="callout-icon">💻</div>
+    <div class="callout-content">
+      <strong>技术实现</strong>：计算机视觉、表情识别、多目标跟踪、AnythingLLM 动态语料、实时语言交互与图像生成协同。
+    </div>
+  </div>
+</section>
+
+<section id="challenges" class="section-block">
+  <h2>技术挑战</h2>
+  <ul>
+    <li><strong>跨媒介同步</strong>：人声、舞蹈、激光、粒子、实时视觉的触发时机对齐。</li>
+    <li><strong>场地落地</strong>：户外草坪空间内实现结构安全与视觉效果平衡。</li>
+    <li><strong>实时稳定性</strong>：从模型理解到整合运行，必须在演出现场稳定输出。</li>
+  </ul>
+</section>
+
+<section id="outcome" class="section-block">
+  <h2>项目产出</h2>
+  <div class="results-grid">
+    <div class="result-item">
+      <div class="result-number">30+</div>
+      <div class="result-label">共创团队规模</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">5幕</div>
+      <div class="result-label">完整叙事结构</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">1次</div>
+      <div class="result-label">大型户外落地展演</div>
+    </div>
+  </div>
+  
+  <div class="callout">
+    <div class="callout-icon">📰</div>
+    <div class="callout-content">
+      <strong>官方复盘</strong>：<a href="https://mp.weixin.qq.com/s/nifP7hlcPVjPP-mVLuYwgQ" target="_blank" rel="noopener noreferrer">从构想走向现实：GAFA AI 团队的「CO-EVO」共创之旅</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER NAV -->
+<footer class="footer-nav">
+  <a href="StoryVibe.html">← 上一个项目: StoryVibe</a>
+  <a href="Stariver.html">下一个项目: Stariver →</a>
+</footer>
+
 </main>
-<script>(function(){const s=localStorage.getItem('theme');const p=window.matchMedia('(prefers-color-scheme: dark)').matches;const t=s||(p?'dark':'light');document.documentElement.setAttribute('data-theme',t);const b=document.getElementById('themeToggle');if(b){b.addEventListener('click',function(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n)})}})();</script>
+</div>
+
+<script>
+// Theme Toggle Logic
+(function(){
+  const s = localStorage.getItem('theme');
+  const p = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const t = s || (p ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', t);
+  
+  const b = document.getElementById('themeToggle');
+  if(b){
+    b.addEventListener('click', function(){
+      const c = document.documentElement.getAttribute('data-theme');
+      const n = c === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', n);
+      localStorage.setItem('theme', n);
+    });
+  }
+
+  // Scroll Reveal Logic
+  const observerOptions = {
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.img-block, .result-item, .compare-item, .video-block').forEach(el => {
+    observer.observe(el);
+  });
+
+  // TOC Active Link Logic
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (pageYOffset >= sectionTop - 100) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    tocLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href').substring(1) === current) {
+        link.classList.add('active');
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>

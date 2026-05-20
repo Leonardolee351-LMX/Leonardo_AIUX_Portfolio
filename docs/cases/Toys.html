@@ -3,107 +3,540 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 启蒙代练屋 · 儿童机器人</title>
+<title>AI 启蒙代练屋 · 黎铭晞</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#08090d;--bg-elevated:rgba(8,8,10,.88);--text:#f2f2f2;--text-dim:rgba(255,255,255,.75);--text-muted:rgba(255,255,255,.48);--border:rgba(255,255,255,.1);--accent:#f1c40f}
-[data-theme="light"]{--bg:#f5f3ef;--bg-elevated:rgba(245,243,239,.9);--text:#1a1a1a;--text-dim:#5a5a5a;--text-muted:#8a8a8a;--border:rgba(0,0,0,.1);--accent:#d4ac0d}
-body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.85;transition:background .3s,color .3s}
-.unified-topbar{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:var(--bg-elevated);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);transition:background .3s,border-color .3s}
-.unified-brand{font-size:14px;letter-spacing:1.5px;color:var(--text-dim);text-decoration:none}
-.unified-nav{display:flex;align-items:center;gap:18px}
-.unified-nav a{font-size:13px;letter-spacing:1px;color:var(--text-muted);text-decoration:none;transition:color .3s}
-.unified-nav a.active{color:var(--text)}
-.theme-toggle{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg-elevated);cursor:pointer;transition:all .3s;color:var(--text-muted)}
-.theme-toggle:hover{background:var(--bg);color:var(--text-dim);border-color:var(--text-muted)}
-.theme-toggle svg{width:16px;height:16px}
-.theme-toggle .sun{display:none}.theme-toggle .moon{display:block}
-[data-theme="light"] .theme-toggle .sun{display:block}
-[data-theme="light"] .theme-toggle .moon{display:none}
-.wrap{max-width:920px;margin:0 auto;padding:26px 18px 70px}
-h1{font-family:Georgia,"Times New Roman",serif;font-size:50px;font-weight:400;line-height:1.15;margin:16px 0 8px}
-h2{font-family:Georgia,"Times New Roman",serif;font-size:30px;font-weight:400;margin:30px 0 14px}
-p{color:var(--text-dim);margin-bottom:16px}
-.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
-.box{border:1px solid var(--border);border-radius:10px;padding:12px;background:var(--bg-elevated)}
-.box b{display:block;color:var(--text-muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
-.box span{display:block;margin-top:6px;color:var(--text-dim);font-size:14px}
-.img-block{margin:32px 0;text-align:center}
-.img-block img{width:100%;border-radius:12px;border:1px solid var(--border)}
-.caption{font-size:12px;color:var(--text-muted);margin-top:8px}
-.back-wrap{max-width:920px;margin:14px auto 0;padding:0 18px;}
-.back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:var(--text-muted);text-decoration:none;transition:color .2s ease;}
-.back-work:hover{color:var(--text);}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: rgba(255,255,255,0.03);
+  --text: #e8e6e1;
+  --text-dim: #8a8580;
+  --text-muted: #5a5550;
+  --accent: #f1c40f;
+  --accent-soft: rgba(241,196,15,0.1);
+  --border: rgba(255,255,255,0.06);
+  --g-1: #1a0a2e;
+  --sidebar-bg: linear-gradient(to right, rgba(10,10,15,0.98), rgba(10,10,15,0.95));
+  --card-bg: rgba(255,255,255,0.02);
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ef;
+  --bg-elevated: rgba(0,0,0,0.03);
+  --text: #1a1a1a;
+  --text-dim: #5a5a5a;
+  --text-muted: #8a8a8a;
+  --accent: #d4ac0d;
+  --accent-soft: rgba(212,172,13,0.1);
+  --border: rgba(0,0,0,0.08);
+  --g-1: #e8e0f0;
+  --sidebar-bg: linear-gradient(to right, rgba(245,243,239,0.98), rgba(245,243,239,0.95));
+  --card-bg: rgba(0,0,0,0.03);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+/* ===== LAYOUT ===== */
+.page { display: flex; min-height: 100vh; }
+
+/* ===== LEFT SIDEBAR (TOC) ===== */
+.sidebar {
+  width: 260px;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  padding: 32px 24px;
+  overflow-y: auto;
+  z-index: 100;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.theme-toggle:hover {
+  background: var(--card-bg);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.theme-toggle .sun { display: none; }
+.theme-toggle .moon { display: block; }
+[data-theme="light"] .theme-toggle .sun { display: block; }
+[data-theme="light"] .theme-toggle .moon { display: none; }
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 32px;
+  transition: color 0.3s;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 16px; height: 16px; }
+
+.toc-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 4px; }
+.toc-list a {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-left: 2px solid transparent;
+}
+.toc-list a:hover { color: var(--text); background: var(--bg-elevated); }
+.toc-list a.active { color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); }
+.toc-list a.sub { padding-left: 24px; font-size: 12px; }
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 48px 64px 120px;
+}
+
+/* ===== HERO BANNER ===== */
+.project-hero {
+  margin: -48px -64px 48px;
+  padding: 80px 64px 48px;
+  background: linear-gradient(135deg, rgba(26,20,10,0.6), rgba(10,10,15,0.9));
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.project-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+  filter: blur(60px);
+}
+.project-hero h1 {
+  font-size: 42px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.project-hero .subtitle {
+  font-size: 16px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  position: relative;
+}
+
+/* ===== META BAR ===== */
+.meta-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.meta-group h4 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.meta-group p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+/* ===== CONTENT BLOCKS ===== */
+.section-block { margin-bottom: 64px; }
+
+.section-block h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.section-block p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+/* ===== CALLOUT ===== */
+.callout {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.callout-icon { font-size: 20px; flex-shrink: 0; }
+.callout-content { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+/* ===== IMAGE BLOCKS ===== */
+.img-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.img-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.img-block img {
+  width: 100%;
+  display: block;
+}
+.img-caption {
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+}
+
+/* ===== FOOTER NAV ===== */
+.footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 48px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+}
+.footer-nav a {
+  font-size: 14px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-nav a:hover { color: var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
+  .project-hero h1 { font-size: 28px; }
+  .meta-bar { grid-template-columns: 1fr; gap: 16px; }
+}
+
+.back-wrap { max-width: 980px; margin: 14px auto 0; padding: 0 18px; }
+.back-work { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; letter-spacing: .02em; color: var(--text-muted); text-decoration: none; transition: color .2s ease; }
+.back-work:hover { color: var(--text); }
+
+/* Top Navigation Bar */
+.unified-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 56px;
+  background: var(--sidebar-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+.unified-brand {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  text-decoration: none;
+}
+.unified-nav {
+  display: flex;
+  gap: 24px;
+}
+.unified-nav a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.unified-nav a:hover, .unified-nav a.active {
+  color: var(--text);
+}
 </style>
 </head>
 <body>
-<header class="unified-topbar">
-  <a class="unified-brand" href="../index.html">[Leonardo Li] · Work · Index</a>
-  <nav class="unified-nav">
-    <a href="../index.html">Home</a>
-    <a class="active" href="../works.html">Work</a>
-    <a href="../resume.html">Resume</a>
-    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-    </button>
-  </nav>
-</header>
-<div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
-<main class="wrap">
-  <h1>AI 启蒙代练屋</h1>
-  <p class="subtitle">AI 教育玩具 · 多模态交互设计与用户研究</p>
 
-  <div class="meta">
-    <div class="box"><b>Role</b><span>用户研究 / 产品定义 / 交互设计</span></div>
-    <div class="box"><b>Context</b><span>Xbot 科创夏令营 (2024)</span></div>
-    <div class="box"><b>Award</b><span>最佳用户洞察奖 (5万启动金)</span></div>
+<!-- Top Navigation -->
+<nav class="unified-topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 200;">
+  <a href="../index.html" class="unified-brand">[Leonardo Li] · Work · Index</a>
+  <div class="unified-nav">
+    <a href="../index.html">Home</a>
+    <a href="../works.html" class="active">Work</a>
+    <a href="../resume.html">Resume</a>
+  </div>
+</nav>
+
+<!-- Spacer for nav -->
+<div style="height: 56px;"></div>
+<div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
+
+<div class="page">
+
+<!-- SIDEBAR TOC -->
+<aside class="sidebar">
+  <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+    <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+    <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </button>
+  <a href="../works.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to Index
+  </a>
+
+  <div class="toc-title">目录</div>
+  <ul class="toc-list">
+    <li><a href="#insight" class="active">用户洞察</a></li>
+    <li><a href="#solution">解决方案</a></li>
+    <li><a href="#validation">方案验证</a></li>
+    <li><a href="#archive">视觉资产</a></li>
+  </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- HERO -->
+<div class="project-hero">
+  <h1>AI 启蒙代练屋</h1>
+  <div class="subtitle">AI 教育玩具 · 多模态交互设计与用户研究</div>
+</div>
+
+<!-- META BAR -->
+<div class="meta-bar">
+  <div class="meta-group">
+    <h4>角色</h4>
+    <p>用户研究 / 产品定义 / 交互设计</p>
+  </div>
+  <div class="meta-group">
+    <h4>背景</h4>
+    <p>Xbot 科创夏令营 (2024)</p>
+  </div>
+  <div class="meta-group">
+    <h4>荣誉</h4>
+    <p>最佳用户洞察奖 (5万启动金)</p>
+  </div>
+</div>
+
+<!-- CONTENT SECTIONS -->
+<section id="insight" class="section-block">
+  <h2>用户洞察</h2>
+  <p>通过 500+ 份家长问卷与 20+ 款产品竞品分析，我们发现 68% 的家长面临“教育效果可视化”需求与儿童“趣味互动”偏好之间的核心矛盾。传统的教育玩具往往过于枯燥，而娱乐玩具又缺乏教育深度。</p>
+  
+  <div class="callout">
+    <div class="callout-icon">🔍</div>
+    <div class="callout-content">
+      <strong>核心洞察</strong>：教育玩具的断层在于——家长想要“结果”，而孩子想要“玩伴”。
+    </div>
   </div>
 
   <div class="img-block">
-    <img src="../img/projects/toys/toy-1.png" alt="AI 玩具鸭机器人概念图">
-    <div class="caption">基于通义大模型的 AI 玩具鸭 — 模拟行为与过家家场景</div>
+    <img src="../img/projects/toys/toy-1.png" alt="AI 玩具鸭概念图">
+    <div class="img-caption">基于通义大模型的 AI 玩具鸭 — 模拟行为与过家家场景</div>
   </div>
-
-  <h2>Insight</h2>
-  <p>通过 500+ 份家长问卷与 20+ 款产品竞品分析，我们发现 68% 的家长面临“教育效果可视化”需求与儿童“趣味互动”偏好之间的核心矛盾。传统的教育玩具往往过于枯燥，而娱乐玩具又缺乏教育深度。</p>
 
   <div class="img-block">
     <img src="../img/projects/toys/toy-2.png" alt="用户洞察与竞品分析">
+    <div class="img-caption">详尽的用户画像与竞品象限图</div>
   </div>
+</section>
 
-  <h2>Solution</h2>
+<section id="solution" class="section-block">
+  <h2>解决方案</h2>
   <p>我整合通义大模型，提出了“场景化交互 + 情感反馈”的多模态交互框架。产品以“模拟行为+过家家”为交互锚点，让儿童在与 AI 玩具鸭的互动中自然地学习知识。同时，系统会生成家长端报告，让教育效果直观可见。</p>
-
+  
   <div class="img-block">
     <img src="../img/projects/toys/toy-3.png" alt="交互框架设计">
+    <div class="img-caption">AI 驱动的场景化交互框架</div>
   </div>
 
   <div class="img-block">
     <img src="../img/projects/toys/toy-4.png" alt="多模态反馈机制">
+    <div class="img-caption">多模态反馈逻辑与视觉反馈设计</div>
   </div>
+</section>
 
-  <h2>Validation</h2>
+<section id="validation" class="section-block">
+  <h2>方案验证</h2>
   <p>通过对 17 位家长和 10 名儿童的深度访谈，方案获得了 80% 的用户认可。使用 Midjourney 生成了高保真产品概念原型，并输出了完整 PRD 推动开发落地。</p>
-
+  
   <div class="img-block">
     <img src="../img/projects/toys/toy-5.png" alt="用户测试与反馈">
+    <div class="img-caption">真实场景下的用户测试与访谈记录</div>
   </div>
 
   <div class="img-block">
     <img src="../img/projects/toys/toy-6.png" alt="产品原型展示">
+    <div class="img-caption">高保真产品原型渲染图</div>
   </div>
+</section>
 
-  <h2>Visual Archive</h2>
-  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:12px; margin-top:16px;">
-    <img src="../img/projects/toys/TOY_vertical (1).png" alt="垂直展示1" style="width:100%; border-radius:8px; border:1px solid var(--border);">
-    <img src="../img/projects/toys/TOY_vertical (2).png" alt="垂直展示2" style="width:100%; border-radius:8px; border:1px solid var(--border);">
-    <img src="../img/projects/toys/TOY_vertical (3).png" alt="垂直展示3" style="width:100%; border-radius:8px; border:1px solid var(--border);">
-    <img src="../img/projects/toys/TOY_vertical (4).png" alt="垂直展示4" style="width:100%; border-radius:8px; border:1px solid var(--border);">
-    <img src="../img/projects/toys/TOY_vertical (5).png" alt="垂直展示5" style="width:100%; border-radius:8px; border:1px solid var(--border);">
-    <img src="../img/projects/toys/TOY_vertical (6).png" alt="垂直展示6" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+<section id="archive" class="section-block">
+  <h2>视觉资产</h2>
+  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px; margin-top:24px;">
+    <div class="img-block" style="margin:0">
+      <img src="../img/projects/toys/TOY_vertical (1).png" alt="展示1">
+    </div>
+    <div class="img-block" style="margin:0">
+      <img src="../img/projects/toys/TOY_vertical (2).png" alt="展示2">
+    </div>
+    <div class="img-block" style="margin:0">
+      <img src="../img/projects/toys/TOY_vertical (3).png" alt="展示3">
+    </div>
+    <div class="img-block" style="margin:0">
+      <img src="../img/projects/toys/TOY_vertical (4).png" alt="展示4">
+    </div>
+    <div class="img-block" style="margin:0">
+      <img src="../img/projects/toys/TOY_vertical (5).png" alt="展示5">
+    </div>
+    <div class="img-block" style="margin:0">
+      <img src="../img/projects/toys/TOY_vertical (6).png" alt="展示6">
+    </div>
   </div>
+</section>
+
+<!-- FOOTER NAV -->
+<footer class="footer-nav">
+  <a href="Twin-City-Tale.html">← 上一个项目: Twin City Tale</a>
+  <a href="StoryVibe.html">下一个项目: StoryVibe →</a>
+</footer>
+
 </main>
-<script>(function(){const s=localStorage.getItem('theme');const p=window.matchMedia('(prefers-color-scheme: dark)').matches;const t=s||(p?'dark':'light');document.documentElement.setAttribute('data-theme',t);const b=document.getElementById('themeToggle');if(b){b.addEventListener('click',function(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n)})}})();</script>
+</div>
+
+<script>
+// Theme Toggle Logic
+(function(){
+  const s = localStorage.getItem('theme');
+  const p = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const t = s || (p ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', t);
+  
+  const b = document.getElementById('themeToggle');
+  if(b){
+    b.addEventListener('click', function(){
+      const c = document.documentElement.getAttribute('data-theme');
+      const n = c === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', n);
+      localStorage.setItem('theme', n);
+    });
+  }
+
+  // Scroll Reveal Logic
+  const observerOptions = {
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.img-block, .result-item, .compare-item, .video-block').forEach(el => {
+    observer.observe(el);
+  });
+
+  // TOC Active Link Logic
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (pageYOffset >= sectionTop - 100) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    tocLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href').substring(1) === current) {
+        link.classList.add('active');
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
