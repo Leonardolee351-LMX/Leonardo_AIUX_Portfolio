@@ -462,17 +462,155 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 48px 0;
+  padding: 64px 0;
   border-top: 1px solid var(--border);
-  margin-top: 64px;
+  margin-top: 80px;
+  gap: 24px;
 }
-.footer-nav a {
-  font-size: 14px;
-  color: var(--text-dim);
+
+.footer-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 24px;
+  border-radius: 16px;
   text-decoration: none;
-  transition: color 0.3s;
+  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
 }
-.footer-nav a:hover { color: var(--accent); }
+
+.footer-btn .btn-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.footer-btn .btn-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Light Mode: Blue 系 */
+[data-theme="light"] .footer-btn {
+  background: #f0f7ff;
+  color: #0066cc;
+  border-color: #d0e7ff;
+}
+[data-theme="light"] .footer-btn:hover {
+  background: #0066cc;
+  color: #fff;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 102, 204, 0.15);
+  border-color: transparent;
+}
+
+/* Dark Mode: Green 系 */
+[data-theme="dark"] .footer-btn {
+  background: rgba(0, 255, 135, 0.03);
+  color: #00ff87;
+  border-color: rgba(0, 255, 135, 0.1);
+}
+[data-theme="dark"] .footer-btn:hover {
+  background: rgba(0, 255, 135, 0.1);
+  color: #00ff87;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 255, 135, 0.1);
+  border-color: rgba(0, 255, 135, 0.3);
+}
+
+/* ===== PROJECT LINK CARDS ===== */
+.project-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 0 0 48px;
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.link-card:hover {
+  transform: translateY(-4px);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.link-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.link-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.link-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.link-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Top Navigation Bar Theme Toggle */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+}
+
+.nav-theme-toggle:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.nav-theme-toggle svg { width: 16px; height: 16px; }
+.nav-theme-toggle .sun { display: none; }
+.nav-theme-toggle .moon { display: block; }
+[data-theme="light"] .nav-theme-toggle .sun { display: block; }
+[data-theme="light"] .nav-theme-toggle .moon { display: none; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
@@ -494,18 +632,23 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
-  height: 56px;
-  background: var(--sidebar-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  height: 64px;
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   transition: all 0.3s ease;
 }
+
+[data-theme="light"] .unified-topbar {
+  background: rgba(255, 255, 255, 0.7);
+}
+
 .unified-brand {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  color: var(--text-dim);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
   text-decoration: none;
 }
 .unified-nav {
@@ -532,38 +675,40 @@ body {
 
   <!-- Top Navigation -->
 <nav class="unified-topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 200;">
-  <a href="../index.html" class="unified-brand">[Leonardo Li] · Work · Index</a>
-  <div class="unified-nav">
-    <a href="../index.html">Home</a>
-    <a href="../works.html" class="active">Work</a>
-    <a href="../resume.html">Resume</a>
+  <a href="../index.html" class="unified-brand">LeonardoLi🐱</a>
+  <div class="nav-actions">
+    <div class="unified-nav">
+      <a href="../index.html">Home</a>
+      <a href="../works.html" class="active">Work</a>
+      <a href="../resume.html">Resume</a>
+    </div>
+    <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题">
+      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
   </div>
 </nav>
 
 <!-- Spacer for nav -->
-<div style="height: 56px;"></div>
+<div style="height: 64px;"></div>
 <div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
 
 <div class="page">
 
 <!-- SIDEBAR TOC -->
 <aside class="sidebar">
-  <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-    <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-    </svg>
-    <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="5"></circle>
-      <line x1="12" y1="1" x2="12" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="23"></line>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-      <line x1="1" y1="12" x2="3" y2="12"></line>
-      <line x1="21" y1="12" x2="23" y2="12"></line>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
-  </button>
   <a href="../works.html" class="back-link">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     Back to Index
@@ -608,6 +753,50 @@ body {
     <p>2025.08 – 2026.01<br><a href="https://jiancareer.com/">jiancareer.com</a></p>
   </div>
 </div>
+
+<!-- QUICK LINKS -->
+<div class="project-links">
+  <a href="https://jiancareer.com/" target="_blank" class="link-card">
+    <div class="link-icon">🌐</div>
+    <div class="link-info">
+      <span class="link-label">Preview</span>
+      <span class="link-name">访问官网</span>
+    </div>
+  </a>
+  <a href="https://jian-career.lovable.app/" target="_blank" class="link-card">
+    <div class="link-icon">⚡</div>
+    <div class="link-info">
+      <span class="link-label">Prototype</span>
+      <span class="link-name">Lovable 预览</span>
+    </div>
+  </a>
+  <a href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1&t=0TkLYv2ivkakbyUG-1" target="_blank" class="link-card">
+    <div class="link-icon">🎨</div>
+    <div class="link-info">
+      <span class="link-label">Figma</span>
+      <span class="link-name">设计工程文件</span>
+    </div>
+  </a>
+</div>
+
+<!-- KEY RESULTS (Moved from bottom) -->
+<section id="outcome-preview" class="section-block">
+  <h2>项目成果</h2>
+  <div class="results-grid">
+    <div class="result-item">
+      <div class="result-number">TOP 10%</div>
+      <div class="result-label">全平台 AI Agent 排名</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">NO. 1</div>
+      <div class="result-label">职业决策类细分榜单</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">2026</div>
+      <div class="result-label">带领实习生团队工程推进</div>
+    </div>
+  </div>
+</section>
 
 <section id="assets" class="section-block">
   <h2>补充工程资料</h2>
@@ -725,21 +914,6 @@ body {
   <h2>最终产出与反馈</h2>
   <p>简职在发布后获得了极高的行业关注度。在多个 AI Agent 榜单中位列前茅，并在职业教育类细分领域夺得 TOP 1。这不仅验证了产品逻辑的正确性，也证明了 AI 在垂直赛道上的巨大潜力。</p>
   
-  <div class="results-grid">
-    <div class="result-item">
-      <div class="result-number">TOP 10%</div>
-      <div class="result-label">全平台 AI Agent 排名</div>
-    </div>
-    <div class="result-item">
-      <div class="result-number">NO. 1</div>
-      <div class="result-label">职业决策类细分榜单</div>
-    </div>
-    <div class="result-item">
-      <div class="result-number">2026</div>
-      <div class="result-label">带领实习生团队工程推进</div>
-    </div>
-  </div>
-
   <div class="img-block">
     <img src="../img/projects/jiancareer/JianCareer_01.png" alt="最终产出">
     <div class="img-caption">简职核心功能模块最终视觉呈现</div>
@@ -817,8 +991,14 @@ body {
 
 <!-- FOOTER NAV -->
 <div class="footer-nav">
-  <a href="../works.html">← 返回作品列表</a>
-  <a href="../resume.html">查看简历</a>
+  <a href="Anxious-Kit.html" class="footer-btn">
+    <span class="btn-label">Next Project</span>
+    <span class="btn-title">Anxious Kit 焦虑包 →</span>
+  </a>
+  <a href="../works.html" class="footer-btn">
+    <span class="btn-label">Back to</span>
+    <span class="btn-title">Works Index</span>
+  </a>
 </div>
 
 </main>
@@ -861,15 +1041,16 @@ document.querySelectorAll('.img-block, .compare-item, .video-block, .result-item
   const theme = stored || (prefersDark ? 'dark' : 'light');
   document.documentElement.setAttribute('data-theme', theme);
 
-  const toggle = document.getElementById('themeToggle');
-  if (toggle) {
-    toggle.addEventListener('click', function() {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
+  const navToggle = document.getElementById('navThemeToggle');
+  
+  function handleToggle() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
   }
+
+  if (navToggle) navToggle.addEventListener('click', handleToggle);
 })();
 </script>
 

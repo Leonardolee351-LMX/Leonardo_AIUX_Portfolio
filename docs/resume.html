@@ -56,17 +56,24 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 28px;
-  background: var(--bg-elevated);
-  backdrop-filter: blur(10px);
+  padding: 0 32px;
+  height: 64px;
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .unified-topbar {
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .unified-brand {
-  font-size: 14px;
-  letter-spacing: 1.5px;
-  color: var(--text-dim);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
   text-decoration: none;
 }
 
@@ -402,6 +409,45 @@ html, body {
   margin-right: 4px;
 }
 
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stack-card {
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  border-radius: 14px;
+  padding: 16px 16px 14px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.stack-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 242, 254, 0.25);
+  box-shadow: 0 16px 30px rgba(0,0,0,0.22);
+  background: rgba(255,255,255,0.04);
+}
+
+[data-theme="light"] .stack-card:hover {
+  box-shadow: 0 16px 30px rgba(0,0,0,0.08);
+}
+
+.stack-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.stack-items {
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--text-dim);
+}
+
 /* ===== HONORS ===== */
 .honors-list {
   display: flex;
@@ -420,6 +466,7 @@ html, body {
   .dock { display: none; }
   .content { padding: 24px; }
   .skills-grid { grid-template-columns: 1fr; }
+  .stack-grid { grid-template-columns: 1fr; }
 }
 
 @page { size: A4; margin: 15mm; }
@@ -450,7 +497,7 @@ html, body {
 
 <div class="os-window">
   <header class="unified-topbar">
-    <a class="unified-brand" href="./index.html">[Leonardo Li] · Work · Index</a>
+    <a class="unified-brand" href="./index.html">LeonardoLi🐱</a>
     <nav class="unified-nav">
       <a href="./index.html">Home</a>
       <a href="./works.html">Work</a>
@@ -696,6 +743,24 @@ html, body {
           <div class="skill-row"><span class="skill-cat">实时交互视觉</span> — TouchDesigner（资深）/ MediaPipe（手势/肢体/眼动）/ YOLO（多人追踪）</div>
           <div class="skill-row"><span class="skill-cat">三维与引擎</span> — Blender / TripoAI / Rhino / Unreal Engine</div>
           <div class="skill-row"><span class="skill-cat">用户研究</span> — 用户访谈 / 可用性测试 / 用户旅程地图 / 竞品分析 / Kano模型</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">技术栈</div>
+        <div class="stack-grid">
+          <div class="stack-card">
+            <div class="stack-title">前端 / 原型实现</div>
+            <div class="stack-items">HTML / CSS / JavaScript · Vibe Coding（TRAE / Lovable）</div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-title">AI / Workflow</div>
+            <div class="stack-items">Dify · AnythingLLM · 多 Agent 工作流 · ComfyUI / Runway</div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-title">实时交互 / 视觉</div>
+            <div class="stack-items">TouchDesigner · MediaPipe · YOLO · OpenCV · OSC</div>
+          </div>
         </div>
       </div>
 

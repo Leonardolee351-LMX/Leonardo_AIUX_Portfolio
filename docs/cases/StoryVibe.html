@@ -280,56 +280,32 @@ body {
   background: var(--bg-elevated);
 }
 
-/* ===== FOOTER NAV ===== */
-.footer-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 48px 0;
-  border-top: 1px solid var(--border);
-  margin-top: 64px;
-}
-.footer-nav a {
-  font-size: 14px;
-  color: var(--text-dim);
-  text-decoration: none;
-  transition: color 0.3s;
-}
-.footer-nav a:hover { color: var(--accent); }
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 900px) {
-  .sidebar { display: none; }
-  .main { margin-left: 0; padding: 24px; }
-  .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
-  .project-hero h1 { font-size: 28px; }
-  .meta-bar { grid-template-columns: 1fr; gap: 16px; }
-}
-
-.back-wrap { max-width: 980px; margin: 14px auto 0; padding: 0 18px; }
-.back-work { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; letter-spacing: .02em; color: var(--text-muted); text-decoration: none; transition: color .2s ease; }
-.back-work:hover { color: var(--text); }
-
 /* Top Navigation Bar */
 .unified-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
-  height: 56px;
-  background: var(--sidebar-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  height: 64px;
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   transition: all 0.3s ease;
 }
+
+[data-theme="light"] .unified-topbar {
+  background: rgba(255, 255, 255, 0.7);
+}
+
 .unified-brand {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  color: var(--text-dim);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
   text-decoration: none;
 }
+
 .unified-nav {
   display: flex;
   gap: 24px;
@@ -343,44 +319,257 @@ body {
 .unified-nav a:hover, .unified-nav a.active {
   color: var(--text);
 }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+}
+
+.nav-theme-toggle:hover {
+  background: var(--card-bg);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.nav-theme-toggle svg { width: 16px; height: 16px; }
+.nav-theme-toggle .sun { display: none; }
+.nav-theme-toggle .moon { display: block; }
+[data-theme="light"] .nav-theme-toggle .sun { display: block; }
+[data-theme="light"] .nav-theme-toggle .moon { display: none; }
+
+/* ===== BACKGROUND ORBS ===== */
+.bg-orbs {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.3;
+  mix-blend-mode: screen;
+  animation: moveOrb 20s infinite alternate ease-in-out;
+}
+
+[data-theme="light"] .orb {
+  mix-blend-mode: multiply;
+  opacity: 0.08;
+}
+
+.orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #00f2fe 0%, transparent 70%);
+  top: -10%; left: -10%;
+  animation-duration: 25s;
+}
+
+.orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #4facfe 0%, transparent 70%);
+  bottom: -5%; right: -5%;
+  animation-duration: 30s;
+  animation-delay: -5s;
+}
+
+.orb-3 {
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, #00ff87 0%, transparent 70%);
+  top: 40%; left: 30%;
+  animation-duration: 22s;
+  animation-delay: -10s;
+}
+
+@keyframes moveOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(100px, 50px) scale(1.1); }
+}
+
+/* ===== FOOTER NAV ===== */
+.footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 64px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 80px;
+  gap: 24px;
+}
+
+.footer-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 24px;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-btn .btn-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.footer-btn .btn-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Light Mode: Blue 系 */
+[data-theme="light"] .footer-btn {
+  background: #f0f7ff;
+  color: #0066cc;
+  border-color: #d0e7ff;
+}
+[data-theme="light"] .footer-btn:hover {
+  background: #0066cc;
+  color: #fff;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 102, 204, 0.15);
+  border-color: transparent;
+}
+
+/* Dark Mode: Green 系 */
+[data-theme="dark"] .footer-btn {
+  background: rgba(0, 255, 135, 0.03);
+  color: #00ff87;
+  border-color: rgba(0, 255, 135, 0.1);
+}
+[data-theme="dark"] .footer-btn:hover {
+  background: rgba(0, 255, 135, 0.1);
+  color: #00ff87;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 255, 135, 0.1);
+  border-color: rgba(0, 255, 135, 0.3);
+}
+
+/* ===== PROJECT LINK CARDS ===== */
+.project-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 0 0 48px;
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.link-card:hover {
+  transform: translateY(-4px);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.link-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.link-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.link-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.link-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
 </style>
 </head>
 <body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
 
 <!-- Top Navigation -->
 <nav class="unified-topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 200;">
-  <a href="../index.html" class="unified-brand">[Leonardo Li] · Work · Index</a>
-  <div class="unified-nav">
-    <a href="../index.html">Home</a>
-    <a href="../works.html" class="active">Work</a>
-    <a href="../resume.html">Resume</a>
+  <a href="../index.html" class="unified-brand">LeonardoLi🐱</a>
+  <div class="nav-actions">
+    <div class="unified-nav">
+      <a href="../index.html">Home</a>
+      <a href="../works.html" class="active">Work</a>
+      <a href="../resume.html">Resume</a>
+    </div>
+    <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题">
+      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
   </div>
 </nav>
 
 <!-- Spacer for nav -->
-<div style="height: 56px;"></div>
+<div style="height: 64px;"></div>
 <div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
 
 <div class="page">
 
 <!-- SIDEBAR TOC -->
 <aside class="sidebar">
-  <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-    <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-    </svg>
-    <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="5"></circle>
-      <line x1="12" y1="1" x2="12" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="23"></line>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-      <line x1="1" y1="12" x2="3" y2="12"></line>
-      <line x1="21" y1="12" x2="23" y2="12"></line>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
-  </button>
   <a href="../works.html" class="back-link">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     Back to Index
@@ -390,7 +579,6 @@ body {
   <ul class="toc-list">
     <li><a href="#progress" class="active">当前进展</a></li>
     <li><a href="#references">设计参考</a></li>
-    <li><a href="#links">相关链接</a></li>
   </ul>
 </aside>
 
@@ -418,6 +606,38 @@ body {
     <h4>目标</h4>
     <p>从灵感到脚本到视频资产的全链路生成</p>
   </div>
+</div>
+
+<!-- QUICK LINKS -->
+<div class="project-links">
+  <a href="https://xyk4vninj5wnq.ok.kimi.link" target="_blank" class="link-card">
+    <div class="link-icon">🌐</div>
+    <div class="link-info">
+      <span class="link-label">Preview</span>
+      <span class="link-name">产品体验 (实际界面)</span>
+    </div>
+  </a>
+  <a href="https://www.figma.com/design/W3hR0cyqjajMyKIcNMExTe/GenAI-Video?node-id=0-1&t=Q6eDkj0oiaODBjGm-1" target="_blank" class="link-card">
+    <div class="link-icon">🎨</div>
+    <div class="link-info">
+      <span class="link-label">Figma</span>
+      <span class="link-name">UI 设计稿</span>
+    </div>
+  </a>
+  <a href="https://www.figma.com/board/je1mR8UdFIdenPTCcbG7gG/Genai-video-LI-Mingxi--YI-Keshu--LU-Junchi?node-id=10113-980&t=3BJjSO2TySliyszT-1" target="_blank" class="link-card">
+    <div class="link-icon">📋</div>
+    <div class="link-info">
+      <span class="link-label">Board</span>
+      <span class="link-name">调研与灵感</span>
+    </div>
+  </a>
+  <a href="https://www.figma.com/slides/jmCqNCgZT7x1l9PlDkzcpu" target="_blank" class="link-card">
+    <div class="link-icon">📊</div>
+    <div class="link-info">
+      <span class="link-label">Slides</span>
+      <span class="link-name">汇报演示</span>
+    </div>
+  </a>
 </div>
 
 <!-- CONTENT SECTIONS -->
@@ -462,69 +682,67 @@ body {
 </section>
 
 <!-- FOOTER NAV -->
-<footer class="footer-nav">
-  <a href="Toys.html">← 上一个项目: AI 启蒙代练屋</a>
-  <a href="CO-EVO.html">下一个项目: CO-EVO →</a>
-</footer>
+<div class="footer-nav">
+  <a href="Toys.html" class="footer-btn">
+    <span class="btn-label">Next Project</span>
+    <span class="btn-title">Toys 启蒙代练屋 →</span>
+  </a>
+  <a href="../works.html" class="footer-btn">
+    <span class="btn-label">Back to</span>
+    <span class="btn-title">Works Index</span>
+  </a>
+</div>
 
 </main>
 </div>
 
 <script>
-// Theme Toggle Logic
-(function(){
-  const s = localStorage.getItem('theme');
-  const p = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const t = s || (p ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', t);
+// TOC Active State on Scroll
+const sections = document.querySelectorAll('section[id], h3[id]');
+const tocLinks = document.querySelectorAll('.toc-list a');
+
+function updateActiveToc() {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.getBoundingClientRect().top;
+    if (top < 200) current = section.id;
+  });
+  tocLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateActiveToc);
+
+// Scroll Animation (Intersection Observer)
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.img-block, .compare-item, .video-block, .result-item').forEach(el => {
+  observer.observe(el);
+});
+</script>
+<script>
+(function() {
+  const stored = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = stored || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+
+  const navToggle = document.getElementById('navThemeToggle');
   
-  const b = document.getElementById('themeToggle');
-  if(b){
-    b.addEventListener('click', function(){
-      const c = document.documentElement.getAttribute('data-theme');
-      const n = c === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', n);
-      localStorage.setItem('theme', n);
-    });
+  function handleToggle() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
   }
 
-  // Scroll Reveal Logic
-  const observerOptions = {
-    threshold: 0.1
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll('.img-block, .result-item, .compare-item, .video-block').forEach(el => {
-    observer.observe(el);
-  });
-
-  // TOC Active Link Logic
-  const sections = document.querySelectorAll('section[id]');
-  const tocLinks = document.querySelectorAll('.toc-list a');
-
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      if (pageYOffset >= sectionTop - 100) {
-        current = section.getAttribute('id');
-      }
-    });
-
-    tocLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href').substring(1) === current) {
-        link.classList.add('active');
-      }
-    });
-  });
+  if (navToggle) navToggle.addEventListener('click', handleToggle);
 })();
 </script>
 </body>

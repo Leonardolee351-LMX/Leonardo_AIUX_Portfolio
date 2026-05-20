@@ -40,7 +40,6 @@
 html, body {
   width: 100%;
   height: 100%;
-  overflow: hidden;
 }
 
 body {
@@ -112,18 +111,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 28px;
-  background: rgba(10,10,15,0.3);
+  padding: 0 32px;
+  height: 64px;
+  background: rgba(10, 10, 15, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   transition: all 0.3s ease;
 }
 
+[data-theme="light"] .unified-topbar {
+  background: rgba(255, 255, 255, 0.7);
+}
+
 .unified-brand {
-  font-size: 14px;
-  letter-spacing: 1.5px;
-  color: var(--text-dim);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
   text-decoration: none;
 }
 
@@ -411,91 +416,44 @@ body {
   bottom: 0;
   perspective: 800px;
   overflow: hidden;
-  pointer-events: none;
+  pointer-events: auto;
+  z-index: 2;
 }
 
 .float-sym {
   position: absolute;
   font-weight: 900;
   transform-style: preserve-3d;
-  animation: symFloat linear infinite;
+  cursor: grab;
+  touch-action: none;
   user-select: none;
   font-family: 'Courier New', monospace;
   letter-spacing: -2px;
-  text-shadow: 0 4px 18px rgba(0,0,0,0.45);
-  -webkit-text-stroke: 1px rgba(255,255,255,0.07);
+  background: linear-gradient(135deg, rgba(255,255,255,0.62), rgba(0,242,254,0.22), rgba(0,255,135,0.18));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.18);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.08),
+    0 2px 0 rgba(255,255,255,0.06),
+    0 3px 0 rgba(255,255,255,0.04),
+    0 10px 26px rgba(0,0,0,0.45),
+    0 0 40px rgba(0,242,254,0.18),
+    0 0 44px rgba(0,255,135,0.12);
+  transform: translateZ(40px) rotateX(12deg) rotateY(18deg);
 }
 
-.sym-1 {
-  top: 8%;
-  left: 10%;
-  font-size: 140px;
-  color: rgba(91,158,138,0.18);
-  animation-duration: 22s;
-  animation-delay: 0s;
-}
+.float-sym.dragging { cursor: grabbing; filter: brightness(1.06); }
 
-.sym-2 {
-  top: 5%;
-  right: 15%;
-  font-size: 100px;
-  color: rgba(91,126,199,0.15);
-  animation-duration: 28s;
-  animation-delay: -7s;
-}
-
-.sym-3 {
-  top: 55%;
-  left: 5%;
-  font-size: 120px;
-  color: rgba(139,110,180,0.13);
-  animation-duration: 24s;
-  animation-delay: -12s;
-}
-
-.sym-4 {
-  top: 65%;
-  right: 8%;
-  font-size: 90px;
-  color: rgba(91,158,138,0.12);
-  animation-duration: 20s;
-  animation-delay: -4s;
-}
-
-.sym-5 {
-  top: 35%;
-  left: 25%;
-  font-size: 80px;
-  color: rgba(91,126,199,0.10);
-  animation-duration: 26s;
-  animation-delay: -9s;
-}
-
-.sym-6 {
-  top: 75%;
-  right: 35%;
-  font-size: 110px;
-  color: rgba(139,110,180,0.12);
-  animation-duration: 30s;
-  animation-delay: -16s;
-}
-
-.sym-7 {
-  top: 20%;
-  left: 55%;
-  font-size: 70px;
-  color: rgba(91,158,138,0.09);
-  animation-duration: 18s;
-  animation-delay: -2s;
-}
-
-@keyframes symFloat {
-  0% { transform: translateY(0) rotateX(0deg) rotateY(0deg) translateZ(0); }
-  25% { transform: translateY(-25px) rotateX(12deg) rotateY(90deg) translateZ(40px); }
-  50% { transform: translateY(-15px) rotateX(-8deg) rotateY(180deg) translateZ(-30px); }
-  75% { transform: translateY(-35px) rotateX(18deg) rotateY(270deg) translateZ(50px); }
-  100% { transform: translateY(0) rotateX(0deg) rotateY(360deg) translateZ(0); }
-}
+.sym-1 { top: 8%; left: 10%; font-size: 120px; }
+.sym-2 { top: 6%; right: 14%; font-size: 96px; }
+.sym-3 { top: 46%; left: 6%; font-size: 110px; }
+.sym-4 { top: 62%; right: 10%; font-size: 88px; }
+.sym-5 { top: 34%; left: 26%; font-size: 72px; }
+.sym-6 { top: 72%; right: 34%; font-size: 100px; }
+.sym-7 { top: 20%; left: 56%; font-size: 64px; }
+.sym-8 { top: 28%; right: 48%; font-size: 76px; }
 
 /* ===== PARTICLES ===== */
 #particles {
@@ -567,40 +525,56 @@ body {
 .hero-cta {
   margin-top: 28px;
   display: flex;
+  flex-direction: column;
   gap: 12px;
   justify-content: center;
-  flex-wrap: wrap;
+  align-items: stretch;
+  width: min(520px, 100%);
 }
 
-.btn {
-  display: inline-flex;
+.cta-bar,
+.cta-bar-btn {
+  width: 100%;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 10px 16px;
-  border-radius: 999px;
-  font-size: 12px;
-  letter-spacing: 1px;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-radius: 14px;
+  font-size: 13px;
+  letter-spacing: 0.7px;
   text-decoration: none;
-  transition: all 0.25s ease;
-  border: 1px solid transparent;
-}
-
-.btn-primary {
-  color: #0b0f0e;
-  background: linear-gradient(135deg, #73d8bb, #78a4ea);
-}
-
-.btn-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
-
-.btn-ghost {
-  color: var(--text-dim);
-  border-color: var(--border);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  border: 1px solid var(--border);
   background: var(--bg-card);
+  color: var(--text);
 }
 
-.btn-ghost:hover {
-  color: var(--text);
-  border-color: var(--text-muted);
+.cta-bar strong,
+.cta-bar-btn strong {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.cta-bar:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 242, 254, 0.35);
+  box-shadow: 0 18px 34px rgba(0,0,0,0.26);
+  background: rgba(255,255,255,0.06);
+}
+
+.cta-bar.primary {
+  border-color: rgba(0, 242, 254, 0.28);
+  background: linear-gradient(135deg, rgba(115,216,187,0.22), rgba(120,164,234,0.16));
+}
+
+.cta-bar.primary:hover {
+  border-color: rgba(0, 242, 254, 0.6);
+  box-shadow: 0 18px 40px rgba(0, 242, 254, 0.12);
+}
+
+.cta-bar-btn {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .launch-note {
@@ -687,7 +661,7 @@ body {
 }
 
 .content-area {
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
 }
 </style>
 </head>
@@ -701,7 +675,7 @@ body {
 
 <div class="os-window">
   <header class="unified-topbar">
-    <a class="unified-brand" href="./index.html">[Leonardo Li] · Work · Index</a>
+    <a class="unified-brand" href="./index.html">LeonardoLi🐱</a>
     <nav class="unified-nav">
       <a class="active" href="./index.html">Home</a>
       <a href="./works.html">Work</a>
@@ -776,30 +750,31 @@ body {
 
       <!-- 3D Floating Symbols -->
       <div class="scene-3d">
-        <div class="float-sym sym-1">{ }</div>
-        <div class="float-sym sym-2">&lt;/&gt;</div>
-        <div class="float-sym sym-3">[ ]</div>
-        <div class="float-sym sym-4">&lt; &gt;</div>
-        <div class="float-sym sym-5">/ /</div>
-        <div class="float-sym sym-6">( )</div>
-        <div class="float-sym sym-7">#</div>
+        <div class="float-sym sym-1">/</div>
+        <div class="float-sym sym-2">&amp;</div>
+        <div class="float-sym sym-3">&lt; &gt;</div>
+        <div class="float-sym sym-4">#</div>
+        <div class="float-sym sym-5">@</div>
+        <div class="float-sym sym-6">class</div>
+        <div class="float-sym sym-7">div</div>
+        <div class="float-sym sym-8">*</div>
       </div>
 
       <!-- Hero Center -->
       <div class="hero-center">
         <div class="hero-label">HOME</div>
         <h1 class="hero-title">
-          <span class="name">黎铭晞 Leonardo Li</span><br>
-          专注于 <span class="role-highlight">人机交互</span><br>
-          与 <span class="role-highlight">原型实现</span> 的设计师
+          Hi I'm <span class="name">LeonardoLi黎铭晞</span><br>
+          <span class="role-highlight">人机交互设计师</span>
         </h1>
         <p class="hero-desc">
           我融合人机交互专业背景与AI Native全链路设计能力，<br>
           从用户洞察到Vibe Coding前端实现，创造有温度的智能体验。
         </p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="./works.html">浏览项目</a>
-          <a class="btn btn-ghost" href="./resume.html">查看简历</a>
+          <a class="cta-bar primary" href="./works.html"><strong>浏览作品</strong><span>→</span></a>
+          <a class="cta-bar" href="./resume.html"><strong>查阅简历</strong><span>→</span></a>
+          <button class="cta-bar-btn" type="button" disabled><strong>艺术创想</strong><span>⟂</span></button>
         </div>
         <div class="launch-note">StoryVibe 正在制作中，当前优先展示已完成主打案例。</div>
         <div style="margin-top:12px;font-size:12px;color:var(--text-muted);line-height:1.6;">
@@ -917,6 +892,62 @@ animate();
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
+  });
+})();
+</script>
+<script>
+(function() {
+  const items = Array.from(document.querySelectorAll('.float-sym'));
+  const container = document.querySelector('.scene-3d');
+  if (!container || items.length === 0) return;
+
+  let active = null;
+  let startX = 0;
+  let startY = 0;
+  let origLeft = 0;
+  let origTop = 0;
+
+  function toPx(value, total) {
+    if (typeof value !== 'string') return 0;
+    if (value.endsWith('px')) return parseFloat(value);
+    if (value.endsWith('%')) return total * (parseFloat(value) / 100);
+    return parseFloat(value) || 0;
+  }
+
+  items.forEach(el => {
+    el.addEventListener('pointerdown', (e) => {
+      if (e.button !== undefined && e.button !== 0) return;
+      active = el;
+      active.classList.add('dragging');
+      active.setPointerCapture(e.pointerId);
+      startX = e.clientX;
+      startY = e.clientY;
+      const rect = container.getBoundingClientRect();
+      const style = getComputedStyle(active);
+      origLeft = toPx(style.left, rect.width);
+      origTop = toPx(style.top, rect.height);
+    });
+
+    el.addEventListener('pointermove', (e) => {
+      if (!active || active !== el) return;
+      const rect = container.getBoundingClientRect();
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const nextLeft = Math.max(-80, Math.min(rect.width + 80, origLeft + dx));
+      const nextTop = Math.max(-80, Math.min(rect.height + 80, origTop + dy));
+      active.style.left = `${nextLeft}px`;
+      active.style.top = `${nextTop}px`;
+    });
+
+    function endDrag(e) {
+      if (!active || active !== el) return;
+      active.classList.remove('dragging');
+      try { active.releasePointerCapture(e.pointerId); } catch {}
+      active = null;
+    }
+
+    el.addEventListener('pointerup', endDrag);
+    el.addEventListener('pointercancel', endDrag);
   });
 })();
 </script>
