@@ -34,7 +34,11 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
   background: var(--bg);
-  background-image: radial-gradient(circle at 20% 0%, var(--surface-2) 0%, var(--bg) 45%, var(--bg) 100%);
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(91, 158, 138, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(91, 126, 199, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, var(--surface) 0%, var(--bg) 100%);
+  background-attachment: fixed;
   color: var(--text);
   min-height: 100vh;
   transition: background 0.3s ease, color 0.3s ease;
@@ -43,13 +47,14 @@ body {
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 18px 28px;
   background: var(--bg-elevated);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   transition: background 0.3s ease, border-color 0.3s ease;
 }
@@ -174,7 +179,7 @@ body {
   text-decoration: none;
   background: var(--card-bg);
   color: inherit;
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.3s ease;
 }
 
 .card--xl { grid-column: span 2; grid-row: span 2; }
@@ -183,7 +188,111 @@ body {
 .card--sm { grid-column: span 1; grid-row: span 1; }
 
 .card:hover {
-  border-color: var(--surface-2);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  border-color: var(--text-muted);
+  z-index: 10;
+}
+
+[data-theme="light"] .card:hover {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* ===== LIST VIEW STYLES ===== */
+.grid.view-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.grid.view-list .card {
+  grid-column: span 4 !important;
+  grid-row: span 1 !important;
+  height: auto;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+.grid.view-list .card:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--surface);
+}
+
+.grid.view-list .thumb {
+  display: none;
+}
+
+.grid.view-list .meta {
+  position: static;
+  opacity: 1;
+  transform: none;
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  padding: 16px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.grid.view-list .title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.grid.view-list .desc {
+  font-size: 14px;
+  flex: 1;
+  text-align: right;
+  margin-right: 24px;
+}
+
+.grid.view-list .tags {
+  margin-top: 0;
+  width: auto;
+}
+
+.grid.view-list .status {
+  display: none;
+}
+
+/* View Switcher */
+.view-switcher {
+  display: flex;
+  background: var(--surface);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-left: 16px;
+}
+
+.view-btn {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.view-btn.active {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.view-btn svg {
+  width: 14px;
+  height: 14px;
 }
 
 .thumb {
@@ -318,11 +427,33 @@ body {
   <main class="container">
     <section class="heading">
       <h1>Selected work(s)</h1>
-      <div class="filters">
-        <button class="chip active" type="button" data-filter="all">All 9</button>
-        <button class="chip" type="button" data-filter="product">Product 6</button>
-        <button class="chip" type="button" data-filter="tech">Tech 2</button>
-        <button class="chip" type="button" data-filter="creative">Creative 1</button>
+      <div style="display: flex; align-items: center;">
+        <div class="filters">
+          <button class="chip active" type="button" data-filter="all">All 9</button>
+          <button class="chip" type="button" data-filter="product">Product 6</button>
+          <button class="chip" type="button" data-filter="tech">Tech 2</button>
+          <button class="chip" type="button" data-filter="creative">Creative 1</button>
+        </div>
+        <div class="view-switcher">
+          <button class="view-btn active" id="viewGrid" title="网格视图">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </button>
+          <button class="view-btn" id="viewList" title="目录视图">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -442,9 +573,11 @@ body {
       const grid = document.querySelector('.grid');
       const chips = [...document.querySelectorAll('.chip[data-filter]')];
       const cards = [...document.querySelectorAll('.card[data-category]')];
+      const viewGridBtn = document.getElementById('viewGrid');
+      const viewListBtn = document.getElementById('viewList');
 
       function updateGridUnit() {
-        if (!grid) return;
+        if (!grid || grid.classList.contains('view-list')) return;
         const styles = getComputedStyle(grid);
         const gap = parseFloat(styles.columnGap || styles.gap || '12');
         const cols = window.matchMedia('(max-width: 1024px)').matches ? 2 : 4;
@@ -468,6 +601,19 @@ body {
           applyFilter(chip.dataset.filter);
           updateGridUnit();
         });
+      });
+
+      viewGridBtn.addEventListener('click', () => {
+        grid.classList.remove('view-list');
+        viewGridBtn.classList.add('active');
+        viewListBtn.classList.remove('active');
+        updateGridUnit();
+      });
+
+      viewListBtn.addEventListener('click', () => {
+        grid.classList.add('view-list');
+        viewListBtn.classList.add('active');
+        viewGridBtn.classList.remove('active');
       });
 
       window.addEventListener('resize', updateGridUnit);
