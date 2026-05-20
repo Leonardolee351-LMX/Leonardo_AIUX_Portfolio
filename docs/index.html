@@ -9,12 +9,32 @@
 
 :root {
   --bg: #08080c;
+  --bg-elevated: rgba(255,255,255,0.03);
+  --surface: rgba(255,255,255,0.03);
   --text: #e8e6e1;
   --text-dim: #8a8580;
   --text-muted: #5a5550;
   --accent: #5b9e8a;
   --accent-blue: #5b7ec7;
   --border: rgba(255,255,255,0.06);
+  --bg-card: rgba(255,255,255,0.02);
+  --tag-bg: rgba(91,158,138,0.08);
+  --tag-text: #5b9e8a;
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ef;
+  --bg-elevated: rgba(0,0,0,0.03);
+  --surface: rgba(0,0,0,0.03);
+  --text: #1a1a1a;
+  --text-dim: #5a5a5a;
+  --text-muted: #8a8a8a;
+  --accent: #3d7a6a;
+  --accent-blue: #4a6ba8;
+  --border: rgba(0,0,0,0.08);
+  --bg-card: rgba(0,0,0,0.03);
+  --tag-bg: rgba(61,122,106,0.1);
+  --tag-text: #3d7a6a;
 }
 
 html, body {
@@ -28,6 +48,7 @@ body {
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .unified-topbar {
@@ -38,31 +59,64 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 18px 28px;
-  background: rgba(8,8,10,0.88);
+  background: var(--bg-elevated);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .unified-brand {
   font-size: 14px;
   letter-spacing: 1.5px;
-  color: rgba(255,255,255,0.75);
+  color: var(--text-dim);
   text-decoration: none;
 }
 
 .unified-nav {
   display: flex;
+  align-items: center;
   gap: 18px;
 }
 
 .unified-nav a {
   font-size: 13px;
   letter-spacing: 1px;
-  color: rgba(255,255,255,0.48);
+  color: var(--text-muted);
   text-decoration: none;
+  transition: color 0.3s;
 }
 
-.unified-nav a.active { color: #ffffff; }
+.unified-nav a.active { color: var(--text); }
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+}
+
+.theme-toggle:hover {
+  background: var(--bg-card);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.theme-toggle .sun { display: none; }
+.theme-toggle .moon { display: block; }
+[data-theme="light"] .theme-toggle .sun { display: block; }
+[data-theme="light"] .theme-toggle .moon { display: none; }
 
 /* ===== OS WINDOW FRAME ===== */
 .os-window {
@@ -81,9 +135,10 @@ body {
   justify-content: space-between;
   padding: 0 16px;
   border-bottom: 1px solid var(--border);
-  background: rgba(8,8,12,0.9);
+  background: var(--bg-elevated);
   flex-shrink: 0;
   z-index: 100;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .window-controls {
@@ -178,12 +233,12 @@ body {
 
 .dock-item:hover {
   color: var(--text-dim);
-  background: rgba(255,255,255,0.03);
+  background: var(--surface);
 }
 
 .dock-item.active {
   color: var(--accent);
-  background: rgba(91,158,138,0.08);
+  background: var(--tag-bg);
 }
 
 .dock-item.active::before {
@@ -475,12 +530,12 @@ body {
 .btn-ghost {
   color: var(--text-dim);
   border-color: var(--border);
-  background: rgba(255,255,255,0.02);
+  background: var(--bg-card);
 }
 
 .btn-ghost:hover {
   color: var(--text);
-  border-color: rgba(255,255,255,0.16);
+  border-color: var(--text-muted);
 }
 
 .launch-note {
@@ -580,6 +635,22 @@ body {
       <a class="active" href="./index.html">Home</a>
       <a href="./works.html">Work</a>
       <a href="./resume.html">Resume</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+        <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
     </nav>
   </header>
 
@@ -761,6 +832,21 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
+</script>
+<script>
+(function() {
+  const stored = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = stored || (prefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+})();
 </script>
 
 </body>

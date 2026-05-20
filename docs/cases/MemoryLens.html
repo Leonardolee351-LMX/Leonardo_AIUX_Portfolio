@@ -8,26 +8,46 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --bg: #06070a;
+  --bg-elevated: rgba(8,8,10,.88);
   --text: #f3f4f7;
   --text-dim: rgba(243,244,247,0.74);
   --text-muted: rgba(243,244,247,0.45);
   --border: rgba(255,255,255,0.1);
   --surface: rgba(255,255,255,0.03);
 }
+[data-theme="light"] {
+  --bg: #f5f3ef;
+  --bg-elevated: rgba(245,243,239,.9);
+  --text: #1a1a1a;
+  --text-dim: #5a5a5a;
+  --text-muted: #8a8a8a;
+  --border: rgba(0,0,0,.1);
+  --surface: rgba(0,0,0,0.04);
+}
 body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-  background: radial-gradient(circle at 70% 0%, #111827 0%, #06070a 50%);
+  background: var(--bg);
+  background-image: radial-gradient(circle at 70% 0%, var(--surface) 0%, var(--bg) 50%);
+  color: var(--text);
   color: var(--text);
   line-height: 1.8;
+  transition: background .3s, color .3s;
 }
 .unified-topbar{
   position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
-  padding:18px 28px;background:rgba(8,8,10,.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.1)
+  padding:18px 28px;background:var(--bg-elevated);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);
+  transition: background .3s, border-color .3s;
 }
-.unified-brand{font-size:14px;letter-spacing:1.5px;color:rgba(255,255,255,.75);text-decoration:none}
-.unified-nav{display:flex;gap:18px}
-.unified-nav a{font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.48);text-decoration:none}
-.unified-nav a.active{color:#fff}
+.unified-brand{font-size:14px;letter-spacing:1.5px;color:var(--text-dim);text-decoration:none}
+.unified-nav{display:flex;align-items:center;gap:18px}
+.unified-nav a{font-size:13px;letter-spacing:1px;color:var(--text-muted);text-decoration:none;transition:color .3s}
+.unified-nav a.active{color:var(--text)}
+.theme-toggle{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg-elevated);cursor:pointer;transition:all .3s;color:var(--text-muted)}
+.theme-toggle:hover{background:var(--bg);color:var(--text-dim);border-color:var(--text-muted)}
+.theme-toggle svg{width:16px;height:16px}
+.theme-toggle .sun{display:none}.theme-toggle .moon{display:block}
+[data-theme="light"] .theme-toggle .sun{display:block}
+[data-theme="light"] .theme-toggle .moon{display:none}
 .shell { max-width: 980px; margin: 0 auto; padding: 36px 22px 72px; }
 .top {
   display: flex;
@@ -122,6 +142,10 @@ p { color: var(--text-dim); margin-bottom: 12px; }
       <a href="../index.html">Home</a>
       <a class="active" href="../works.html">Work</a>
       <a href="../resume.html">Resume</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+        <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
     </nav>
   </header>
   <main class="shell">
@@ -180,5 +204,6 @@ p { color: var(--text-dim); margin-bottom: 12px; }
       <p>这个项目强化了我的一个方法论：AI 交互不该只停在聊天界面，而要结合具体情境形成“动作可执行”的反馈链路。未来如果继续迭代，我会优先补充用户测试与多物体冲突场景策略。</p>
     </section>
   </main>
+<script>(function(){const s=localStorage.getItem('theme');const p=window.matchMedia('(prefers-color-scheme: dark)').matches;const t=s||(p?'dark':'light');document.documentElement.setAttribute('data-theme',t);const b=document.getElementById('themeToggle');if(b){b.addEventListener('click',function(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n)})}})();</script>
 </body>
 </html>
