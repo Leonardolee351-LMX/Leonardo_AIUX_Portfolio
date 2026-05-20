@@ -49,20 +49,75 @@ body {
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   transition: background 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ===== BACKGROUND ORBS ===== */
+.bg-orbs {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  animation: moveOrb 20s infinite alternate ease-in-out;
+}
+
+[data-theme="light"] .orb {
+  mix-blend-mode: multiply;
+  opacity: 0.1;
+}
+
+.orb-1 {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, #00f2fe 0%, transparent 70%);
+  top: -15%; left: -10%;
+  animation-duration: 25s;
+}
+
+.orb-2 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #4facfe 0%, transparent 70%);
+  bottom: -10%; right: -5%;
+  animation-duration: 30s;
+  animation-delay: -5s;
+}
+
+.orb-3 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #00ff87 0%, transparent 70%);
+  top: 40%; left: 30%;
+  animation-duration: 22s;
+  animation-delay: -10s;
+}
+
+@keyframes moveOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(120px, 60px) scale(1.1); }
 }
 
 .unified-topbar {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: 0; left: 0; right: 0;
   z-index: 300;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 18px 28px;
-  background: var(--bg-elevated);
-  backdrop-filter: blur(10px);
+  background: rgba(10,10,15,0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .unified-brand {
@@ -636,7 +691,13 @@ body {
 }
 </style>
 </head>
-<body>
+<body data-theme="dark">
+
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
 
 <div class="os-window">
   <header class="unified-topbar">
@@ -728,8 +789,9 @@ body {
       <div class="hero-center">
         <div class="hero-label">HOME</div>
         <h1 class="hero-title">
-          <span class="name">Hi, I'm 黎铭晞,</span><br>
-          <span class="role-highlight">AI交互</span><span class="role-plain">设计师</span>
+          <span class="name">黎铭晞 Leonardo Li</span><br>
+          专注于 <span class="role-highlight">人机交互</span><br>
+          与 <span class="role-highlight">原型实现</span> 的设计师
         </h1>
         <p class="hero-desc">
           我融合人机交互专业背景与AI Native全链路设计能力，<br>

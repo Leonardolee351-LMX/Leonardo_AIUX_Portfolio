@@ -34,14 +34,63 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
   background: var(--bg);
-  background-image: 
-    radial-gradient(circle at 0% 0%, rgba(91, 158, 138, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 100% 100%, rgba(91, 126, 199, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, var(--surface) 0%, var(--bg) 100%);
   background-attachment: fixed;
   color: var(--text);
   min-height: 100vh;
   transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ===== BACKGROUND ORBS ===== */
+.bg-orbs {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  animation: moveOrb 20s infinite alternate ease-in-out;
+}
+
+[data-theme="light"] .orb {
+  mix-blend-mode: multiply;
+  opacity: 0.15;
+}
+
+.orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #00f2fe 0%, transparent 70%);
+  top: -10%; left: -10%;
+  animation-duration: 25s;
+}
+
+.orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #4facfe 0%, transparent 70%);
+  bottom: -5%; right: -5%;
+  animation-duration: 30s;
+  animation-delay: -5s;
+}
+
+.orb-3 {
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, #00ff87 0%, transparent 70%);
+  top: 40%; left: 30%;
+  animation-duration: 22s;
+  animation-delay: -10s;
+}
+
+@keyframes moveOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(100px, 50px) scale(1.1); }
 }
 
 .topbar {
@@ -202,7 +251,9 @@ body {
 .grid.view-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .grid.view-list .card {
@@ -210,15 +261,26 @@ body {
   grid-row: span 1 !important;
   height: auto;
   border: none;
-  border-bottom: 1px solid var(--border);
   border-radius: 0;
   background: transparent;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.grid.view-list .card:last-child {
+  border-bottom: none;
 }
 
 .grid.view-list .card:hover {
-  transform: none;
+  transform: scale(1.05);
   box-shadow: none;
-  background: var(--surface);
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.1), transparent 70%);
+  z-index: 5;
+}
+
+[data-theme="light"] .grid.view-list .card:hover {
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.05), transparent 70%);
 }
 
 .grid.view-list .thumb {
@@ -232,30 +294,50 @@ body {
   background: transparent;
   backdrop-filter: none;
   border: none;
-  padding: 16px 8px;
+  padding: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  text-align: center;
   width: 100%;
 }
 
 .grid.view-list .title {
-  font-size: 24px;
-  font-weight: 500;
-  margin-bottom: 0;
-  flex: 1;
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  transition: all 0.3s;
+}
+
+.grid.view-list .card:hover .title {
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
 }
 
 .grid.view-list .desc {
-  font-size: 14px;
-  flex: 1;
-  text-align: right;
-  margin-right: 24px;
+  display: none; /* Hide description in list view to keep it clean */
 }
 
 .grid.view-list .tags {
-  margin-top: 0;
-  width: auto;
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.grid.view-list .tag {
+  font-size: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  padding: 4px 16px;
+  border-radius: 6px;
+  color: var(--text-dim);
+}
+
+[data-theme="light"] .grid.view-list .tag {
+  background: rgba(0,0,0,0.03);
 }
 
 .grid.view-list .status {
@@ -399,6 +481,12 @@ body {
 </style>
 </head>
 <body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
   <header class="topbar">
     <a class="brand" href="./index.html">[Leonardo Li] · Work · Index</a>
     <nav class="nav">
@@ -465,7 +553,7 @@ body {
           <div class="meta">
             <div class="title">JianCareer · AI 求职助手</div>
             <div class="desc">体验设计 · Vibe Coding · 设计系统</div>
-            <div class="tags"><span class="tag">Product</span><span class="tag">AI</span><span class="tag">Design System</span></div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#AI</span><span class="tag">#Design System</span></div>
           </div>
         </div>
       </a>
@@ -477,7 +565,7 @@ body {
           <div class="meta">
             <div class="title">Anxious Kit</div>
             <div class="desc">可穿戴情绪辅助系统 · 生理信号监测</div>
-            <div class="tags"><span class="tag">Product</span><span class="tag">AI Agent</span><span class="tag">Wearable</span></div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#AI Agent</span><span class="tag">#Wearable</span></div>
           </div>
         </div>
       </a>
@@ -490,7 +578,7 @@ body {
             <div class="title">StoryVibe</div>
             <div class="desc">AI 视频叙事中间层 · 创意工作流</div>
             <span class="status">ON GOING</span>
-            <div class="tags"><span class="tag">Product</span><span class="tag">GenAI</span><span class="tag">Interaction</span></div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#GenAI</span><span class="tag">#Interaction</span></div>
           </div>
         </div>
       </a>
@@ -502,7 +590,7 @@ body {
           <div class="meta">
             <div class="title">MemoryLens</div>
             <div class="desc">VisionPro · 多模态交互 · 黑客松</div>
-            <div class="tags"><span class="tag">Tech</span><span class="tag">MR</span><span class="tag">Multimodal</span></div>
+            <div class="tags"><span class="tag">#Tech</span><span class="tag">#MR</span><span class="tag">#Multimodal</span></div>
           </div>
         </div>
       </a>
@@ -514,7 +602,7 @@ body {
           <div class="meta">
             <div class="title">AI 启蒙代练屋</div>
             <div class="desc">AI 教育玩具 · 用户研究 · 交互定义</div>
-            <div class="tags"><span class="tag">Product</span><span class="tag">AI</span><span class="tag">Research</span></div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#AI</span><span class="tag">#Research</span></div>
           </div>
         </div>
       </a>
@@ -526,7 +614,7 @@ body {
           <div class="meta">
             <div class="title">Twin City Tale</div>
             <div class="desc">深港双城数据叙事 · 前端开发</div>
-            <div class="tags"><span class="tag">Tech</span><span class="tag">DataVis</span><span class="tag">Frontend</span></div>
+            <div class="tags"><span class="tag">#Tech</span><span class="tag">#DataVis</span><span class="tag">#Frontend</span></div>
           </div>
         </div>
       </a>
@@ -538,7 +626,7 @@ body {
           <div class="meta">
             <div class="title">CO-EVO 互动剧场</div>
             <div class="desc">TouchDesigner · YOLO · 实时交互</div>
-            <div class="tags"><span class="tag">Creative</span><span class="tag">Install</span><span class="tag">Realtime</span></div>
+            <div class="tags"><span class="tag">#Creative</span><span class="tag">#Install</span><span class="tag">#Realtime</span></div>
           </div>
         </div>
       </a>
@@ -550,7 +638,7 @@ body {
           <div class="meta">
             <div class="title">渡星河界面设计</div>
             <div class="desc">界面设计 · IP形象快设 · 交付落地</div>
-            <div class="tags"><span class="tag">Product</span><span class="tag">UI</span><span class="tag">Brand</span></div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#UI</span><span class="tag">#Brand</span></div>
           </div>
         </div>
       </a>
@@ -562,7 +650,7 @@ body {
           <div class="meta">
             <div class="title">乐刻新手成长系统</div>
             <div class="desc">品牌服务系统分析 · 留存体验优化</div>
-            <div class="tags"><span class="tag">Product</span><span class="tag">UX</span><span class="tag">Service</span></div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#UX</span><span class="tag">#Service</span></div>
           </div>
         </div>
       </a>
