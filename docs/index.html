@@ -274,13 +274,20 @@ body {
 }
 
 .bg-name-track {
-  display: inline-flex;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  font-size: 15vw;
+  font-weight: 900;
+  color: var(--border);
   white-space: nowrap;
-  font-size: clamp(72px, 14vw, 240px);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: rgba(255,255,255,0.04);
-  animation: marqueeName 22s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+  text-transform: uppercase;
+  transform: translateY(-50%);
+  opacity: 0.4;
+  letter-spacing: -0.02em;
 }
 
 @keyframes marqueeName {
@@ -488,7 +495,8 @@ body {
 }
 
 .hero-title .role-plain {
-  color: var(--text);
+  color: var(--text-dim);
+  font-weight: 300;
 }
 
 .hero-desc {

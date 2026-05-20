@@ -132,7 +132,7 @@ html, body {
   justify-content: space-between;
   padding: 0 16px;
   border-bottom: 1px solid var(--border);
-  background: rgba(8,8,12,0.95);
+  background: var(--bg-elevated);
   flex-shrink: 0;
   z-index: 100;
 }
@@ -191,8 +191,8 @@ html, body {
 
 .dock-item svg { width: 20px; height: 20px; }
 .dock-item span { font-size: 9px; letter-spacing: 0.5px; }
-.dock-item:hover { color: var(--text-dim); background: rgba(255,255,255,0.03); }
-.dock-item.active { color: var(--accent); background: rgba(91,158,138,0.08); }
+.dock-item:hover { color: var(--text-dim); background: var(--surface); }
+.dock-item.active { color: var(--accent); background: var(--tag-bg); }
 .dock-item.active::before {
   content: '';
   position: absolute; left: 0; top: 50%;
