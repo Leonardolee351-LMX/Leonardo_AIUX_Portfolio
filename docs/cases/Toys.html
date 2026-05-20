@@ -322,28 +322,30 @@ body {
   background: rgba(255, 255, 255, 0.7);
 }
 .unified-brand {
-  font-size: 14px;
   font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--text);
+  text-decoration: none;
 }
+
 .unified-nav {
   display: flex;
-  gap: 24px;
-}
   align-items: center;
   gap: 18px;
+}
+
+.unified-nav a {
   font-size: 13px;
   color: var(--text-muted);
   text-decoration: none;
   transition: color 0.3s ease;
 }
-.unified-nav a:hover, .unified-nav a.active {
+
+.unified-nav a:hover,
+.unified-nav a.active {
   color: var(--text);
 }
-</style>
-</head>
 
 .nav-actions {
   display: flex;
@@ -376,7 +378,7 @@ body {
 .nav-theme-toggle .moon { display: block; }
 [data-theme="light"] .nav-theme-toggle .sun { display: block; }
 [data-theme="light"] .nav-theme-toggle .moon { display: none; }
-<body>
+</style>
 </head>
 <body>
 
