@@ -14,6 +14,8 @@
   --text-muted: #5a5550;
   --accent: #7c6fae;
   --accent-soft: rgba(124,111,174,0.15);
+  --link: #00ff87;
+  --link-soft: rgba(0, 255, 135, 0.25);
   --border: rgba(255,255,255,0.06);
   --g-1: #1a0a2e;
   --sidebar-bg: linear-gradient(to right, rgba(10,10,15,0.98), rgba(10,10,15,0.95));
@@ -28,6 +30,8 @@
   --text-muted: #8a8a8a;
   --accent: #5b4fa0;
   --accent-soft: rgba(91,79,160,0.1);
+  --link: #0066cc;
+  --link-soft: rgba(0, 102, 204, 0.22);
   --border: rgba(0,0,0,0.08);
   --g-1: #e8e0f0;
   --sidebar-bg: linear-gradient(to right, rgba(245,243,239,0.98), rgba(245,243,239,0.95));
@@ -235,12 +239,19 @@ body {
 }
 
 .section-block p a {
-  color: var(--accent);
+  color: var(--link);
   text-decoration: none;
-  border-bottom: 1px solid var(--accent-soft);
+  border-bottom: 1px solid var(--link-soft);
   transition: border-color 0.3s;
 }
-.section-block p a:hover { border-bottom-color: var(--accent); }
+.section-block p a:hover { border-bottom-color: var(--link); }
+
+.callout-content a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid var(--link-soft);
+}
+.callout-content a:hover { border-bottom-color: var(--link); }
 
 /* ===== CALLOUT (Notion style) ===== */
 .callout {
@@ -293,7 +304,7 @@ body {
   color: var(--accent);
   background: var(--accent-soft);
   padding: 4px 12px;
-  border-radius: 20px;
+  border-radius: 999px;
   letter-spacing: 1px;
 }
 
@@ -542,6 +553,19 @@ body {
   font-weight: 600;
   color: var(--text);
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
+  .project-hero h1 { font-size: 28px; }
+  .meta-bar { grid-template-columns: 1fr; gap: 16px; }
+}
+
+.back-wrap { max-width: 900px; margin: 14px auto 0; padding: 0 18px; }
+.back-work { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; letter-spacing: .02em; color: var(--text-muted); text-decoration: none; transition: color .2s ease; }
+.back-work:hover { color: var(--text); }
 </style>
 </head>
 <body>

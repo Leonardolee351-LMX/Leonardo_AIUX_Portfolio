@@ -93,7 +93,7 @@ body {
   100% { transform: translate(100px, 50px) scale(1.1); }
 }
 
-.topbar {
+.unified-topbar {
   position: sticky;
   top: 0;
   z-index: 100;
@@ -109,11 +109,11 @@ body {
   transition: all 0.3s ease;
 }
 
-[data-theme="light"] .topbar {
+[data-theme="light"] .unified-topbar {
   background: rgba(255, 255, 255, 0.7);
 }
 
-.brand {
+.unified-brand {
   font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.5px;
@@ -121,13 +121,13 @@ body {
   text-decoration: none;
 }
 
-.nav {
+.unified-nav {
   display: flex;
   align-items: center;
   gap: 18px;
 }
 
-.nav a {
+.unified-nav a {
   font-size: 13px;
   letter-spacing: 1px;
   color: var(--text-muted);
@@ -135,7 +135,7 @@ body {
   transition: color 0.3s;
 }
 
-.nav a.active {
+.unified-nav a.active {
   color: var(--text);
 }
 
@@ -512,9 +512,9 @@ body {
     <div class="orb orb-3"></div>
   </div>
 
-  <header class="topbar">
-    <a class="brand" href="./index.html">LeonardoLi🐱</a>
-    <nav class="nav">
+  <header class="unified-topbar">
+    <a class="unified-brand" href="./index.html">LeonardoLi🐱</a>
+    <nav class="unified-nav">
       <a href="./index.html">Home</a>
       <a href="./works.html" class="active">Work</a>
       <a href="./resume.html">Resume</a>

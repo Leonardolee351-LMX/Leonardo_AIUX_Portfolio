@@ -444,6 +444,17 @@ body {
   transform: translateZ(40px) rotateX(12deg) rotateY(18deg);
 }
 
+[data-theme="light"] .float-sym {
+  -webkit-text-stroke: 1px rgba(0,0,0,0.12);
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.8),
+    0 2px 0 rgba(255,255,255,0.7),
+    0 3px 0 rgba(255,255,255,0.6),
+    0 10px 26px rgba(255,255,255,0.55),
+    0 0 40px rgba(0,242,254,0.12),
+    0 0 44px rgba(0,255,135,0.08);
+}
+
 .float-sym.dragging { cursor: grabbing; filter: brightness(1.06); }
 
 .sym-1 { top: 8%; left: 10%; font-size: 120px; }
@@ -583,6 +594,45 @@ body {
   color: var(--text-muted);
 }
 
+.home-notes {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 108px;
+  width: min(720px, 92vw);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 12px;
+}
+
+[data-theme="dark"] .home-notes {
+  color: rgba(255,255,255,0.72);
+}
+
+[data-theme="light"] .home-notes {
+  color: var(--text-dim);
+}
+
+.home-notes p {
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.home-notes a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.18);
+}
+
+[data-theme="light"] .home-notes a {
+  border-bottom-color: rgba(0,0,0,0.18);
+}
+
+.home-notes a:hover {
+  border-bottom-color: rgba(0,242,254,0.45);
+}
+
 .hero-scroll {
   position: absolute;
   bottom: 48px;
@@ -604,45 +654,6 @@ body {
   50% { transform: translateX(-50%) translateY(10px); }
 }
 
-/* ===== STATUS BAR ===== */
-.status-bar {
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  border-top: 1px solid var(--border);
-  background: rgba(8,8,12,0.9);
-  font-size: 12px;
-  color: var(--text-muted);
-  flex-shrink: 0;
-  z-index: 100;
-}
-
-.status-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.status-sep { margin: 0 4px; }
-
-.status-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.status-right a {
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 0.3s;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-}
-
-.status-right a:hover { color: var(--accent); }
-
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .dock { display: none; }
@@ -652,7 +663,7 @@ body {
   .orb-right { width: 250px; height: 250px; }
 }
 
-.title-bar, .dock, .status-bar {
+.title-bar, .dock {
   display: none;
 }
 
@@ -776,8 +787,8 @@ body {
           <a class="cta-bar" href="./resume.html"><strong>查阅简历</strong><span>→</span></a>
           <button class="cta-bar-btn" type="button" disabled><strong>艺术创想</strong><span>⟂</span></button>
         </div>
-        <div class="launch-note">StoryVibe 正在制作中，当前优先展示已完成主打案例。</div>
-        <div style="margin-top:12px;font-size:12px;color:var(--text-muted);line-height:1.6;">
+        <div class="home-notes">
+          <p>StoryVibe 正在制作中，当前优先展示已完成主打案例。</p>
           <p>① 个人作品集网站仍在持续开发中，欢迎随时回访查看最新进展。</p>
           <p>② 完整自我介绍与补充资料已整理至飞书文档，建议面试官点击查阅：<a href="https://my.feishu.cn/docx/TzDZdqGRqocEqqxW3ACcRkhsncu?from=from_copylink" target="_blank" rel="noopener noreferrer">飞书在线文档</a>。</p>
         </div>
@@ -787,39 +798,9 @@ body {
     </div>
   </div>
 
-  <!-- STATUS BAR -->
-  <div class="status-bar">
-    <div class="status-left">
-      <span>Hong Kong, China</span>
-      <span class="status-sep">·</span>
-      <span id="local-time">--:--</span>
-      <span class="status-sep">·</span>
-      <a href="mailto:919452364@qq.com" style="color:inherit;text-decoration:none;">919452364@qq.com</a>
-    </div>
-    <div class="status-right">
-      <a href="./cases/Jiancareer.html">简职</a>
-      <a href="https://github.com/QiriZ/MemoryLens" target="_blank">GitHub</a>
-      <a href="./resume.html">resume & contact →</a>
-    </div>
-  </div>
-
 </div>
 
 <script>
-// Local time
-function updateTime() {
-  const now = new Date();
-  const hkTime = now.toLocaleTimeString('en-US', {
-    timeZone: 'Asia/Hong_Kong',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  });
-  document.getElementById('local-time').textContent = 'Local time ' + hkTime;
-}
-updateTime();
-setInterval(updateTime, 60000);
-
 // Particles
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
@@ -907,12 +888,31 @@ animate();
   let origLeft = 0;
   let origTop = 0;
 
+  function initBasePositions() {
+    const rect = container.getBoundingClientRect();
+    items.forEach((el) => {
+      const style = getComputedStyle(el);
+      const x = toPx(style.left, rect.width);
+      const y = toPx(style.top, rect.height);
+      el.dataset.baseX = String(x);
+      el.dataset.baseY = String(y);
+      el.dataset.phase = String(Math.random() * Math.PI * 2);
+      el.dataset.speed = String(0.35 + Math.random() * 0.65);
+      el.dataset.amp = String(10 + Math.random() * 16);
+      el.style.left = `${x}px`;
+      el.style.top = `${y}px`;
+    });
+  }
+
   function toPx(value, total) {
     if (typeof value !== 'string') return 0;
     if (value.endsWith('px')) return parseFloat(value);
     if (value.endsWith('%')) return total * (parseFloat(value) / 100);
     return parseFloat(value) || 0;
   }
+
+  initBasePositions();
+  window.addEventListener('resize', initBasePositions);
 
   items.forEach(el => {
     el.addEventListener('pointerdown', (e) => {
@@ -941,6 +941,8 @@ animate();
 
     function endDrag(e) {
       if (!active || active !== el) return;
+      active.dataset.baseX = String(parseFloat(active.style.left) || 0);
+      active.dataset.baseY = String(parseFloat(active.style.top) || 0);
       active.classList.remove('dragging');
       try { active.releasePointerCapture(e.pointerId); } catch {}
       active = null;
@@ -949,6 +951,24 @@ animate();
     el.addEventListener('pointerup', endDrag);
     el.addEventListener('pointercancel', endDrag);
   });
+
+  function tick(t) {
+    const time = t * 0.001;
+    items.forEach((el) => {
+      if (el.classList.contains('dragging')) return;
+      const bx = parseFloat(el.dataset.baseX || '0');
+      const by = parseFloat(el.dataset.baseY || '0');
+      const phase = parseFloat(el.dataset.phase || '0');
+      const speed = parseFloat(el.dataset.speed || '1');
+      const amp = parseFloat(el.dataset.amp || '12');
+      const ox = Math.sin(time * speed + phase) * amp;
+      const oy = Math.cos(time * speed * 0.9 + phase) * (amp * 0.7);
+      el.style.left = `${bx + ox}px`;
+      el.style.top = `${by + oy}px`;
+    });
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 })();
 </script>
 

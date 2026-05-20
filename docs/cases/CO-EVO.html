@@ -14,6 +14,8 @@
   --text-muted: #5a5550;
   --accent: #7c6fae;
   --accent-soft: rgba(124,111,174,0.15);
+  --link: #00ff87;
+  --link-soft: rgba(0, 255, 135, 0.25);
   --border: rgba(255,255,255,0.06);
   --g-1: #1a0a2e;
   --sidebar-bg: linear-gradient(to right, rgba(10,10,15,0.98), rgba(10,10,15,0.95));
@@ -28,6 +30,8 @@
   --text-muted: #8a8a8a;
   --accent: #5b4fa0;
   --accent-soft: rgba(91,79,160,0.1);
+  --link: #0066cc;
+  --link-soft: rgba(0, 102, 204, 0.22);
   --border: rgba(0,0,0,0.08);
   --g-1: #e8e0f0;
   --sidebar-bg: linear-gradient(to right, rgba(245,243,239,0.98), rgba(245,243,239,0.95));
@@ -241,7 +245,7 @@ body {
 }
 .callout-icon { font-size: 20px; flex-shrink: 0; }
 .callout-content { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
-.callout-content a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+.callout-content a { color: var(--link); text-decoration: none; border-bottom: 1px solid var(--link-soft); }
 
 /* ===== IMAGE BLOCKS ===== */
 .img-block {
@@ -546,22 +550,54 @@ body {
   font-weight: 600;
   color: var(--text);
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
+  .project-hero h1 { font-size: 28px; }
+  .meta-bar { grid-template-columns: 1fr; gap: 16px; }
+  .results-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.back-wrap { max-width: 900px; margin: 14px auto 0; padding: 0 18px; }
+.back-work { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; letter-spacing: .02em; color: var(--text-muted); text-decoration: none; transition: color .2s ease; }
+.back-work:hover { color: var(--text); }
 </style>
 </head>
 <body>
 
 <!-- Top Navigation -->
 <nav class="unified-topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 200;">
-  <a href="../index.html" class="unified-brand">[Leonardo Li] · Work · Index</a>
-  <div class="unified-nav">
-    <a href="../index.html">Home</a>
-    <a href="../works.html" class="active">Work</a>
-    <a href="../resume.html">Resume</a>
+  <a href="../index.html" class="unified-brand">LeonardoLi🐱</a>
+  <div class="nav-actions">
+    <div class="unified-nav">
+      <a href="../index.html">Home</a>
+      <a href="../works.html" class="active">Work</a>
+      <a href="../resume.html">Resume</a>
+    </div>
+    <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题">
+      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
   </div>
 </nav>
 
 <!-- Spacer for nav -->
-<div style="height: 56px;"></div>
+<div style="height: 64px;"></div>
 <div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
 
 <div class="page">
@@ -697,15 +733,15 @@ body {
   const t = s || (p ? 'dark' : 'light');
   document.documentElement.setAttribute('data-theme', t);
   
-  const b = document.getElementById('themeToggle');
-  if(b){
+  const buttons = [document.getElementById('themeToggle'), document.getElementById('navThemeToggle')].filter(Boolean);
+  buttons.forEach((b) => {
     b.addEventListener('click', function(){
       const c = document.documentElement.getAttribute('data-theme');
       const n = c === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', n);
       localStorage.setItem('theme', n);
     });
-  }
+  });
 
   // Scroll Reveal Logic
   const observerOptions = {
