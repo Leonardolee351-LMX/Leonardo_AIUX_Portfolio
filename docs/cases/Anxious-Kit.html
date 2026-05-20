@@ -110,17 +110,40 @@ p{color:var(--text-dim);margin-bottom:12px}
     <span>状态：持续完善中</span>
   </div>
 
-  <h2>Context</h2>
-  <p>该项目关注高压日常中的情绪记录与自我觉察。核心目标是让用户通过更低负担的交互形式，完成情绪采样、事件标记和回顾反思。</p>
-
-  <h2>Current Direction</h2>
-  <div class="card">
-    在当前可访问材料中，已明确项目标题与主题方向；后续可补充的信息包括：目标用户细分、传感/记录机制、反馈可视化方式、迭代验证数据。
+  <div class="img-block" style="margin: 24px 0;">
+    <img src="../img/projects/anxiouskit/P1.png" alt="Anxious Kit 产品概览" style="width:100%; border-radius:12px; border:1px solid var(--border);">
   </div>
-  <p>建议后续正文补齐三段：问题定义、方案结构、验证结果。这样在面试中能从“概念展示”升级为“设计决策展示”。</p>
+
+  <h2>Context</h2>
+  <p>在快节奏的高压日常中，人们往往难以实时察觉并记录自己的负面情绪。Anxious Kit 是一款可穿戴情绪辅助系统，旨在通过生理信号监测与 AI Agent 的即时干预，帮助用户完成从“情绪采样”到“长期管理”的闭环。</p>
+
+  <div class="card">
+    <strong>核心挑战</strong>：如何在不增加用户认知负担的前提下，实现高频、准确的情绪记录与反馈？
+  </div>
+
+  <h2>Design Solution</h2>
+  <p>项目采用了“传感器监测 + 交互式标记”的双重机制。当传感器捕捉到异常生理信号（如心率波动）时，AI Agent 会通过微弱的物理震动或语音提醒用户，引导其进行简单的点击标记或短语音录入。</p>
+
+  <div class="img-block" style="margin: 24px 0;">
+    <img src="../img/projects/anxiouskit/P2.png" alt="交互逻辑展示" style="width:100%; border-radius:12px; border:1px solid var(--border);">
+    <p style="font-size:12px; color:var(--text-muted); text-align:center; margin-top:8px;">AI Agent 驱动的情绪反馈闭环</p>
+  </div>
+
+  <p>通过这种“低负担采样”模式，系统能够积累大量的用户情绪数据，并生成个性化的情绪趋势报告。AI Agent 会根据长期数据提供心理建议，帮助用户识别焦虑诱因并建立应对机制。</p>
+
+  <div class="img-block" style="margin: 24px 0;">
+    <img src="../img/projects/anxiouskit/P3.png" alt="设计细节" style="width:100%; border-radius:12px; border:1px solid var(--border);">
+  </div>
+
+  <h2>Prototype & Validation</h2>
+  <p>在原型开发阶段，我重点验证了反馈机制的灵敏度与用户接受度。通过多次迭代，优化了提醒的频率与强度，确保系统既能起到警示作用，又不会成为新的干扰源。</p>
+
+  <div class="img-block" style="margin: 24px 0;">
+    <img src="../img/projects/anxiouskit/P4.png" alt="原型验证" style="width:100%; border-radius:12px; border:1px solid var(--border);">
+  </div>
 
   <h2>Reference Link</h2>
-  <p><a href="https://my.feishu.cn/wiki/MPo0wwQFxiOoKJkrgfhcAWxIn0d?from=from_copylink" target="_blank" rel="noopener noreferrer">飞书原始文档</a></p>
+  <p><a href="https://my.feishu.cn/wiki/MPo0wwQFxiOoKJkrgfhcAWxIn0d?from=from_copylink" target="_blank" rel="noopener noreferrer">飞书原始文档 (详细调研与叙述)</a></p>
 </main>
 <script>
 (function(){const s=localStorage.getItem('theme');const p=window.matchMedia('(prefers-color-scheme: dark)').matches;const t=s||(p?'dark':'light');document.documentElement.setAttribute('data-theme',t);const b=document.getElementById('themeToggle');if(b){b.addEventListener('click',function(){const c=document.documentElement.getAttribute('data-theme');const n=c==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n)})}})();

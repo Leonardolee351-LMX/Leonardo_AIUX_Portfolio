@@ -154,37 +154,34 @@ p { color: var(--text-dim); margin-bottom: 12px; }
     <h1>MemoryLens</h1>
     <p class="subtitle">Apple Vision Pro 智能寻物助手 · AI Native 交互设计与实现</p>
 
+    <div class="img-block" style="margin: 24px 0;">
+      <img src="../img/projects/memorylens/Memory01.png" alt="MemoryLens 概念展示" style="width:100%; border-radius:12px; border:1px solid var(--border);">
+    </div>
+
     <div class="meta">
       <div class="box"><b>Role</b><p>AI Native 产品设计师 / 前端开发</p></div>
-      <div class="box"><b>Time</b><p>2025.07 · 黑客松快速开发</p></div>
-      <div class="box"><b>Platform</b><p>visionOS + Python WebSocket + Coze</p></div>
+      <div class="box"><b>Time</b><p>2025.07 · 杭州黑客松 (48h)</p></div>
+      <div class="box"><b>Platform</b><p>visionOS + Python + Dify LLM</p></div>
     </div>
 
     <section>
       <h2>Context</h2>
-      <p>MemoryLens 的切入场景是老年人或高频忙碌用户的“日常物品遗忘”。项目目标是把“看见物体”升级成“理解用户正在找什么”，并给出实时、可执行的定位反馈。</p>
+      <p>MemoryLens 聚焦老年人“日常物品遗忘”的痛点，选择 Apple Vision Pro 为载体。项目目标是把“看见物体”升级为“语义理解 + 空间导航”，并提供具有情感温度的陪伴式反馈。</p>
       <div class="callout">
-        问题定义：不是单纯目标检测，而是“视觉识别 + 语义对话 + 空间反馈”的连续体验。
+        问题定义：不是单纯的目标检测，而是“视觉定位 + 语音引导 + 情感陪伴”的多模态连续交互。
       </div>
     </section>
 
     <section>
-      <h2>System Design</h2>
-      <ul class="list">
-        <li>前端载体：Vision Pro 端使用 SwiftUI + RealityKit 构建混合现实交互。</li>
-        <li>识别模块：Core ML 执行实时物体检测。</li>
-        <li>通信链路：WebSocket 负责图像与状态实时传输。</li>
-        <li>AI服务：Coze 工作流处理语义理解与对话反馈。</li>
-      </ul>
-      <div class="callout">
-        关键决策：优先把“语音问询 -> 空间定位 -> 音频反馈”闭环打通，再逐步扩充识别类别。
+      <h2>Design Solution</h2>
+      <p>独立负责产品体验设计与品牌视觉系统。基于 Vision Pro 完成可交互原型，并通过 TRAE 实现 Vibe Coding 快速开发。后端整合 YOLO 视觉识别与 Dify LLM 工作流，构建了完整的寻物链路。</p>
+      <div class="img-block" style="margin: 24px 0;">
+        <img src="../img/projects/memorylens/Memory02.png" alt="交互逻辑展示" style="width:100%; border-radius:12px; border:1px solid var(--border);">
       </div>
-    </section>
-
-    <section>
-      <h2>Core Iterations</h2>
-      <p>第一版只输出识别框，用户知道“识别到了”，但不知道“与我有什么关系”；第二版加入语音问答后，找物路径变清晰；第三版优化音频提示与视觉高亮同步，提升了在 MR 场景中的可理解性。</p>
-      <p>从工程上看，项目在有限时间内实现跨端协同（VisionOS + Python + AI 服务），证明了架构可扩展。</p>
+      <p>系统支持用户通过自然语言询问（如“我的钥匙在哪？”），Vision Pro 实时扫描空间并高亮目标物体，同时通过语音提供具体的方位指引。</p>
+      <div class="img-block" style="margin: 24px 0;">
+        <img src="../img/projects/memorylens/Memory03.png" alt="多模态交互细节" style="width:100%; border-radius:12px; border:1px solid var(--border);">
+      </div>
     </section>
 
     <section>
@@ -194,8 +191,8 @@ p { color: var(--text-dim); margin-bottom: 12px; }
         <div class="metric"><strong>3层</strong><span>视觉 / 语音 / 空间反馈</span></div>
         <div class="metric"><strong>1套</strong><span>可运行的 Vision Pro Demo</span></div>
       </div>
-      <div class="links" style="margin-top:14px;">
-        <a href="https://github.com/QiriZ/MemoryLens" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
+      <div class="links" style="margin-top:24px;">
+        <a href="https://github.com/QiriZ/MemoryLens" target="_blank" rel="noopener noreferrer" class="btn">GitHub 开源仓库</a>
       </div>
     </section>
 

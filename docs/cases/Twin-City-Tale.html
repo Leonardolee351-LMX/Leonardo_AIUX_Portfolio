@@ -189,22 +189,32 @@ p { color: var(--text-dim); margin-bottom: 14px; }
         核心问题：如何把“跨境数据”从抽象统计，转成“有情境、有情绪、有决策价值”的可视化故事。
       </div>
       <div class="image">
-        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1400&q=80" alt="Twin City Tale">
-        <div class="caption">公开站点标题信息：2023 - 2025 BORDER CHRONICLE</div>
+        <img src="../img/projects/twincity/City01.png" alt="Twin City Tale 产品概览">
+        <div class="caption">项目概览：深港双城数据叙事网站 - IEEE PacificVis 2026 Shortlist</div>
       </div>
     </section>
 
     <section id="strategy">
       <h2>How It Works</h2>
-      <p>我把叙事拆成“时间层、地点层、行为层”三条并行主线，让用户通过滚动逐步进入：先看到趋势，再看到结构，最后看到具体群体行为。</p>
-      <p>技术上采用前端叙事页面 + 可视化图层联动，保证交互轻量但信息密度足够高，适配评审快速浏览场景。</p>
+      <p>基于 2021-2025 年香港政府日客流量数据，结合建筑学城市界面叙事方法与实地田野调查。我将复杂的跨境流动数据拆解为“时间、空间、行为”三个维度，构建了一个四章节的线性叙事结构。</p>
+      
+      <div class="image">
+        <img src="../img/projects/twincity/City02-1.png" alt="数据维度拆解">
+      </div>
+
+      <p>技术上采用 D3.js 进行前端代码实现，确保大规模数据的实时渲染与流畅的滚动叙事体验。组员负责视觉艺术表达，我负责整个技术栈选型、叙事逻辑搭建与前端代码编写。</p>
+
+      <div class="image">
+        <img src="../img/projects/twincity/City02-2.png" alt="交互界面细节">
+      </div>
     </section>
 
     <section id="iterations">
       <h2>Core Iterations</h2>
-      <p>第一轮重点是“把数据讲明白”，但页面像报告；第二轮把章节变成故事节奏；第三轮将叙事锚点与视觉锚点绑定，降低用户迷失感。</p>
-      <div class="callout">
-        关键决策：牺牲部分炫技动效，优先保证读者在 10 秒内知道“这页在讲什么变化”。
+      <p>在设计过程中，我们经历了从“单纯的数据展示”到“情感化叙事”的转变。早期的版本过于关注图形的复杂度，导致普通用户难以理解数据背后的社会意义。最终版通过引入“典型通勤者”的视角，将枯燥的客流量数据转化为具体的跨境生活故事。</p>
+      
+      <div class="image">
+        <img src="../img/projects/twincity/City02-3.png" alt="叙事逻辑迭代">
       </div>
     </section>
 
@@ -213,9 +223,13 @@ p { color: var(--text-dim); margin-bottom: 14px; }
       <div class="results">
         <div class="result"><strong>Shortlist</strong><span>IEEE PacificVis 2026 Sydney</span></div>
         <div class="result"><strong>3层叙事</strong><span>时间 / 空间 / 行为联动</span></div>
-        <div class="result"><strong>1个站点</strong><span>可直接在线演示与投递</span></div>
+        <div class="result"><strong>D3.js</strong><span>高性能数据驱动渲染</span></div>
       </div>
-      <div class="callout">外链演示：<a href="https://twincitytale-visstory2026.netlify.app/" target="_blank" rel="noopener noreferrer">twincitytale-visstory2026.netlify.app</a></div>
+      <div class="callout" style="margin-top:24px;">
+        <strong>相关链接</strong>：<br>
+        • <a href="https://twincitytale-visstory2026.netlify.app/" target="_blank" rel="noopener noreferrer">在线演示 Demo</a><br>
+        • <a href="https://visstory.github.io/" target="_blank" rel="noopener noreferrer">PacificVis 2026 Contest 官方站点</a>
+      </div>
     </section>
 
     <section id="reflection">
