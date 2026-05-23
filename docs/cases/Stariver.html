@@ -349,9 +349,9 @@ body {
 .unified-nav {
   display: flex;
   gap: 24px;
-}
   align-items: center;
-  gap: 18px;
+}
+.unified-nav a {
   font-size: 13px;
   color: var(--text-muted);
   text-decoration: none;
@@ -360,8 +360,6 @@ body {
 .unified-nav a:hover, .unified-nav a.active {
   color: var(--text);
 }
-</style>
-</head>
 
 .nav-actions {
   display: flex;
@@ -394,7 +392,9 @@ body {
 .nav-theme-toggle .moon { display: block; }
 [data-theme="light"] .nav-theme-toggle .sun { display: block; }
 [data-theme="light"] .nav-theme-toggle .moon { display: none; }
-<body>
+</style>
+<link rel="stylesheet" href="../site.css">
+<script src="../site.js" defer></script>
 </head>
 <body>
 
@@ -407,7 +407,7 @@ body {
       <a href="../works.html" class="active">Work</a>
       <a href="../resume.html">Resume</a>
     </div>
-    <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题">
+    <button class="nav-theme-toggle" id="navThemeToggle" type="button" data-theme-toggle aria-label="切换主题">
       <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
       </svg>
@@ -423,8 +423,23 @@ body {
         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
       </svg>
     </button>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
   </div>
 </nav>
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="mobile-menu-section">
+    <a href="../index.html">Home</a>
+    <a href="../works.html">Work</a>
+    <a href="../resume.html">Resume</a>
+  </div>
+  <div class="mobile-menu-section" data-mobile-toc></div>
+</div>
 
 <!-- Spacer for nav -->
 <div style="height: 64px;"></div>
@@ -434,7 +449,7 @@ body {
 
 <!-- SIDEBAR TOC -->
 <aside class="sidebar">
-  <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+  <button class="theme-toggle" id="themeToggle" type="button" data-theme-toggle aria-label="切换主题">
     <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
     </svg>
@@ -548,33 +563,11 @@ body {
 </div>
 
 <script>
-// Theme Toggle Logic
 (function(){
-  const s = localStorage.getItem('theme');
-  const p = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const t = s || (p ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', t);
-  
-  const buttons = [document.getElementById('themeToggle'), document.getElementById('navThemeToggle')].filter(Boolean);
-  buttons.forEach((b) => {
-    b.addEventListener('click', function(){
-      const c = document.documentElement.getAttribute('data-theme');
-      const n = c === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', n);
-      localStorage.setItem('theme', n);
-    });
-  });
-
-  // Scroll Reveal Logic
-  const observerOptions = {
-    threshold: 0.1
-  };
-
+  const observerOptions = { threshold: 0.1 };
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
+      if (entry.isIntersecting) entry.target.classList.add('visible');
     });
   }, observerOptions);
 
@@ -582,7 +575,6 @@ body {
     observer.observe(el);
   });
 
-  // TOC Active Link Logic
   const sections = document.querySelectorAll('section[id]');
   const tocLinks = document.querySelectorAll('.toc-list a');
 
@@ -590,16 +582,12 @@ body {
     let current = '';
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
-      if (pageYOffset >= sectionTop - 100) {
-        current = section.getAttribute('id');
-      }
+      if (pageYOffset >= sectionTop - 100) current = section.getAttribute('id');
     });
 
     tocLinks.forEach(link => {
       link.classList.remove('active');
-      if (link.getAttribute('href').substring(1) === current) {
-        link.classList.add('active');
-      }
+      if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
     });
   });
 })();

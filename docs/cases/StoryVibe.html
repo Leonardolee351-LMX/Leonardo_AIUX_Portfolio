@@ -544,6 +544,8 @@ body {
 .back-work { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; letter-spacing: .02em; color: var(--text-muted); text-decoration: none; transition: color .2s ease; }
 .back-work:hover { color: var(--text); }
 </style>
+<link rel="stylesheet" href="../site.css">
+<script src="../site.js" defer></script>
 </head>
 <body>
   <div class="bg-orbs">
@@ -561,7 +563,7 @@ body {
       <a href="../works.html" class="active">Work</a>
       <a href="../resume.html">Resume</a>
     </div>
-    <button class="nav-theme-toggle" id="navThemeToggle" aria-label="切换主题">
+    <button class="nav-theme-toggle" id="navThemeToggle" type="button" data-theme-toggle aria-label="切换主题">
       <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
       </svg>
@@ -577,8 +579,23 @@ body {
         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
       </svg>
     </button>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
   </div>
 </nav>
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="mobile-menu-section">
+    <a href="../index.html">Home</a>
+    <a href="../works.html">Work</a>
+    <a href="../resume.html">Resume</a>
+  </div>
+  <div class="mobile-menu-section" data-mobile-toc></div>
+</div>
 
 <!-- Spacer for nav -->
 <div style="height: 64px;"></div>
@@ -744,24 +761,6 @@ document.querySelectorAll('.img-block, .compare-item, .video-block, .result-item
   observer.observe(el);
 });
 </script>
-<script>
-(function() {
-  const stored = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = stored || (prefersDark ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', theme);
-
-  const navToggle = document.getElementById('navThemeToggle');
-  
-  function handleToggle() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-  }
-
-  if (navToggle) navToggle.addEventListener('click', handleToggle);
-})();
-</script>
 </body>
+</html>
 </html>
