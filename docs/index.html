@@ -42,9 +42,15 @@ html, body {
   height: 100%;
 }
 
+html {
+  background: var(--bg);
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  background: var(--bg);
+  background:
+    radial-gradient(1200px 900px at 40% 30%, rgba(0, 242, 254, 0.18) 0%, rgba(0, 255, 135, 0.12) 35%, rgba(91, 126, 199, 0.12) 72%, transparent 100%),
+    var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   transition: background 0.3s ease, color 0.3s ease;
@@ -73,7 +79,7 @@ body {
 
 [data-theme="light"] .orb {
   mix-blend-mode: multiply;
-  opacity: 0.1;
+  opacity: 0.16;
 }
 
 .orb-1 {
@@ -113,15 +119,15 @@ body {
   justify-content: space-between;
   padding: 0 32px;
   height: 64px;
-  background: rgba(10, 10, 15, 0.7);
+  background: linear-gradient(to bottom, rgba(10, 10, 15, 0.82), rgba(10, 10, 15, 0.58));
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: none;
   transition: all 0.3s ease;
 }
 
 [data-theme="light"] .unified-topbar {
-  background: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.66));
 }
 
 .unified-brand {
@@ -181,7 +187,7 @@ body {
 /* ===== OS WINDOW FRAME ===== */
 .os-window {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -250,7 +256,7 @@ body {
 .main-area {
   display: flex;
   flex: 1;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* ===== LEFT DOCK ===== */
@@ -317,13 +323,13 @@ body {
 .content-area {
   flex: 1;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
 }
 
 .bg-name {
-  position: absolute;
+  position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
@@ -357,7 +363,7 @@ body {
 
 /* ===== BACKGROUND ORBS - BIGGER & MORE VISIBLE ===== */
 .gradient-orb {
-  position: absolute;
+  position: fixed;
   border-radius: 50%;
   filter: blur(80px);
   pointer-events: none;
@@ -409,11 +415,8 @@ body {
 
 /* ===== 3D FLOATING SYMBOLS - BIGGER ===== */
 .scene-3d {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: fixed;
+  inset: 0;
   perspective: 800px;
   overflow: hidden;
   pointer-events: auto;
@@ -468,11 +471,10 @@ body {
 
 /* ===== PARTICLES ===== */
 #particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 5;
   pointer-events: none;
   opacity: 0.5;
@@ -505,11 +507,15 @@ body {
   letter-spacing: -0.02em;
   line-height: 1.1;
   margin-bottom: 24px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .hero-title .name {
   color: var(--text);
   font-weight: 700;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .hero-title .role-highlight {
@@ -541,6 +547,19 @@ body {
   justify-content: center;
   align-items: stretch;
   width: min(520px, 100%);
+}
+
+@media (min-width: 900px) {
+  .hero-cta {
+    flex-direction: row;
+    width: min(980px, 100%);
+    gap: 14px;
+  }
+
+  .cta-bar,
+  .cta-bar-btn {
+    min-height: 74px;
+  }
 }
 
 .cta-bar,
@@ -595,15 +614,12 @@ body {
 }
 
 .home-notes {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 108px;
+  margin-top: 18px;
   width: min(720px, 92vw);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 0 12px;
+  padding: 0 12px 24px;
 }
 
 [data-theme="dark"] .home-notes {
@@ -633,27 +649,6 @@ body {
   border-bottom-color: rgba(0,242,254,0.45);
 }
 
-.hero-scroll {
-  position: absolute;
-  bottom: 48px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: float 3s ease-in-out infinite;
-}
-
-.hero-scroll span {
-  display: block;
-  width: 1px;
-  height: 48px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
-  margin: 0 auto;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(10px); }
-}
-
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .dock { display: none; }
@@ -672,9 +667,16 @@ body {
 }
 
 .content-area {
+  min-height: 100vh;
+  padding-top: 64px;
+}
+
+.hero-center {
   min-height: calc(100vh - 64px);
 }
 </style>
+<link rel="stylesheet" href="./site.css">
+<script src="./site.js" defer></script>
 </head>
 <body data-theme="dark">
 
@@ -691,7 +693,7 @@ body {
       <a class="active" href="./index.html">Home</a>
       <a href="./works.html">Work</a>
       <a href="./resume.html">Resume</a>
-      <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
         <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
@@ -707,8 +709,22 @@ body {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
       </button>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
+        </svg>
+      </button>
     </nav>
   </header>
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <div class="mobile-menu-section">
+      <a href="./index.html">Home</a>
+      <a href="./works.html">Work</a>
+      <a href="./resume.html">Resume</a>
+    </div>
+  </div>
 
   <!-- TITLE BAR -->
   <div class="title-bar">
@@ -788,11 +804,8 @@ body {
           <button class="cta-bar-btn" type="button" disabled><strong>艺术创想</strong><span>⟂</span></button>
         </div>
         <div class="home-notes">
-          <p>StoryVibe 正在制作中，当前优先展示已完成主打案例。</p>
-          <p>① 个人作品集网站仍在持续开发中，欢迎随时回访查看最新进展。</p>
-          <p>② 完整自我介绍与补充资料已整理至飞书文档，建议面试官点击查阅：<a href="https://my.feishu.cn/docx/TzDZdqGRqocEqqxW3ACcRkhsncu?from=from_copylink" target="_blank" rel="noopener noreferrer">飞书在线文档</a>。</p>
-        </div>
-        <div class="hero-scroll"><span></span></div>
+          <p>个人作品集网站仍在持续开发中，欢迎随时回访查看最新进展。</p>
+          </div>
       </div>
 
     </div>
@@ -807,8 +820,8 @@ const ctx = canvas.getContext('2d');
 let w, h, particles = [];
 
 function resize() {
-  w = canvas.width = canvas.parentElement.offsetWidth;
-  h = canvas.height = canvas.parentElement.offsetHeight;
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
 }
 resize();
 window.addEventListener('resize', resize);
@@ -860,21 +873,6 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
-</script>
-<script>
-(function() {
-  const stored = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = stored || (prefersDark ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', theme);
-
-  document.getElementById('themeToggle').addEventListener('click', function() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-  });
-})();
 </script>
 <script>
 (function() {

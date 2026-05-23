@@ -49,24 +49,30 @@ html, body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
+.os-window {
+  padding-top: 64px;
+}
+
 .unified-topbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 300;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
   height: 64px;
-  background: rgba(10, 10, 15, 0.7);
+  background: linear-gradient(to bottom, rgba(10, 10, 15, 0.82), rgba(10, 10, 15, 0.58));
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: none;
   transition: all 0.3s ease;
 }
 
 [data-theme="light"] .unified-topbar {
-  background: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.66));
 }
 
 .unified-brand {
@@ -242,11 +248,17 @@ html, body {
   font-size: 13px;
   color: var(--text-muted);
   letter-spacing: 0.5px;
+  max-width: 100%;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .resume-header .contact-row a {
   color: var(--text-muted);
   text-decoration: none;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .resume-header .contact-row a:hover { color: var(--accent); }
@@ -465,6 +477,7 @@ html, body {
 @media (max-width: 768px) {
   .dock { display: none; }
   .content { padding: 24px; }
+  .resume-header .contact-row { letter-spacing: 0; }
   .skills-grid { grid-template-columns: 1fr; }
   .stack-grid { grid-template-columns: 1fr; }
 }
@@ -492,6 +505,8 @@ html, body {
   overflow: visible;
 }
 </style>
+<link rel="stylesheet" href="./site.css">
+<script src="./site.js" defer></script>
 </head>
 <body>
 
@@ -502,7 +517,7 @@ html, body {
       <a href="./index.html">Home</a>
       <a href="./works.html">Work</a>
       <a class="active" href="./resume.html">Resume</a>
-      <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
         <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
@@ -518,8 +533,22 @@ html, body {
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
       </button>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
+        </svg>
+      </button>
     </nav>
   </header>
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <div class="mobile-menu-section">
+      <a href="./index.html">Home</a>
+      <a href="./works.html">Work</a>
+      <a href="./resume.html">Resume</a>
+    </div>
+  </div>
 
   <!-- TITLE BAR -->
   <div class="title-bar">
@@ -796,22 +825,6 @@ html, body {
   </div>
 
 </div>
-
-<script>
-(function() {
-  const stored = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = stored || (prefersDark ? 'dark' : 'light');
-  document.documentElement.setAttribute('data-theme', theme);
-
-  document.getElementById('themeToggle').addEventListener('click', function() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-  });
-})();
-</script>
 
 </body>
 </html>
