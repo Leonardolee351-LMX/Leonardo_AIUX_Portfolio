@@ -1,0 +1,4 @@
+﻿event: message
+data: {"result":{"content":[{"type":"text","text":"No node could be found for the provided nodeId: 0:4. Make sure the Figma desktop app is open and the document containing the node is the active tab."}],"isError":true},"jsonrpc":"2.0","id":6}
+
+

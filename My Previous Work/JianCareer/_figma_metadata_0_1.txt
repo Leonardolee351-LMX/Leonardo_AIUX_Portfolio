@@ -1,0 +1,4 @@
+﻿event: message
+data: {"result":{"content":[{"type":"text","text":"<canvas id=\"0:1\" name=\"Page 1\" x=\"0\" y=\"0\" width=\"0\" height=\"0\">\n  <responsive-set id=\"0:3\" name=\"/\" x=\"0\" y=\"0\" width=\"1408\" height=\"1244\">\n    <frame id=\"0:4\" name=\"Desktop\" x=\"64\" y=\"100\" width=\"1280\" height=\"1080\">\n      <code-instance id=\"0:7\" name=\"App\" x=\"0\" y=\"0\" width=\"1280\" height=\"1080\" />\n    </frame>\n  </responsive-set>\n</canvas>"},{"type":"text","text":"IMPORTANT: After you call this tool, you MUST call get_design_context if trying to implement the design, since this tool only returns metadata. If you do not call get_design_context, the agent will not be able to implement the design."}]},"jsonrpc":"2.0","id":3}
+
+
