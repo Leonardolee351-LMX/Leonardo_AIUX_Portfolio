@@ -104,7 +104,7 @@
 
   function initImagePreview() {
     const pathname = String(location.pathname || '').replace(/\\/g, '/');
-    if (!pathname.includes('/cases/')) return;
+    if (!pathname.includes('/cases/') && !pathname.includes('/art/')) return;
     const main = document.querySelector('.main');
     if (!main) return;
 

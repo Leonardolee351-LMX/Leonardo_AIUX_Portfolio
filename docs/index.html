@@ -1,974 +1,254 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>黎铭晞 · Leonardo Li · AI交互设计师</title>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --bg: #08080c;
-  --bg-elevated: rgba(255,255,255,0.03);
-  --surface: rgba(255,255,255,0.03);
-  --text: #e8e6e1;
-  --text-dim: #8a8580;
-  --text-muted: #5a5550;
-  --accent: #5b9e8a;
-  --accent-blue: #5b7ec7;
-  --border: rgba(255,255,255,0.06);
-  --bg-card: rgba(255,255,255,0.02);
-  --tag-bg: rgba(91,158,138,0.08);
-  --tag-text: #5b9e8a;
-}
-
-[data-theme="light"] {
-  --bg: #f5f3ef;
-  --bg-elevated: rgba(0,0,0,0.03);
-  --surface: rgba(0,0,0,0.03);
-  --text: #1a1a1a;
-  --text-dim: #5a5a5a;
-  --text-muted: #8a8a8a;
-  --accent: #3d7a6a;
-  --accent-blue: #4a6ba8;
-  --border: rgba(0,0,0,0.08);
-  --bg-card: rgba(0,0,0,0.03);
-  --tag-bg: rgba(61,122,106,0.1);
-  --tag-text: #3d7a6a;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-}
-
-html {
-  background: var(--bg);
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  background:
-    radial-gradient(1200px 900px at 40% 30%, rgba(0, 242, 254, 0.18) 0%, rgba(0, 255, 135, 0.12) 35%, rgba(91, 126, 199, 0.12) 72%, transparent 100%),
-    var(--bg);
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  transition: background 0.3s ease, color 0.3s ease;
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* ===== BACKGROUND ORBS ===== */
-.bg-orbs {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.4;
-  mix-blend-mode: screen;
-  animation: moveOrb 20s infinite alternate ease-in-out;
-}
-
-[data-theme="light"] .orb {
-  mix-blend-mode: multiply;
-  opacity: 0.16;
-}
-
-.orb-1 {
-  width: 700px; height: 700px;
-  background: radial-gradient(circle, #00f2fe 0%, transparent 70%);
-  top: -15%; left: -10%;
-  animation-duration: 25s;
-}
-
-.orb-2 {
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, #4facfe 0%, transparent 70%);
-  bottom: -10%; right: -5%;
-  animation-duration: 30s;
-  animation-delay: -5s;
-}
-
-.orb-3 {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, #00ff87 0%, transparent 70%);
-  top: 40%; left: 30%;
-  animation-duration: 22s;
-  animation-delay: -10s;
-}
-
-@keyframes moveOrb {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(120px, 60px) scale(1.1); }
-}
-
-.unified-topbar {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 300;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
-  height: 64px;
-  background: linear-gradient(to bottom, rgba(10, 10, 15, 0.82), rgba(10, 10, 15, 0.58));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: none;
-  transition: all 0.3s ease;
-}
-
-[data-theme="light"] .unified-topbar {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.66));
-}
-
-.unified-brand {
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: var(--text);
-  text-decoration: none;
-}
-
-.unified-nav {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.unified-nav a {
-  font-size: 13px;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.unified-nav a.active { color: var(--text); }
-
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: var(--text-muted);
-}
-
-.theme-toggle:hover {
-  background: var(--bg-card);
-  color: var(--text-dim);
-  border-color: var(--text-muted);
-}
-
-.theme-toggle svg {
-  width: 16px;
-  height: 16px;
-}
-
-.theme-toggle .sun { display: none; }
-.theme-toggle .moon { display: block; }
-[data-theme="light"] .theme-toggle .sun { display: block; }
-[data-theme="light"] .theme-toggle .moon { display: none; }
-
-/* ===== OS WINDOW FRAME ===== */
-.os-window {
-  width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-/* ===== TITLE BAR ===== */
-.title-bar {
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-elevated);
-  flex-shrink: 0;
-  z-index: 100;
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
-
-.window-controls {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.window-btn {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.window-btn:hover { transform: scale(1.15); }
-.window-btn.close { background: #ff5f56; }
-.window-btn.minimize { background: #ffbd2e; }
-.window-btn.maximize { background: #27c93f; }
-
-.window-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 13px;
-  letter-spacing: 1px;
-  color: var(--text-dim);
-}
-
-.window-title span { color: var(--accent); font-weight: 500; }
-
-.window-actions {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.window-actions svg {
-  width: 14px;
-  height: 14px;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: color 0.3s;
-}
-.window-actions svg:hover { color: var(--text-dim); }
-
-/* ===== MAIN AREA ===== */
-.main-area {
-  display: flex;
-  flex: 1;
-  overflow: visible;
-}
-
-/* ===== LEFT DOCK ===== */
-.dock {
-  width: 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px 0;
-  border-right: 1px solid var(--border);
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-.dock-item {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  border-radius: 10px;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: relative;
-}
-
-.dock-item svg {
-  width: 20px;
-  height: 20px;
-}
-
-.dock-item span {
-  font-size: 9px;
-  letter-spacing: 0.5px;
-}
-
-.dock-item:hover {
-  color: var(--text-dim);
-  background: var(--surface);
-}
-
-.dock-item.active {
-  color: var(--accent);
-  background: var(--tag-bg);
-}
-
-.dock-item.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 20px;
-  background: var(--accent);
-  border-radius: 0 2px 2px 0;
-}
-
-/* ===== CONTENT AREA ===== */
-.content-area {
-  flex: 1;
-  position: relative;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-}
-
-.bg-name {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.bg-name-track {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  font-size: 15vw;
-  font-weight: 900;
-  color: var(--border);
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: -1;
-  text-transform: uppercase;
-  transform: translateY(-50%);
-  opacity: 0.4;
-  letter-spacing: -0.02em;
-}
-
-@keyframes marqueeName {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-/* ===== BACKGROUND ORBS - BIGGER & MORE VISIBLE ===== */
-.gradient-orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(80px);
-  pointer-events: none;
-}
-
-.orb-left {
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(91,158,138,0.55), rgba(91,158,138,0.15) 40%, transparent 70%);
-  bottom: -150px;
-  left: -150px;
-  animation: orbMove1 20s ease-in-out infinite;
-}
-
-.orb-right {
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(91,126,199,0.45), rgba(91,126,199,0.12) 40%, transparent 70%);
-  top: -50px;
-  right: -100px;
-  animation: orbMove2 25s ease-in-out infinite;
-}
-
-.orb-bottom {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(139,110,180,0.35), transparent 70%);
-  bottom: 10%;
-  right: 30%;
-  animation: orbMove3 30s ease-in-out infinite;
-}
-
-@keyframes orbMove1 {
-  0%, 100% { transform: translate(0,0) scale(1); }
-  33% { transform: translate(40px,-50px) scale(1.2); }
-  66% { transform: translate(-20px,30px) scale(1.1); }
-}
-
-@keyframes orbMove2 {
-  0%, 100% { transform: translate(0,0) scale(1); }
-  33% { transform: translate(-30px,40px) scale(1.15); }
-  66% { transform: translate(20px,-20px) scale(1.05); }
-}
-
-@keyframes orbMove3 {
-  0%, 100% { transform: translate(0,0) scale(1); }
-  50% { transform: translate(-40px,-30px) scale(1.25); }
-}
-
-/* ===== 3D FLOATING SYMBOLS - BIGGER ===== */
-.scene-3d {
-  position: fixed;
-  inset: 0;
-  perspective: 800px;
-  overflow: hidden;
-  pointer-events: auto;
-  z-index: 2;
-}
-
-.float-sym {
-  position: absolute;
-  font-weight: 900;
-  transform-style: preserve-3d;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
-  font-family: 'Courier New', monospace;
-  letter-spacing: -2px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.62), rgba(0,242,254,0.22), rgba(0,255,135,0.18));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255,255,255,0.18);
-  text-shadow:
-    0 1px 0 rgba(255,255,255,0.08),
-    0 2px 0 rgba(255,255,255,0.06),
-    0 3px 0 rgba(255,255,255,0.04),
-    0 10px 26px rgba(0,0,0,0.45),
-    0 0 40px rgba(0,242,254,0.18),
-    0 0 44px rgba(0,255,135,0.12);
-  transform: translateZ(40px) rotateX(12deg) rotateY(18deg);
-}
-
-[data-theme="light"] .float-sym {
-  -webkit-text-stroke: 1px rgba(0,0,0,0.12);
-  text-shadow:
-    0 1px 0 rgba(255,255,255,0.8),
-    0 2px 0 rgba(255,255,255,0.7),
-    0 3px 0 rgba(255,255,255,0.6),
-    0 10px 26px rgba(255,255,255,0.55),
-    0 0 40px rgba(0,242,254,0.12),
-    0 0 44px rgba(0,255,135,0.08);
-}
-
-.float-sym.dragging { cursor: grabbing; filter: brightness(1.06); }
-
-.sym-1 { top: 8%; left: 10%; font-size: 120px; }
-.sym-2 { top: 6%; right: 14%; font-size: 96px; }
-.sym-3 { top: 46%; left: 6%; font-size: 110px; }
-.sym-4 { top: 62%; right: 10%; font-size: 88px; }
-.sym-5 { top: 34%; left: 26%; font-size: 72px; }
-.sym-6 { top: 72%; right: 34%; font-size: 100px; }
-.sym-7 { top: 20%; left: 56%; font-size: 64px; }
-.sym-8 { top: 28%; right: 48%; font-size: 76px; }
-
-/* ===== PARTICLES ===== */
-#particles {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 5;
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-/* ===== HERO CENTER ===== */
-.hero-center {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 40px;
-  position: relative;
-  z-index: 10;
-}
-
-.hero-label {
-  font-size: 11px;
-  letter-spacing: 6px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin-bottom: 32px;
-}
-
-.hero-title {
-  font-size: clamp(42px, 6.5vw, 84px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  margin-bottom: 24px;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.hero-title .name {
-  color: var(--text);
-  font-weight: 700;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.hero-title .role-highlight {
-  background: linear-gradient(135deg, var(--accent), var(--accent-blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
-}
-
-.hero-title .role-plain {
-  color: var(--text-dim);
-  font-weight: 400;
-}
-
-.hero-desc {
-  max-width: 520px;
-  font-size: 15px;
-  color: var(--text-dim);
-  line-height: 2;
-  letter-spacing: 0.3px;
-}
-
-.hero-cta {
-  margin-top: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  justify-content: center;
-  align-items: stretch;
-  width: min(520px, 100%);
-}
-
-@media (min-width: 900px) {
-  .hero-cta {
-    flex-direction: row;
-    width: min(980px, 100%);
-    gap: 14px;
-  }
-
-  .cta-bar,
-  .cta-bar-btn {
-    min-height: 74px;
-  }
-}
-
-.cta-bar,
-.cta-bar-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 18px;
-  border-radius: 14px;
-  font-size: 13px;
-  letter-spacing: 0.7px;
-  text-decoration: none;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text);
-}
-
-.cta-bar strong,
-.cta-bar-btn strong {
-  font-weight: 700;
-  letter-spacing: 0.2px;
-}
-
-.cta-bar:hover {
-  transform: translateY(-3px);
-  border-color: rgba(0, 242, 254, 0.35);
-  box-shadow: 0 18px 34px rgba(0,0,0,0.26);
-  background: rgba(255,255,255,0.06);
-}
-
-.cta-bar.primary {
-  border-color: rgba(0, 242, 254, 0.28);
-  background: linear-gradient(135deg, rgba(115,216,187,0.22), rgba(120,164,234,0.16));
-}
-
-.cta-bar.primary:hover {
-  border-color: rgba(0, 242, 254, 0.6);
-  box-shadow: 0 18px 40px rgba(0, 242, 254, 0.12);
-}
-
-.cta-bar-btn {
-  cursor: not-allowed;
-  opacity: 0.55;
-}
-
-.launch-note {
-  margin-top: 14px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.home-notes {
-  margin-top: 18px;
-  width: min(720px, 92vw);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 0 12px 24px;
-}
-
-[data-theme="dark"] .home-notes {
-  color: rgba(255,255,255,0.72);
-}
-
-[data-theme="light"] .home-notes {
-  color: var(--text-dim);
-}
-
-.home-notes p {
-  font-size: 12px;
-  line-height: 1.65;
-}
-
-.home-notes a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,0.18);
-}
-
-[data-theme="light"] .home-notes a {
-  border-bottom-color: rgba(0,0,0,0.18);
-}
-
-.home-notes a:hover {
-  border-bottom-color: rgba(0,242,254,0.45);
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .dock { display: none; }
-  .hero-title { font-size: 40px; }
-  .float-sym { font-size: 50px !important; }
-  .orb-left { width: 300px; height: 300px; }
-  .orb-right { width: 250px; height: 250px; }
-}
-
-.title-bar, .dock {
-  display: none;
-}
-
-.main-area {
-  display: block;
-}
-
-.content-area {
-  min-height: 100vh;
-  padding-top: 64px;
-}
-
-.hero-center {
-  min-height: calc(100vh - 64px);
-}
-</style>
-<link rel="stylesheet" href="./site.css">
-<script src="./site.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leonardo Li · 黎铭晞</title>
+  <link rel="stylesheet" href="./index.css">
+  <link rel="stylesheet" href="./site.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="./site.js" defer></script>
 </head>
 <body data-theme="dark">
 
-<div class="bg-orbs">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+<div class="bg-aurora" aria-hidden="true"></div>
+
+<!-- 固定导航栏 - 透明 -->
+<header class="unified-topbar">
+  <a class="unified-brand" href="./index.html" aria-label="LeonardoLi">
+    <span class="brand-mark" aria-hidden="true"></span>
+  </a>
+  <nav class="unified-nav">
+    <a class="active" href="./index.html#home">Home</a>
+    <a href="./works.html">Work</a>
+    <a href="./art/index.html">Art</a>
+    <a href="./resume.html">Resume</a>
+    <a href="./about.html">About</a>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
+      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="mobile-menu-section">
+    <a href="./index.html#home" class="active">Home</a>
+    <a href="./works.html">Work</a>
+    <a href="./art/index.html">Art</a>
+    <a href="./resume.html">Resume</a>
+    <a href="./about.html">About</a>
+  </div>
 </div>
 
-<div class="os-window">
-  <header class="unified-topbar">
-    <a class="unified-brand" href="./index.html">LeonardoLi🐱</a>
-    <nav class="unified-nav">
-      <a class="active" href="./index.html">Home</a>
-      <a href="./works.html">Work</a>
-      <a href="./resume.html">Resume</a>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
-        <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-        <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-      </button>
-      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="4" y1="7" x2="20" y2="7"></line>
-          <line x1="4" y1="12" x2="20" y2="12"></line>
-          <line x1="4" y1="17" x2="20" y2="17"></line>
-        </svg>
-      </button>
-    </nav>
-  </header>
-  <div class="mobile-menu" id="mobileMenu" hidden>
-    <div class="mobile-menu-section">
-      <a href="./index.html">Home</a>
-      <a href="./works.html">Work</a>
-      <a href="./resume.html">Resume</a>
-    </div>
-  </div>
-
-  <!-- TITLE BAR -->
-  <div class="title-bar">
-    <div class="window-controls">
-      <div class="window-btn close"></div>
-      <div class="window-btn minimize"></div>
-      <div class="window-btn maximize"></div>
-    </div>
-    <div class="window-title">limingxi <span>&lt;AI交互设计师&gt;</span></div>
-    <div class="window-actions">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
-    </div>
-  </div>
-
-  <!-- MAIN AREA -->
-  <div class="main-area">
-
-    <!-- LEFT DOCK -->
-    <nav class="dock">
-      <a href="./index.html" class="dock-item active" title="首页">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>首页</span>
-      </a>
-      <a href="./works.html" class="dock-item" title="作品">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-        <span>作品</span>
-      </a>
-      <a href="./resume.html" class="dock-item" title="简历">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        <span>简历</span>
-      </a>
-      <a href="./resume.html" class="dock-item" title="关于">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        <span>关于</span>
-      </a>
-    </nav>
-
-    <!-- CONTENT AREA -->
-    <div class="content-area">
-
-      <!-- Background Effects -->
-      <div class="gradient-orb orb-left"></div>
-      <div class="gradient-orb orb-right"></div>
-      <div class="gradient-orb orb-bottom"></div>
-      <canvas id="particles"></canvas>
-      <div class="bg-name">
-        <div class="bg-name-track">LEONARDO LI · AI INTERACTION DESIGNER · LEONARDO LI · AI INTERACTION DESIGNER · </div>
+<!-- 滚动式叙事内容 -->
+<main class="scroll-container">
+  <!-- 首页区域 -->
+  <section id="home" class="section hero-section">
+    <div class="hero-center">
+      <div class="hero-logo" aria-hidden="true"><span class="brand-mark"></span></div>
+      <div class="hero-label">HOME</div>
+      <h1 class="hero-title">
+        Hi I'm <span class="name">LeonardoLi黎铭晞</span><br>
+        <span class="role-highlight">人机交互设计师</span>
+      </h1>
+      <p class="hero-desc">
+        我融合人机交互专业背景与AI Native全链路设计能力，<br>
+        从用户洞察到Vibe Coding前端实现，创造有温度的智能体验。
+      </p>
+      <div class="hero-cta">
+        <a class="cta-bar primary" href="#works"><strong>浏览作品</strong><span>→</span></a>
+        <a class="cta-bar" href="./resume.html"><strong>查阅简历</strong><span>→</span></a>
       </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
 
-      <!-- 3D Floating Symbols -->
-      <div class="scene-3d">
-        <div class="float-sym sym-1">/</div>
-        <div class="float-sym sym-2">&amp;</div>
-        <div class="float-sym sym-3">&lt; &gt;</div>
-        <div class="float-sym sym-4">#</div>
-        <div class="float-sym sym-5">@</div>
-        <div class="float-sym sym-6">class</div>
-        <div class="float-sym sym-7">div</div>
-        <div class="float-sym sym-8">*</div>
-      </div>
-
-      <!-- Hero Center -->
-      <div class="hero-center">
-        <div class="hero-label">HOME</div>
-        <h1 class="hero-title">
-          Hi I'm <span class="name">LeonardoLi黎铭晞</span><br>
-          <span class="role-highlight">人机交互设计师</span>
-        </h1>
-        <p class="hero-desc">
-          我融合人机交互专业背景与AI Native全链路设计能力，<br>
-          从用户洞察到Vibe Coding前端实现，创造有温度的智能体验。
-        </p>
-        <div class="hero-cta">
-          <a class="cta-bar primary" href="./works.html"><strong>浏览作品</strong><span>→</span></a>
-          <a class="cta-bar" href="./resume.html"><strong>查阅简历</strong><span>→</span></a>
-          <button class="cta-bar-btn" type="button" disabled><strong>艺术创想</strong><span>⟂</span></button>
-        </div>
-        <div class="home-notes">
-          <p>个人作品集网站仍在持续开发中，欢迎随时回访查看最新进展。</p>
+  <!-- 作品区域 -->
+  <section id="works" class="section works-section">
+    <div class="section-header">
+      <p class="section-kicker">Selected Projects</p>
+      <h2 class="section-title">Recent Works</h2>
+    </div>
+    <div class="works-grid">
+      <!-- 1. JianCareer -->
+      <article class="work-item glass-card">
+        <a href="./cases/Jiancareer.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/jiancareer.jpg" alt="JianCareer" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
           </div>
-      </div>
+          <div class="work-info">
+            <span class="work-year">2025</span>
+            <h3 class="work-title">JianCareer · AI 求职助手</h3>
+            <p class="work-desc">体验设计 · Vibe Coding · 设计系统</p>
+          </div>
+        </a>
+      </article>
+      
+      <!-- 2. Anxious Kit -->
+      <article class="work-item glass-card">
+        <a href="./cases/Anxious-Kit.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/anxious.jpg" alt="Anxious Kit" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2025</span>
+            <h3 class="work-title">Anxious Kit</h3>
+            <p class="work-desc">可穿戴情绪辅助系统 · 生理信号监测</p>
+          </div>
+        </a>
+      </article>
 
+      <!-- 3. StoryVibe -->
+      <article class="work-item glass-card">
+        <a href="./cases/StoryVibe.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/storyvibe.jpg" alt="StoryVibe" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2025</span>
+            <h3 class="work-title">StoryVibe</h3>
+            <p class="work-desc">AI 视频叙事中间层 · 创意工作流</p>
+          </div>
+        </a>
+      </article>
     </div>
-  </div>
 
-</div>
+    <div class="works-grid" style="margin-top: 32px;">
+      <!-- 4. MemoryLens -->
+      <article class="work-item glass-card">
+        <a href="./cases/MemoryLens.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/memorylens.jpg" alt="MemoryLens" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2024</span>
+            <h3 class="work-title">MemoryLens</h3>
+            <p class="work-desc">VisionPro · 多模态交互 · 黑客松</p>
+          </div>
+        </a>
+      </article>
 
-<script>
-// Particles
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let w, h, particles = [];
+      <!-- 5. AI 启蒙代练屋 -->
+      <article class="work-item glass-card">
+        <a href="./cases/Toys.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/toys.png" alt="AI 启蒙代练屋" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2024</span>
+            <h3 class="work-title">AI 启蒙代练屋</h3>
+            <p class="work-desc">AI 教育玩具 · 用户研究 · 交互定义</p>
+          </div>
+        </a>
+      </article>
 
-function resize() {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
+      <!-- 6. Twin City Tale -->
+      <article class="work-item glass-card">
+        <a href="./cases/Twin-City-Tale.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/twincity.jpg" alt="Twin City Tale" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2024</span>
+            <h3 class="work-title">Twin City Tale</h3>
+            <p class="work-desc">深港双城数据叙事 · 前端开发</p>
+          </div>
+        </a>
+      </article>
+    </div>
 
-class Particle {
-  constructor() { this.reset(); }
-  reset() {
-    this.x = Math.random() * w;
-    this.y = Math.random() * h;
-    this.vx = (Math.random() - 0.5) * 0.25;
-    this.vy = (Math.random() - 0.5) * 0.25;
-    this.r = Math.random() * 1.8 + 0.3;
-    this.alpha = Math.random() * 0.4 + 0.1;
-  }
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(120,160,200,${this.alpha})`;
-    ctx.fill();
-  }
-}
+    <div style="margin-top: 40px; text-align: center;">
+      <a href="./works.html" class="cta-bar" style="display: inline-flex; justify-content: center;">
+        <strong>查看所有 9 个作品</strong><span>→</span>
+      </a>
+    </div>
+  </section>
 
-for (let i = 0; i < 50; i++) particles.push(new Particle());
+  <!-- 关于区域 -->
+  <section id="about" class="section about-section">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-kicker">About Me</p>
+        <h2 class="section-title">Designer & Developer</h2>
+        <p class="about-body">
+          我是 Leonardo Li，一名人机交互设计师与开发者。我的工作专注于创造直观、有生命力的数字体验。
+        </p>
+        <p class="about-body">
+          我将设计思维与技术专长相结合，从概念和原型设计到完整的实现。目前正在探索 AI 原生界面和沉浸式交互模式。
+        </p>
+        <div class="about-tags">
+          <span class="tag">HCI</span>
+          <span class="tag">Interaction Design</span>
+          <span class="tag">Prototyping</span>
+          <span class="tag">Frontend Development</span>
+          <span class="tag">AI Native</span>
+        </div>
+        <div style="margin-top: 24px;">
+          <div class="about-actions">
+            <a href="./about.html" class="cta-bar" style="display: inline-flex; justify-content: center;">
+              <strong>了解更多</strong><span>→</span>
+            </a>
+            <a href="mailto:leonardolee351@gmail.com" class="cta-bar primary" style="display: inline-flex; justify-content: center;">
+              <strong>Say Hello</strong><span>→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="about-image">
+        <div class="image-placeholder glass-card">
+          <div class="image-gradient"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="site-footer">
+    <p>© 2026 Leonardo Li · All Rights Reserved</p>
+    <div class="footer-links">
+      <a href="./works.html">Work</a>
+      <a href="./art/index.html">Art</a>
+      <a href="./resume.html">Resume</a>
+      <a href="./about.html">About</a>
+      <a href="mailto:leonardolee351@gmail.com">Email</a>
+    </div>
+  </footer>
+</main>
 
-function animate() {
-  ctx.clearRect(0, 0, w, h);
-  particles.forEach(p => { p.update(); p.draw(); });
-  // Connections
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 140) {
-        ctx.beginPath();
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.strokeStyle = `rgba(120,160,200,${0.06 * (1 - dist / 140)})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-      }
-    }
-  }
-  requestAnimationFrame(animate);
-}
-animate();
-</script>
-<script>
-(function() {
-  const items = Array.from(document.querySelectorAll('.float-sym'));
-  const container = document.querySelector('.scene-3d');
-  if (!container || items.length === 0) return;
-
-  let active = null;
-  let startX = 0;
-  let startY = 0;
-  let origLeft = 0;
-  let origTop = 0;
-
-  function initBasePositions() {
-    const rect = container.getBoundingClientRect();
-    items.forEach((el) => {
-      const style = getComputedStyle(el);
-      const x = toPx(style.left, rect.width);
-      const y = toPx(style.top, rect.height);
-      el.dataset.baseX = String(x);
-      el.dataset.baseY = String(y);
-      el.dataset.phase = String(Math.random() * Math.PI * 2);
-      el.dataset.speed = String(0.35 + Math.random() * 0.65);
-      el.dataset.amp = String(10 + Math.random() * 16);
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-    });
-  }
-
-  function toPx(value, total) {
-    if (typeof value !== 'string') return 0;
-    if (value.endsWith('px')) return parseFloat(value);
-    if (value.endsWith('%')) return total * (parseFloat(value) / 100);
-    return parseFloat(value) || 0;
-  }
-
-  initBasePositions();
-  window.addEventListener('resize', initBasePositions);
-
-  items.forEach(el => {
-    el.addEventListener('pointerdown', (e) => {
-      if (e.button !== undefined && e.button !== 0) return;
-      active = el;
-      active.classList.add('dragging');
-      active.setPointerCapture(e.pointerId);
-      startX = e.clientX;
-      startY = e.clientY;
-      const rect = container.getBoundingClientRect();
-      const style = getComputedStyle(active);
-      origLeft = toPx(style.left, rect.width);
-      origTop = toPx(style.top, rect.height);
-    });
-
-    el.addEventListener('pointermove', (e) => {
-      if (!active || active !== el) return;
-      const rect = container.getBoundingClientRect();
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-      const nextLeft = Math.max(-80, Math.min(rect.width + 80, origLeft + dx));
-      const nextTop = Math.max(-80, Math.min(rect.height + 80, origTop + dy));
-      active.style.left = `${nextLeft}px`;
-      active.style.top = `${nextTop}px`;
-    });
-
-    function endDrag(e) {
-      if (!active || active !== el) return;
-      active.dataset.baseX = String(parseFloat(active.style.left) || 0);
-      active.dataset.baseY = String(parseFloat(active.style.top) || 0);
-      active.classList.remove('dragging');
-      try { active.releasePointerCapture(e.pointerId); } catch {}
-      active = null;
-    }
-
-    el.addEventListener('pointerup', endDrag);
-    el.addEventListener('pointercancel', endDrag);
-  });
-
-  function tick(t) {
-    const time = t * 0.001;
-    items.forEach((el) => {
-      if (el.classList.contains('dragging')) return;
-      const bx = parseFloat(el.dataset.baseX || '0');
-      const by = parseFloat(el.dataset.baseY || '0');
-      const phase = parseFloat(el.dataset.phase || '0');
-      const speed = parseFloat(el.dataset.speed || '1');
-      const amp = parseFloat(el.dataset.amp || '12');
-      const ox = Math.sin(time * speed + phase) * amp;
-      const oy = Math.cos(time * speed * 0.9 + phase) * (amp * 0.7);
-      el.style.left = `${bx + ox}px`;
-      el.style.top = `${by + oy}px`;
-    });
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-})();
-</script>
-
+<script src="./index.js"></script>
 </body>
 </html>
