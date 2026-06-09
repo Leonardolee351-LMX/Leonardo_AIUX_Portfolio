@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leonardo Li · 黎铭晞</title>
+  <link rel="stylesheet" href="./index.css">
+  <link rel="stylesheet" href="./site.css">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="./site.js" defer></script>
+</head>
+<body data-theme="dark">
+
+<div class="bg-aurora" aria-hidden="true"></div>
+
+<!-- 固定导航栏 - 透明 -->
+<header class="unified-topbar">
+  <a class="unified-brand" href="./index.html" aria-label="LeonardoLi">
+    <span class="brand-mark" aria-hidden="true"></span>
+  </a>
+  <nav class="unified-nav">
+    <a class="active" href="./index.html#home">Home</a>
+    <a href="./works.html">Work</a>
+    <a href="./art/index.html">Art</a>
+    <a href="./resume.html">Resume</a>
+    <a href="./about.html">About</a>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
+      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="mobile-menu-section">
+    <a href="./index.html#home" class="active">Home</a>
+    <a href="./works.html">Work</a>
+    <a href="./art/index.html">Art</a>
+    <a href="./resume.html">Resume</a>
+    <a href="./about.html">About</a>
+  </div>
+</div>
+
+<!-- 滚动式叙事内容 -->
+<main class="scroll-container">
+  <!-- 首页区域 -->
+  <section id="home" class="section hero-section">
+    <div class="hero-center">
+      <div class="hero-logo" aria-hidden="true"><span class="brand-mark"></span></div>
+      <div class="hero-label">HOME</div>
+      <h1 class="hero-title">
+        Hi I'm <span class="name">LeonardoLi黎铭晞</span><br>
+        <span class="role-highlight">人机交互设计师</span>
+      </h1>
+      <p class="hero-desc">
+        我融合人机交互专业背景与AI Native全链路设计能力，<br>
+        从用户洞察到Vibe Coding前端实现，创造有温度的智能体验。
+      </p>
+      <div class="hero-cta">
+        <a class="cta-bar primary" href="#works"><strong>浏览作品</strong><span>→</span></a>
+        <a class="cta-bar" href="./resume.html"><strong>查阅简历</strong><span>→</span></a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- 作品区域 -->
+  <section id="works" class="section works-section">
+    <div class="section-header">
+      <p class="section-kicker">Selected Projects</p>
+      <h2 class="section-title">Recent Works</h2>
+    </div>
+    <div class="works-grid">
+      <!-- 1. JianCareer -->
+      <article class="work-item glass-card">
+        <a href="./cases/Jiancareer.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/jiancareer.jpg" alt="JianCareer" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2025</span>
+            <h3 class="work-title">JianCareer · AI 求职助手</h3>
+            <p class="work-desc">体验设计 · Vibe Coding · 设计系统</p>
+          </div>
+        </a>
+      </article>
+      
+      <!-- 2. Anxious Kit -->
+      <article class="work-item glass-card">
+        <a href="./cases/Anxious-Kit.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/anxious.jpg" alt="Anxious Kit" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2025</span>
+            <h3 class="work-title">Anxious Kit</h3>
+            <p class="work-desc">可穿戴情绪辅助系统 · 生理信号监测</p>
+          </div>
+        </a>
+      </article>
+
+      <!-- 3. StoryVibe -->
+      <article class="work-item glass-card">
+        <a href="./cases/StoryVibe.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/storyvibe.jpg" alt="StoryVibe" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2025</span>
+            <h3 class="work-title">StoryVibe</h3>
+            <p class="work-desc">AI 视频叙事中间层 · 创意工作流</p>
+          </div>
+        </a>
+      </article>
+    </div>
+
+    <div class="works-grid" style="margin-top: 32px;">
+      <!-- 4. MemoryLens -->
+      <article class="work-item glass-card">
+        <a href="./cases/MemoryLens.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/memorylens.jpg" alt="MemoryLens" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2024</span>
+            <h3 class="work-title">MemoryLens</h3>
+            <p class="work-desc">VisionPro · 多模态交互 · 黑客松</p>
+          </div>
+        </a>
+      </article>
+
+      <!-- 5. AI 启蒙代练屋 -->
+      <article class="work-item glass-card">
+        <a href="./cases/Toys.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/toys.png" alt="AI 启蒙代练屋" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2024</span>
+            <h3 class="work-title">AI 启蒙代练屋</h3>
+            <p class="work-desc">AI 教育玩具 · 用户研究 · 交互定义</p>
+          </div>
+        </a>
+      </article>
+
+      <!-- 6. Twin City Tale -->
+      <article class="work-item glass-card">
+        <a href="./cases/Twin-City-Tale.html" style="text-decoration: none; color: inherit; display: block;">
+          <div class="work-image">
+            <div class="work-placeholder" style="background: linear-gradient(135deg, #161922, #0a0b0f);">
+              <img src="./project_cover/twincity.jpg" alt="Twin City Tale" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+          </div>
+          <div class="work-info">
+            <span class="work-year">2024</span>
+            <h3 class="work-title">Twin City Tale</h3>
+            <p class="work-desc">深港双城数据叙事 · 前端开发</p>
+          </div>
+        </a>
+      </article>
+    </div>
+
+    <div style="margin-top: 40px; text-align: center;">
+      <a href="./works.html" class="cta-bar" style="display: inline-flex; justify-content: center;">
+        <strong>查看所有 9 个作品</strong><span>→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 关于区域 -->
+  <section id="about" class="section about-section">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-kicker">About Me</p>
+        <h2 class="section-title">Designer & Developer</h2>
+        <p class="about-body">
+          我是 Leonardo Li，一名人机交互设计师与开发者。我的工作专注于创造直观、有生命力的数字体验。
+        </p>
+        <p class="about-body">
+          我将设计思维与技术专长相结合，从概念和原型设计到完整的实现。目前正在探索 AI 原生界面和沉浸式交互模式。
+        </p>
+        <div class="about-tags">
+          <span class="tag">HCI</span>
+          <span class="tag">Interaction Design</span>
+          <span class="tag">Prototyping</span>
+          <span class="tag">Frontend Development</span>
+          <span class="tag">AI Native</span>
+        </div>
+        <div style="margin-top: 24px;">
+          <div class="about-actions">
+            <a href="./about.html" class="cta-bar" style="display: inline-flex; justify-content: center;">
+              <strong>了解更多</strong><span>→</span>
+            </a>
+            <a href="mailto:leonardolee351@gmail.com" class="cta-bar primary" style="display: inline-flex; justify-content: center;">
+              <strong>Say Hello</strong><span>→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="about-image">
+        <div class="image-placeholder glass-card">
+          <div class="image-gradient"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="site-footer">
+    <p>© 2026 Leonardo Li · All Rights Reserved</p>
+    <div class="footer-links">
+      <a href="./works.html">Work</a>
+      <a href="./art/index.html">Art</a>
+      <a href="./resume.html">Resume</a>
+      <a href="./about.html">About</a>
+      <a href="mailto:leonardolee351@gmail.com">Email</a>
+    </div>
+  </footer>
+</main>
+
+<script src="./index.js"></script>
+</body>
+</html>

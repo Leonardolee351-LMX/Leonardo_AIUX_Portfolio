@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selected Works · Leonardo Li</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #050507;
+  --bg-elevated: rgba(8,8,10,0.85);
+  --surface: rgba(255,255,255,0.03);
+  --surface-2: rgba(255,255,255,0.06);
+  --text: #f4f4f4;
+  --text-dim: rgba(255,255,255,0.7);
+  --text-muted: rgba(255,255,255,0.45);
+  --border: rgba(255,255,255,0.1);
+  --card-bg: #0c0d11;
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ef;
+  --bg-elevated: rgba(245,243,239,0.9);
+  --surface: rgba(0,0,0,0.04);
+  --surface-2: rgba(0,0,0,0.08);
+  --text: #1a1a1a;
+  --text-dim: #5a5a5a;
+  --text-muted: #8a8a8a;
+  --border: rgba(0,0,0,0.1);
+  --card-bg: #ffffff;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ===== BACKGROUND ORBS ===== */
+.bg-orbs {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  animation: moveOrb 20s infinite alternate ease-in-out;
+}
+
+[data-theme="light"] .orb {
+  mix-blend-mode: multiply;
+  opacity: 0.15;
+}
+
+.orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #00f2fe 0%, transparent 70%);
+  top: -10%; left: -10%;
+  animation-duration: 25s;
+}
+
+.orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #4facfe 0%, transparent 70%);
+  bottom: -5%; right: -5%;
+  animation-duration: 30s;
+  animation-delay: -5s;
+}
+
+.orb-3 {
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, #00ff87 0%, transparent 70%);
+  top: 40%; left: 30%;
+  animation-duration: 22s;
+  animation-delay: -10s;
+}
+
+@keyframes moveOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(100px, 50px) scale(1.1); }
+}
+
+.unified-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .unified-topbar {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.unified-brand {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.unified-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.unified-nav a {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.unified-nav a.active {
+  color: var(--text);
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+}
+
+.theme-toggle:hover {
+  background: var(--surface-2);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.theme-toggle .sun { display: none; }
+.theme-toggle .moon { display: block; }
+[data-theme="light"] .theme-toggle .sun { display: block; }
+[data-theme="light"] .theme-toggle .moon { display: none; }
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 22px 18px 64px;
+}
+
+.heading {
+  margin: 8px 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.heading h1 {
+  font-size: clamp(38px, 8vw, 82px);
+  line-height: 0.95;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  opacity: 0.25;
+}
+
+[data-theme="light"] .heading h1 {
+  opacity: 0.15;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.chip {
+  cursor: pointer;
+  appearance: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  height: 36px;
+  padding: 0 12px;
+  font-size: 12px;
+  color: var(--text-dim);
+  background: var(--surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.chip.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+  font-weight: 600;
+}
+
+.grid {
+  --unit: 220px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: var(--unit);
+  gap: 12px;
+}
+
+.card {
+  position: relative;
+  display: block;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  background: var(--card-bg);
+  color: inherit;
+  transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+}
+
+.card--xl { grid-column: span 2; grid-row: span 2; }
+.card--wide { grid-column: span 2; grid-row: span 1; }
+.card--tall { grid-column: span 1; grid-row: span 2; }
+.card--sm { grid-column: span 1; grid-row: span 1; }
+
+.card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  border-color: var(--text-muted);
+  z-index: 10;
+}
+
+[data-theme="light"] .card:hover {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* ===== LIST VIEW STYLES ===== */
+.grid.view-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.grid.view-list .card {
+  grid-column: span 4 !important;
+  grid-row: span 1 !important;
+  height: auto;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.grid.view-list .card:last-child {
+  border-bottom: none;
+}
+
+.grid.view-list .card:hover {
+  transform: scale(1.02);
+  box-shadow: none;
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.15), transparent 80%);
+  z-index: 5;
+}
+
+[data-theme="light"] .grid.view-list .card:hover {
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08), transparent 80%);
+}
+
+.grid.view-list .thumb {
+  display: none;
+}
+
+.grid.view-list .card:hover .meta {
+  opacity: 1 !important;
+  transform: none !important;
+  display: flex !important;
+  visibility: visible !important;
+}
+
+.grid.view-list .meta {
+  position: static;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  padding: 40px 0;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.grid.view-list .card:hover .title {
+  color: var(--text) !important;
+  transform: scale(1.05);
+  text-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
+  display: block !important;
+  opacity: 1 !important;
+}
+
+.grid.view-list .title {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  font-size: clamp(48px, 8vw, 120px);
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -0.04em;
+  color: var(--text) !important;
+  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+  line-height: 1;
+}
+
+.grid.view-list .desc {
+  display: none; /* Hide description in list view to keep it clean */
+}
+
+.grid.view-list .tags {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.grid.view-list .tag {
+  font-size: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  padding: 4px 16px;
+  border-radius: 6px;
+  color: var(--text-dim);
+}
+
+[data-theme="light"] .grid.view-list .tag {
+  background: rgba(0,0,0,0.03);
+}
+
+.grid.view-list .status {
+  display: none;
+}
+
+/* View Switcher */
+.view-switcher {
+  display: flex;
+  background: var(--surface);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-left: 0;
+  align-items: center;
+}
+
+.view-btn {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  width: 36px;
+  height: 28px;
+  padding: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-btn.active {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.view-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.thumb {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #161922, #0a0b0f);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.meta {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  padding: 12px 12px 13px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.card:hover .meta,
+.card:focus-visible .meta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.title {
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.status {
+  margin-top: 8px;
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.tags {
+  margin-top: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+  padding: 2px 7px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.82);
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .card--xl,
+  .card--wide,
+  .card--tall {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+}
+
+@media (max-width: 680px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .card--xl,
+  .card--wide,
+  .card--tall {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .topbar { padding: 16px; }
+  .container { padding: 18px 12px 52px; }
+  .meta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
+<link rel="stylesheet" href="./site.css">
+<script src="./site.js" defer></script>
+</head>
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <header class="unified-topbar">
+    <a class="unified-brand" href="./index.html" aria-label="LeonardoLi"><span class="brand-mark" aria-hidden="true"></span></a>
+    <nav class="unified-nav">
+      <a href="./index.html#home">Home</a>
+      <a href="./works.html" class="active">Work</a>
+      <a href="./art/index.html">Art</a>
+      <a href="./resume.html">Resume</a>
+      <a href="./about.html">About</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
+        <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
+        </svg>
+      </button>
+    </nav>
+  </header>
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <div class="mobile-menu-section">
+      <a href="./index.html#home">Home</a>
+      <a href="./works.html">Work</a>
+      <a href="./art/index.html">Art</a>
+      <a href="./resume.html">Resume</a>
+      <a href="./about.html">About</a>
+    </div>
+  </div>
+
+  <main class="container">
+    <section class="heading">
+      <h1>Selected work(s)</h1>
+      <div class="heading-actions">
+        <div class="filters">
+          <button class="chip active" type="button" data-filter="all">All 9</button>
+          <button class="chip" type="button" data-filter="product">Product 6</button>
+          <button class="chip" type="button" data-filter="tech">Tech 2</button>
+          <button class="chip" type="button" data-filter="creative">Creative 1</button>
+        </div>
+        <div class="view-switcher">
+          <button class="view-btn active" id="viewGrid" title="网格视图">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+          </button>
+          <button class="view-btn" id="viewList" title="目录视图">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <!-- 1. JianCareer (Priority 1) -->
+      <a class="card card--xl" data-category="product" href="./cases/Jiancareer.html">
+        <div class="thumb">
+          <img src="./project_cover/jiancareer.jpg" alt="JianCareer">
+          <div class="meta">
+            <div class="title">JianCareer · AI 求职助手</div>
+            <div class="desc">体验设计 · Vibe Coding · 设计系统</div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#AI</span><span class="tag">#Design System</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2. Anxious Kit (Priority 2) -->
+      <a class="card card--sm" data-category="product" href="./cases/Anxious-Kit.html">
+        <div class="thumb">
+          <img src="./project_cover/anxious.jpg" alt="Anxious Kit">
+          <div class="meta">
+            <div class="title">Anxious Kit</div>
+            <div class="desc">可穿戴情绪辅助系统 · 生理信号监测</div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#AI Agent</span><span class="tag">#Wearable</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 3. StoryVibe (Priority 3) -->
+      <a class="card card--wide" data-category="product" href="./cases/StoryVibe.html">
+        <div class="thumb">
+          <img src="./project_cover/storyvibe.jpg" alt="StoryVibe">
+          <div class="meta">
+            <div class="title">StoryVibe</div>
+            <div class="desc">AI 视频叙事中间层 · 创意工作流</div>
+            <span class="status">ON GOING</span>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#GenAI</span><span class="tag">#Interaction</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 4. MemoryLens (Priority 4) -->
+      <a class="card card--tall" data-category="tech" href="./cases/MemoryLens.html">
+        <div class="thumb">
+          <img src="./project_cover/memorylens.jpg" alt="MemoryLens">
+          <div class="meta">
+            <div class="title">MemoryLens</div>
+            <div class="desc">VisionPro · 多模态交互 · 黑客松</div>
+            <div class="tags"><span class="tag">#Tech</span><span class="tag">#MR</span><span class="tag">#Multimodal</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 5. Toys (Priority 5) -->
+      <a class="card card--sm" data-category="product" href="./cases/Toys.html">
+        <div class="thumb">
+          <img src="./project_cover/toys.png" alt="AI 启蒙代练屋">
+          <div class="meta">
+            <div class="title">AI 启蒙代练屋</div>
+            <div class="desc">AI 教育玩具 · 用户研究 · 交互定义</div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#AI</span><span class="tag">#Research</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 6. Twin City Tales (Priority 6) -->
+      <a class="card card--wide" data-category="tech" href="./cases/Twin-City-Tale.html">
+        <div class="thumb">
+          <img src="./project_cover/twincity.jpg" alt="Twin City Tale">
+          <div class="meta">
+            <div class="title">Twin City Tale</div>
+            <div class="desc">深港双城数据叙事 · 前端开发</div>
+            <div class="tags"><span class="tag">#Tech</span><span class="tag">#DataVis</span><span class="tag">#Frontend</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 7. CO-EVO (Creative) -->
+      <a class="card card--sm" data-category="creative" href="./cases/CO-EVO.html">
+        <div class="thumb">
+          <img src="./project_cover/coevo.jpg" alt="CO-EVO">
+          <div class="meta">
+            <div class="title">CO-EVO 互动剧场</div>
+            <div class="desc">TouchDesigner · YOLO · 实时交互</div>
+            <div class="tags"><span class="tag">#Creative</span><span class="tag">#Install</span><span class="tag">#Realtime</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 8. Stariver (UI) -->
+      <a class="card card--sm" data-category="product" href="./cases/Stariver.html">
+        <div class="thumb">
+          <img src="./project_cover/stariver.jpg" alt="渡星河交互界面设计">
+          <div class="meta">
+            <div class="title">渡星河界面设计</div>
+            <div class="desc">界面设计 · IP形象快设 · 交付落地</div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#UI</span><span class="tag">#Brand</span></div>
+          </div>
+        </div>
+      </a>
+
+      <!-- 9. Leke (Product Analysis) -->
+      <a class="card card--sm" data-category="product" href="./cases/Leke.html">
+        <div class="thumb">
+          <img src="./project_cover/leke.jpg" alt="乐刻新手成长系统">
+          <div class="meta">
+            <div class="title">乐刻新手成长系统</div>
+            <div class="desc">品牌服务系统分析 · 留存体验优化</div>
+            <div class="tags"><span class="tag">#Product</span><span class="tag">#UX</span><span class="tag">#Service</span></div>
+          </div>
+        </div>
+      </a>
+    </section>
+  </main>
+  <script>
+    (() => {
+      const grid = document.querySelector('.grid');
+      const chips = [...document.querySelectorAll('.chip[data-filter]')];
+      const cards = [...document.querySelectorAll('.card[data-category]')];
+      const viewGridBtn = document.getElementById('viewGrid');
+      const viewListBtn = document.getElementById('viewList');
+
+      function updateGridUnit() {
+        if (!grid || grid.classList.contains('view-list')) return;
+        const styles = getComputedStyle(grid);
+        const gap = parseFloat(styles.columnGap || styles.gap || '12');
+        const cols = window.matchMedia('(max-width: 1024px)').matches ? 2 : 4;
+        const width = grid.clientWidth;
+        const unit = Math.max(120, (width - gap * (cols - 1)) / cols);
+        grid.style.setProperty('--unit', `${unit}px`);
+      }
+
+      function applyFilter(filter) {
+        cards.forEach((card) => {
+          const cat = card.dataset.category || '';
+          const show = filter === 'all' || cat.includes(filter);
+          card.style.display = show ? '' : 'none';
+        });
+      }
+
+      chips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          chips.forEach((c) => c.classList.remove('active'));
+          chip.classList.add('active');
+          applyFilter(chip.dataset.filter);
+          updateGridUnit();
+        });
+      });
+
+      viewGridBtn.addEventListener('click', () => {
+        grid.classList.remove('view-list');
+        viewGridBtn.classList.add('active');
+        viewListBtn.classList.remove('active');
+        updateGridUnit();
+      });
+
+      viewListBtn.addEventListener('click', () => {
+        grid.classList.add('view-list');
+        viewListBtn.classList.add('active');
+        viewGridBtn.classList.remove('active');
+      });
+
+      window.addEventListener('resize', updateGridUnit);
+      updateGridUnit();
+      applyFilter('all');
+    })();
+  </script>
+</body>
+</html>
