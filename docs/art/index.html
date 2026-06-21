@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art Works · 黎铭晞</title>
+  <link rel="stylesheet" href="../site.css">
+  <link rel="stylesheet" href="./art.css">
+  <script src="../site.js" defer></script>
+</head>
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <header class="unified-topbar">
+    <a class="unified-brand" href="../index.html" aria-label="LeonardoLi"><span class="brand-mark" aria-hidden="true"></span></a>
+    <nav class="unified-nav">
+      <a href="../index.html">Home</a>
+      <a href="../works.html">Work</a>
+      <a class="active" href="./index.html">Art</a>
+      <a href="../resume.html">Resume</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
+        <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <div class="mobile-menu-section">
+      <a href="../index.html">Home</a>
+      <a href="../works.html">Work</a>
+      <a href="./index.html" class="active">Art</a>
+      <a href="../resume.html">Resume</a>
+      <a href="../about.html">About</a>
+    </div>
+  </div>
+
+  <main class="main art-shell">
+    <section class="art-hero">
+      <h1>艺术作品 / New Media Works</h1>
+      <p>从《数媒方向作品集》拆分出的四个主作品，以图集形式独立呈现。上下滚动浏览，点击图片可放大预览。</p>
+    </section>
+
+    <section class="art-grid" aria-label="Art projects">
+      <a class="art-card" href="./looming-dreamer.html">
+        <img class="art-card__thumb" src="../img/art/portfolio/looming-dreamer/page_03.png" alt="Looming Dreamer 封面" loading="lazy" decoding="async">
+        <div class="art-card__body">
+          <div class="art-kicker">Project 01</div>
+          <h2 class="art-title">Looming Dreamer</h2>
+          <p class="art-sub">公共空间交互装置，以雅卡尔织机机制为灵感，编织中法文化记忆与人际连接。</p>
+        </div>
+      </a>
+
+      <a class="art-card" href="./luminous-and-silhouette.html">
+        <img class="art-card__thumb" src="../img/art/portfolio/luminous-and-silhouette/page_09.png" alt="Luminous & Silhouette 封面" loading="lazy" decoding="async">
+        <div class="art-card__body">
+          <div class="art-kicker">Project 02</div>
+          <h2 class="art-title">Luminous &amp; Silhouette</h2>
+          <p class="art-sub">视听互动 VJ 演出项目，融合古筝与电子音色的张力，探索传统与现代的共振关系。</p>
+        </div>
+      </a>
+
+      <a class="art-card" href="./fingertip-praying.html">
+        <img class="art-card__thumb" src="../img/art/portfolio/fingertip-praying/page_15.png" alt="FingerTip praying 封面" loading="lazy" decoding="async">
+        <div class="art-card__body">
+          <div class="art-kicker">Project 03</div>
+          <h2 class="art-title">FingerTip praying</h2>
+          <p class="art-sub">从祈福 meme 与手势仪式切入的互动装置研究，关注压力释放、社交传播与情绪共鸣。</p>
+        </div>
+      </a>
+
+      <a class="art-card" href="./surreal-wanderer.html">
+        <img class="art-card__thumb" src="../img/art/portfolio/surreal-wanderer/page_21.png" alt="Surreal Wanderer 封面" loading="lazy" decoding="async">
+        <div class="art-card__body">
+          <div class="art-kicker">Project 04</div>
+          <h2 class="art-title">Surreal Wanderer</h2>
+          <p class="art-sub">基于《Sonny Boy》漂流叙事的空间翻译实验，通过图表与符号推演探索空间叙事结构。</p>
+        </div>
+      </a>
+    </section>
+  </main>
+</body>
+</html>

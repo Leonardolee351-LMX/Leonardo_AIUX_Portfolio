@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About · 黎铭晞</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #08080c;
+      --bg-elevated: rgba(255,255,255,0.03);
+      --surface: rgba(255,255,255,0.03);
+      --bg-card: rgba(255,255,255,0.02);
+      --text: #e8e6e1;
+      --text-dim: #8a8580;
+      --text-muted: #5a5550;
+      --accent: #5b9e8a;
+      --accent-blue: #5b7ec7;
+      --border: rgba(255,255,255,0.06);
+      --tag-bg: rgba(91,158,138,0.08);
+      --tag-text: #5b9e8a;
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f3ef;
+      --bg-elevated: rgba(0,0,0,0.03);
+      --surface: rgba(0,0,0,0.03);
+      --bg-card: rgba(0,0,0,0.03);
+      --text: #1a1a1a;
+      --text-dim: #5a5a5a;
+      --text-muted: #8a8a8a;
+      --accent: #3d7a6a;
+      --accent-blue: #4a6ba8;
+      --border: rgba(0,0,0,0.08);
+      --tag-bg: rgba(61,122,106,0.1);
+      --tag-text: #3d7a6a;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    a { color: inherit; }
+
+    .unified-topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      background: linear-gradient(to bottom, rgba(10, 10, 15, 0.82), rgba(10, 10, 15, 0.58));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: none;
+      transition: all 0.3s ease;
+    }
+
+    [data-theme="light"] .unified-topbar {
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.66));
+    }
+
+    .unified-brand {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .unified-nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .unified-nav a {
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .unified-nav a.active { color: var(--text); }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--text-muted);
+    }
+
+    .theme-toggle:hover {
+      background: var(--bg-card);
+      color: var(--text-dim);
+      border-color: var(--text-muted);
+    }
+
+    .theme-toggle svg { width: 16px; height: 16px; }
+    .theme-toggle .sun { display: none; }
+    .theme-toggle .moon { display: block; }
+    [data-theme="light"] .theme-toggle .sun { display: block; }
+    [data-theme="light"] .theme-toggle .moon { display: none; }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 96px 28px 96px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+      align-items: start;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    }
+
+    [data-theme="light"] .hero {
+      background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.02));
+    }
+
+    .hero-kicker {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-size: 34px;
+      line-height: 1.05;
+      letter-spacing: -0.8px;
+      margin-bottom: 12px;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      text-decoration: none;
+      font-size: 12px;
+      color: var(--text);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      min-height: 40px;
+    }
+
+    .pill:hover {
+      transform: translateY(-1px);
+      background: var(--bg-card);
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    [data-theme="light"] .pill:hover {
+      border-color: rgba(0,0,0,0.14);
+    }
+
+    .hero-side {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mini-card {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+    }
+
+    .mini-card-title {
+      font-size: 12px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      border: 1px solid rgba(91,158,138,0.15);
+      font-size: 12px;
+      letter-spacing: 0.3px;
+      line-height: 1;
+    }
+
+    .grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--bg-card);
+    }
+
+    .panel h2 {
+      font-size: 14px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .panel p, .panel li {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-dim);
+    }
+
+    .panel ul { padding-left: 18px; }
+
+    .orbit-wrap {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .orbit-hint {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.8;
+    }
+
+    .orbit {
+      position: relative;
+      width: min(420px, 100%);
+      aspect-ratio: 1 / 1;
+      margin: 6px auto 0;
+      border-radius: 999px;
+      border: 1px dashed rgba(255,255,255,0.12);
+      background: radial-gradient(circle at center, rgba(91,158,138,0.10), transparent 65%);
+    }
+
+    [data-theme="light"] .orbit {
+      border-color: rgba(0,0,0,0.12);
+      background: radial-gradient(circle at center, rgba(61,122,106,0.10), transparent 65%);
+    }
+
+    .orbit-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 148px;
+      height: 148px;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+      padding: 12px;
+    }
+
+    [data-theme="light"] .orbit-center {
+      background: rgba(0,0,0,0.03);
+    }
+
+    .orbit-center strong {
+      font-size: 14px;
+      letter-spacing: 0.4px;
+      color: var(--text);
+    }
+
+    .orbit-center span {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-dim);
+    }
+
+    .orbit-card {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(-1 * var(--radius))) rotate(calc(-1 * var(--angle)));
+      width: 132px;
+      min-height: 72px;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+      color: var(--text);
+    }
+
+    [data-theme="light"] .orbit-card {
+      background: rgba(0,0,0,0.03);
+    }
+
+    .orbit-card:hover {
+      transform: translate(-50%, -50%) rotate(var(--angle)) translateY(calc(-1 * var(--radius))) rotate(calc(-1 * var(--angle))) translateY(-4px);
+      border-color: rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.06);
+    }
+
+    [data-theme="light"] .orbit-card:hover {
+      border-color: rgba(0,0,0,0.14);
+      background: rgba(0,0,0,0.045);
+    }
+
+    .orbit-card .label {
+      font-size: 12px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .orbit-card .title {
+      font-size: 13px;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    .about-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(10, 10, 15, 0.72);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    [data-theme="light"] .about-modal {
+      background: rgba(255, 255, 255, 0.84);
+    }
+
+    .about-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .about-modal-card {
+      width: min(640px, 100%);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      box-shadow: 0 24px 72px rgba(0, 0, 0, 0.45);
+      padding: 18px 18px 16px;
+    }
+
+    [data-theme="light"] .about-modal-card {
+      background: #ffffff;
+    }
+
+    .about-modal-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .about-modal-title {
+      font-size: 16px;
+      letter-spacing: -0.2px;
+      color: var(--text);
+    }
+
+    .about-modal-close {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .about-modal-body {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-dim);
+      white-space: pre-line;
+    }
+
+    body.about-modal-open {
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+      .page { padding: 92px 16px 84px; }
+      .unified-topbar { padding: 0 16px; }
+    }
+
+    @media (max-width: 520px) {
+      .hero-title { font-size: 28px; }
+      .orbit-center { width: 136px; height: 136px; }
+      .orbit-card { width: 124px; }
+    }
+  </style>
+  <link rel="stylesheet" href="./site.css">
+  <script src="./site.js" defer></script>
+</head>
+<body>
+  <header class="unified-topbar">
+    <a class="unified-brand" href="./index.html" aria-label="LeonardoLi"><span class="brand-mark" aria-hidden="true"></span></a>
+    <nav class="unified-nav">
+      <a href="./index.html">Home</a>
+      <a href="./works.html">Work</a>
+      <a href="./art/index.html">Art</a>
+      <a href="./resume.html">Resume</a>
+      <a class="active" href="./about.html">About</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
+        <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+      <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="12" x2="20" y2="12"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <div class="mobile-menu-section">
+      <a href="./index.html">Home</a>
+      <a href="./works.html">Work</a>
+      <a href="./art/index.html">Art</a>
+      <a href="./resume.html">Resume</a>
+      <a href="./about.html">About</a>
+    </div>
+  </div>
+
+  <main class="page">
+    <section class="hero">
+      <div>
+        <div class="hero-kicker">About me</div>
+        <h1 class="hero-title">黎铭晞 <span>/ Leonardo Li</span></h1>
+        <p class="hero-desc">
+          AI 交互设计师。HCI 背景，擅长 AI 对话工作流、可解释性 AI 设计与多模态实时交互。<br>
+          我喜欢把想法做成“能点、能试、能跑起来”的原型，从用户洞察到 Vibe Coding 前端实现，尽量把体验做得更有温度一点。
+        </p>
+        <div class="hero-links">
+          <a class="pill" href="mailto:leonardolee351@gmail.com">Email · leonardolee351@gmail.com</a>
+          <a class="pill" href="./works.html">看作品</a>
+          <a class="pill" href="./resume.html">看简历</a>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="mini-card">
+          <div class="mini-card-title">Interests</div>
+          <div class="tag-row">
+            <span class="tag">摄影 / 影像</span>
+            <span class="tag">运动 / 户外</span>
+            <span class="tag">AI Native</span>
+            <span class="tag">多模态交互</span>
+            <span class="tag">数据叙事</span>
+            <span class="tag">交互装置</span>
+          </div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title">Now</div>
+          <div style="font-size:14px;line-height:1.9;color:var(--text-dim);">
+            学习与实践：AI 产品体验 + 设计系统 + 前端快速验证
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="panel">
+        <h2>我在意的事</h2>
+        <ul>
+          <li>让“AI 的回应既有用又有温度”，不要机械，不要装懂。</li>
+          <li>把复杂的东西做得更清晰：信息层级、反馈、状态与节奏。</li>
+          <li>快速验证：先搭骨架再填血肉，用原型把讨论变具体。</li>
+        </ul>
+      </section>
+
+      <section class="panel orbit-wrap">
+        <h2>碎碎念卡片环</h2>
+        <div class="orbit-hint">点一张小卡片，打开一段更私人的“说明书”。</div>
+        <div class="orbit" aria-label="关于我的卡片环">
+          <div class="orbit-center">
+            <strong>小癖好</strong>
+            <span>点击周围的卡片</span>
+          </div>
+          <button class="orbit-card" type="button" style="--angle: 0deg; --radius: 170px;" data-title="摄影 / 影像" data-body="我会用相机记录城市的光线与边角。\n比起“宏大叙事”，更喜欢把注意力放在细节的质感上。">
+            <div class="label">habit</div>
+            <div class="title">摄影 / 影像</div>
+          </button>
+          <button class="orbit-card" type="button" style="--angle: 60deg; --radius: 170px;" data-title="运动 / 户外" data-body="我喜欢让身体先动起来：走很远、跑一段、换个空气。\n很多卡住的设计问题，反而是在路上想通的。">
+            <div class="label">habit</div>
+            <div class="title">运动 / 户外</div>
+          </button>
+          <button class="orbit-card" type="button" style="--angle: 120deg; --radius: 170px;" data-title="我做原型的方式" data-body="我不太喜欢只讨论“应该是什么样”。\n更倾向先把关键路径做成能点的版本，再一起挑毛病。">
+            <div class="label">note</div>
+            <div class="title">先做能点的</div>
+          </button>
+          <button class="orbit-card" type="button" style="--angle: 180deg; --radius: 170px;" data-title="对 AI 的期待" data-body="我更关注 AI 能不能帮用户“做成事”。\n不是陪聊，而是把建议变成下一步动作。">
+            <div class="label">note</div>
+            <div class="title">把建议变动作</div>
+          </button>
+          <button class="orbit-card" type="button" style="--angle: 240deg; --radius: 170px;" data-title="界面审美的小偏好" data-body="我偏爱克制的层次感：清晰的栅格、稳定的间距、轻微的动效。\n看起来舒服，操作也更不费劲。">
+            <div class="label">taste</div>
+            <div class="title">克制的层次</div>
+          </button>
+          <button class="orbit-card" type="button" style="--angle: 300deg; --radius: 170px;" data-title="我怎么做取舍" data-body="当想法太多时，我会先问：\n1) 用户现在最想解决什么？\n2) 哪一步最容易卡住？\n3) 最小的“可用闭环”是什么？">
+            <div class="label">rule</div>
+            <div class="title">先闭环再加戏</div>
+          </button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>关于这份网站</h2>
+        <p>
+          这是一份持续迭代的作品集网站。我会把最新的项目、过程稿、以及一些小的交互实验放进来。
+          如果你对某个项目或某张图感兴趣，欢迎直接邮件我。
+        </p>
+      </section>
+    </section>
+  </main>
+
+  <div class="about-modal" id="aboutModal" aria-hidden="true">
+    <div class="about-modal-card" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle">
+      <div class="about-modal-top">
+        <div class="about-modal-title" id="aboutModalTitle"></div>
+        <button class="about-modal-close" type="button" aria-label="关闭">×</button>
+      </div>
+      <div class="about-modal-body" id="aboutModalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const modal = document.getElementById('aboutModal');
+      const titleEl = document.getElementById('aboutModalTitle');
+      const bodyEl = document.getElementById('aboutModalBody');
+      const closeBtn = modal ? modal.querySelector('.about-modal-close') : null;
+      const cards = Array.from(document.querySelectorAll('.orbit-card'));
+      let lastActive = null;
+
+      if (!modal || !titleEl || !bodyEl || !closeBtn || cards.length === 0) return;
+
+      function close() {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('about-modal-open');
+        if (lastActive && 'focus' in lastActive) lastActive.focus();
+        lastActive = null;
+      }
+
+      function open(card) {
+        lastActive = document.activeElement;
+        titleEl.textContent = card.dataset.title || '';
+        bodyEl.textContent = card.dataset.body || '';
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('about-modal-open');
+        closeBtn.focus();
+      }
+
+      cards.forEach((card) => {
+        card.addEventListener('click', () => open(card));
+      });
+
+      modal.addEventListener('click', (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        if (target === modal) close();
+      });
+
+      closeBtn.addEventListener('click', close);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        if (!modal.classList.contains('is-open')) return;
+        close();
+      });
+    })();
+  </script>
+</body>
+</html>

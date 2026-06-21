@@ -22,6 +22,34 @@
 
   setTheme(getTheme());
 
+  function normalizeNavigationLinks() {
+    const pathname = String(location.pathname || '').replace(/\\/g, '/');
+    const isNested = /\/docs\/(?:art|cases)\//.test(pathname);
+    const prefix = isNested ? '../' : './';
+    const routes = {
+      home: `${prefix}index.html`,
+      work: `${prefix}works.html`,
+      art: `${prefix}art/index.html`,
+      resume: `${prefix}resume.html`,
+      about: `${prefix}about.html`,
+    };
+
+    document.querySelectorAll('.unified-brand').forEach((brand) => {
+      brand.setAttribute('href', routes.home);
+    });
+
+    document.querySelectorAll('.unified-nav a, #mobileMenu a').forEach((link) => {
+      const label = (link.textContent || '').trim().toLowerCase();
+      if (label === 'home') link.setAttribute('href', routes.home);
+      else if (label === 'work') link.setAttribute('href', routes.work);
+      else if (label === 'art') link.setAttribute('href', routes.art);
+      else if (label === 'resume') link.setAttribute('href', routes.resume);
+      else if (label === 'about') link.setAttribute('href', routes.about);
+    });
+  }
+
+  normalizeNavigationLinks();
+
   const themeButtons = Array.from(
     document.querySelectorAll('[data-theme-toggle], #themeToggle, #navThemeToggle')
   ).filter(Boolean);
@@ -104,7 +132,7 @@
 
   function initImagePreview() {
     const pathname = String(location.pathname || '').replace(/\\/g, '/');
-    if (!pathname.includes('/cases/')) return;
+    if (!pathname.includes('/cases/') && !pathname.includes('/art/')) return;
     const main = document.querySelector('.main');
     if (!main) return;
 
