@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing · Aurora Vision Pro UI</title>
+    <link rel="stylesheet" href="./testing.css">
+    <script src="./vendor/three.min.js"></script>
+    <script src="./vendor/gsap.min.js"></script>
+    <script src="./testing.js?v=2" defer></script>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <div class="ui-layer">
+        <header>
+            <div class="logo">AURORA.LAB</div>
+            <nav aria-label="Primary">
+                <a class="glass-chip" href="./index.html#home">Home</a>
+                <a class="glass-chip" href="./works.html">Works</a>
+                <button class="glass-btn" type="button" data-action="pulse">Pulse</button>
+            </nav>
+        </header>
+        <main>
+            <div class="hero">
+                <h1>Glass UI<br>Meets <strong>Aurora</strong></h1>
+                <p>保留极简结构（header / main / footer），升级为 Vision Pro 风格玻璃组件系统，并用 Three.js + ShaderMaterial 实现“流光前缘 + 柔化尾迹”的极光流苏背景。</p>
+                <div class="hero-actions">
+                    <button class="glass-btn glass-surface primary" type="button" data-action="engage">Engage</button>
+                    <button class="glass-btn glass-surface" type="button" data-action="idle">Idle</button>
+                </div>
+            </div>
+
+            <section class="cards" aria-label="Demo Cards">
+                <article class="glass-card glass-surface">
+                    <h2>States</h2>
+                    <p>hover / pressed / focus-visible / disabled 状态明确，不依赖背景辨识。</p>
+                    <div class="state-row">
+                        <button class="glass-btn glass-surface" type="button">Default</button>
+                        <button class="glass-btn glass-surface" type="button" disabled>Disabled</button>
+                        <a class="glass-btn glass-surface" href="./resume.html">Link</a>
+                    </div>
+                </article>
+            </section>
+        </main>
+        <footer>
+            <div>© 2026 REPLICATION LAB.</div>
+            <div class="footer-right">
+                <span class="footer-hint">MOVE MOUSE</span>
+                <span class="glass-chip glass-surface" id="demo-status">OK</span>
+                <span class="glass-chip glass-surface" id="demo-motion">Motion: On</span>
+                <span class="glass-chip glass-surface" id="demo-webgl">WebGL: On</span>
+                <span class="glass-chip glass-surface" id="demo-gsap">GSAP: On</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
