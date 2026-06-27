@@ -1,47 +1,61 @@
 import { Reveal } from "@/components/Reveal";
 
+const portfolioFigmaBase =
+  "https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?t=lV4KMbHcHR63JHFF-1";
+
+const portfolioNodeLink = (nodeId: string) =>
+  `${portfolioFigmaBase}&node-id=${encodeURIComponent(nodeId).replace(/%3A/g, "-")}`;
+
 const projects = [
   {
     year: "2025",
     title: "JianCareer · AI 求职助手",
     summary: "体验设计 · Vibe Coding · 设计系统",
-    image: "/docs/project_cover/jiancareer.jpg",
-    href: "/docs/cases/Jiancareer.html",
+    image: "./project_cover/jiancareer.jpg",
+    href: "./cases/Jiancareer.html",
+    figmaHref:
+      "https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1&t=0TkLYv2ivkakbyUG-1",
   },
   {
     year: "2025",
     title: "Anxious Kit",
     summary: "可穿戴情绪辅助系统 · 生理信号监测",
-    image: "/docs/project_cover/anxious.jpg",
-    href: "/docs/cases/Anxious-Kit.html",
+    image: "./project_cover/anxious.jpg",
+    href: "./cases/Anxious-Kit.html",
+    figmaHref: portfolioNodeLink("438:34"),
   },
   {
     year: "2025",
     title: "StoryVibe",
     summary: "AI 视频叙事中间层 · 创意工作流",
-    image: "/docs/project_cover/storyvibe.jpg",
-    href: "/docs/cases/StoryVibe.html",
+    image: "./project_cover/storyvibe.jpg",
+    href: "./cases/StoryVibe.html",
+    figmaHref:
+      "https://www.figma.com/design/W3hR0cyqjajMyKIcNMExTe/GenAI-Video?node-id=0-1&t=Q6eDkj0oiaODBjGm-1",
   },
   {
     year: "2024",
     title: "MemoryLens",
     summary: "VisionPro · 多模态交互 · 黑客松",
-    image: "/docs/project_cover/memorylens.jpg",
-    href: "/docs/cases/MemoryLens.html",
+    image: "./project_cover/memorylens.jpg",
+    href: "./cases/MemoryLens.html",
+    figmaHref: portfolioNodeLink("436:5"),
   },
   {
     year: "2024",
     title: "AI 启蒙代练屋",
     summary: "AI 教育玩具 · 用户研究 · 交互定义",
-    image: "/docs/project_cover/toys.png",
-    href: "/docs/cases/Toys.html",
+    image: "./project_cover/toys.png",
+    href: "./cases/Toys.html",
+    figmaHref: portfolioNodeLink("438:46"),
   },
   {
     year: "2024",
     title: "Twin City Tale",
     summary: "深港双城数据叙事 · 前端开发",
-    image: "/docs/project_cover/twincity.jpg",
-    href: "/docs/cases/Twin-City-Tale.html",
+    image: "./project_cover/twincity.jpg",
+    href: "./cases/Twin-City-Tale.html",
+    figmaHref: portfolioNodeLink("689:28"),
   },
 ];
 
@@ -102,7 +116,7 @@ export function WorkSection3() {
         <div className="mt-12 flex justify-center md:mt-14">
           <Reveal delay={0.08} className="w-full">
             <a
-              href="/docs/works.html"
+              href="./works.html"
               className="accent-ring glass-panel mx-auto inline-flex min-h-[52px] items-center justify-between rounded-full px-6 text-[12px] tracking-[0.08em] text-white/85 transition-transform duration-300 hover:scale-[1.02] hover:text-white"
               style={{ width: "min(520px, 100%)" }}
             >

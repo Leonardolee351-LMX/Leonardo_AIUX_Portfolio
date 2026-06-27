@@ -247,10 +247,17 @@ body {
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--border);
-  text-decoration: none;
   background: var(--card-bg);
   color: inherit;
   transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+}
+
+.card-primary-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
 }
 
 .card--xl { grid-column: span 2; grid-row: span 2; }
@@ -330,6 +337,14 @@ body {
   align-items: center;
   text-align: center;
   width: 100%;
+}
+
+.grid.view-list .card-actions {
+  position: static;
+  top: auto;
+  right: auto;
+  margin-top: 18px;
+  justify-content: center;
 }
 
 .grid.view-list .card:hover .title {
@@ -444,6 +459,45 @@ body {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.card-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.card-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(8, 8, 10, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: rgba(255,255,255,0.9);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.card-action:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(18, 18, 22, 0.9);
+}
+
+[data-theme="light"] .card-action {
+  background: rgba(255,255,255,0.82);
+  color: #111;
 }
 
 .card:hover .meta,
@@ -607,7 +661,8 @@ body {
 
     <section class="grid">
       <!-- 1. JianCareer (Priority 1) -->
-      <a class="card card--xl" data-category="product" href="./cases/Jiancareer.html">
+      <article class="card card--xl" data-category="product">
+        <a class="card-primary-link" href="./cases/Jiancareer.html">
         <div class="thumb">
           <img src="./project_cover/jiancareer.jpg" alt="JianCareer">
           <div class="meta">
@@ -616,10 +671,15 @@ body {
             <div class="tags"><span class="tag">#Product</span><span class="tag">#AI</span><span class="tag">#Design System</span></div>
           </div>
         </div>
-      </a>
+        </a>
+        <div class="card-actions">
+          <a class="card-action" href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1&t=0TkLYv2ivkakbyUG-1" target="_blank" rel="noopener noreferrer">Figma</a>
+        </div>
+      </article>
 
       <!-- 2. Anxious Kit (Priority 2) -->
-      <a class="card card--sm" data-category="product" href="./cases/Anxious-Kit.html">
+      <article class="card card--sm" data-category="product">
+        <a class="card-primary-link" href="./cases/Anxious-Kit.html">
         <div class="thumb">
           <img src="./project_cover/anxious.jpg" alt="Anxious Kit">
           <div class="meta">
@@ -628,10 +688,15 @@ body {
             <div class="tags"><span class="tag">#Product</span><span class="tag">#AI Agent</span><span class="tag">#Wearable</span></div>
           </div>
         </div>
-      </a>
+        </a>
+        <div class="card-actions">
+          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=438-34&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
+        </div>
+      </article>
 
       <!-- 3. StoryVibe (Priority 3) -->
-      <a class="card card--wide" data-category="product" href="./cases/StoryVibe.html">
+      <article class="card card--wide" data-category="product">
+        <a class="card-primary-link" href="./cases/StoryVibe.html">
         <div class="thumb">
           <img src="./project_cover/storyvibe.jpg" alt="StoryVibe">
           <div class="meta">
@@ -641,10 +706,15 @@ body {
             <div class="tags"><span class="tag">#Product</span><span class="tag">#GenAI</span><span class="tag">#Interaction</span></div>
           </div>
         </div>
-      </a>
+        </a>
+        <div class="card-actions">
+          <a class="card-action" href="https://www.figma.com/design/W3hR0cyqjajMyKIcNMExTe/GenAI-Video?node-id=0-1&t=Q6eDkj0oiaODBjGm-1" target="_blank" rel="noopener noreferrer">Figma</a>
+        </div>
+      </article>
 
       <!-- 4. MemoryLens (Priority 4) -->
-      <a class="card card--tall" data-category="tech" href="./cases/MemoryLens.html">
+      <article class="card card--tall" data-category="tech">
+        <a class="card-primary-link" href="./cases/MemoryLens.html">
         <div class="thumb">
           <img src="./project_cover/memorylens.jpg" alt="MemoryLens">
           <div class="meta">
@@ -653,10 +723,15 @@ body {
             <div class="tags"><span class="tag">#Tech</span><span class="tag">#MR</span><span class="tag">#Multimodal</span></div>
           </div>
         </div>
-      </a>
+        </a>
+        <div class="card-actions">
+          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=436-5&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
+        </div>
+      </article>
 
       <!-- 5. Toys (Priority 5) -->
-      <a class="card card--sm" data-category="product" href="./cases/Toys.html">
+      <article class="card card--sm" data-category="product">
+        <a class="card-primary-link" href="./cases/Toys.html">
         <div class="thumb">
           <img src="./project_cover/toys.png" alt="AI 启蒙代练屋">
           <div class="meta">
@@ -665,10 +740,15 @@ body {
             <div class="tags"><span class="tag">#Product</span><span class="tag">#AI</span><span class="tag">#Research</span></div>
           </div>
         </div>
-      </a>
+        </a>
+        <div class="card-actions">
+          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=438-46&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
+        </div>
+      </article>
 
       <!-- 6. Twin City Tales (Priority 6) -->
-      <a class="card card--wide" data-category="tech" href="./cases/Twin-City-Tale.html">
+      <article class="card card--wide" data-category="tech">
+        <a class="card-primary-link" href="./cases/Twin-City-Tale.html">
         <div class="thumb">
           <img src="./project_cover/twincity.jpg" alt="Twin City Tale">
           <div class="meta">
@@ -677,10 +757,15 @@ body {
             <div class="tags"><span class="tag">#Tech</span><span class="tag">#DataVis</span><span class="tag">#Frontend</span></div>
           </div>
         </div>
-      </a>
+        </a>
+        <div class="card-actions">
+          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=689-28&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
+        </div>
+      </article>
 
       <!-- 7. CO-EVO (Creative) -->
-      <a class="card card--sm" data-category="creative" href="./cases/CO-EVO.html">
+      <article class="card card--sm" data-category="creative">
+        <a class="card-primary-link" href="./cases/CO-EVO.html">
         <div class="thumb">
           <img src="./project_cover/coevo.jpg" alt="CO-EVO">
           <div class="meta">
@@ -689,10 +774,15 @@ body {
             <div class="tags"><span class="tag">#Creative</span><span class="tag">#Install</span><span class="tag">#Realtime</span></div>
           </div>
         </div>
-      </a>
+        </a>
+        <div class="card-actions">
+          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=848-13&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
+        </div>
+      </article>
 
       <!-- 8. Stariver (UI) -->
-      <a class="card card--sm" data-category="product" href="./cases/Stariver.html">
+      <article class="card card--sm" data-category="product">
+        <a class="card-primary-link" href="./cases/Stariver.html">
         <div class="thumb">
           <img src="./project_cover/stariver.jpg" alt="渡星河交互界面设计">
           <div class="meta">
@@ -701,10 +791,15 @@ body {
             <div class="tags"><span class="tag">#Product</span><span class="tag">#UI</span><span class="tag">#Brand</span></div>
           </div>
         </div>
-      </a>
+        </a>
+        <div class="card-actions">
+          <a class="card-action" href="https://www.figma.com/design/rx3fASf9UORfWOYpYWEqkd/%E6%B8%A1%E6%98%9F%E6%B2%B3%E9%AB%98%E4%BF%9D%E7%9C%9F%E3%80%90%E4%BA%A4%E4%BB%98%E3%80%91?node-id=73-4495&t=MHO2CWudVzccZL6I-1" target="_blank" rel="noopener noreferrer">Figma</a>
+        </div>
+      </article>
 
       <!-- 9. Leke (Product Analysis) -->
-      <a class="card card--sm" data-category="product" href="./cases/Leke.html">
+      <article class="card card--sm" data-category="product">
+        <a class="card-primary-link" href="./cases/Leke.html">
         <div class="thumb">
           <img src="./project_cover/leke.jpg" alt="乐刻新手成长系统">
           <div class="meta">
@@ -713,7 +808,11 @@ body {
             <div class="tags"><span class="tag">#Product</span><span class="tag">#UX</span><span class="tag">#Service</span></div>
           </div>
         </div>
-      </a>
+        </a>
+        <div class="card-actions">
+          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=0-1&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
+        </div>
+      </article>
     </section>
   </main>
   <script>

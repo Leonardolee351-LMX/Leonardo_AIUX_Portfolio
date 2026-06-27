@@ -2,17 +2,21 @@ import { useEffect, useId, useRef, useState } from "react";
 import gsap from "gsap";
 
 const navItems = [
-  { label: "Home", href: "#home" },
-  { label: "Work", href: "/docs/works.html" },
-  { label: "Art", href: "/docs/art/index.html" },
-  { label: "Resume", href: "/docs/resume.html" },
-  { label: "About", href: "/docs/about.html" },
+  { label: "Home", href: "./index.html#home" },
+  { label: "Work", href: "./works.html" },
+  { label: "Art", href: "./art/index.html" },
+  { label: "Resume", href: "./resume.html" },
+  { label: "About", href: "./about.html" },
 ] as const;
 
 export function Navigation3() {
   const navRef = useRef<HTMLElement>(null);
   const menuId = useId();
   const [open, setOpen] = useState(false);
+  const brandMaskStyle = {
+    WebkitMaskImage: 'url("./img/icon/Vector.svg")',
+    maskImage: 'url("./img/icon/Vector.svg")',
+  } as const;
 
   useEffect(() => {
     if (!navRef.current) return;
@@ -42,11 +46,11 @@ export function Navigation3() {
         <div className="topbar-frost absolute inset-0" aria-hidden="true" />
 
         <a
-          href="#home"
+          href="./index.html#home"
           className="brand-hitbox relative inline-flex items-center justify-center rounded-xl"
           aria-label="Leonardo Li"
         >
-          <span className="brand-mark" aria-hidden="true" />
+          <span className="brand-mark" style={brandMaskStyle} aria-hidden="true" />
         </a>
 
         <nav className="relative hidden items-center gap-8 text-[13px] tracking-[0.08em] text-white/62 md:flex">

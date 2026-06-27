@@ -92,11 +92,9 @@
     width: 108px;
     display: inline-block;
     background: #fff;
-    -webkit-mask-image: url("/docs/img/icon/Vector.svg");
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
-    mask-image: url("/docs/img/icon/Vector.svg");
     mask-repeat: no-repeat;
     mask-position: center;
     mask-size: contain;

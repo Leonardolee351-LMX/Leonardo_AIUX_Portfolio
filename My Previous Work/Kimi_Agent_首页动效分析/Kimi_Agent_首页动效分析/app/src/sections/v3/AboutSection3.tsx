@@ -50,7 +50,7 @@ export function AboutSection3() {
 
         <Reveal delay={0.26} className="mt-10 flex">
           <a
-            href="/docs/about.html"
+            href="./about.html"
             className="accent-ring glass-panel inline-flex w-full items-center justify-between rounded-full px-6 py-3 text-[12px] tracking-[0.08em] text-white/80 transition-transform duration-300 hover:scale-[1.02] hover:text-white sm:w-auto"
           >
             <strong className="font-sans font-semibold tracking-normal">了解更多</strong>

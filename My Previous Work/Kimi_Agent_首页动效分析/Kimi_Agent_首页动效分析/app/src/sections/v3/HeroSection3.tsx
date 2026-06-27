@@ -1,6 +1,11 @@
 import { Reveal } from "@/components/Reveal";
 
 export function HeroSection3() {
+  const brandMaskStyle = {
+    WebkitMaskImage: 'url("./img/icon/Vector.svg")',
+    maskImage: 'url("./img/icon/Vector.svg")',
+  } as const;
+
   return (
     <section
       id="home"
@@ -9,7 +14,7 @@ export function HeroSection3() {
     >
       <div className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col items-center justify-center py-10">
         <Reveal delay={0.05} className="mb-5">
-          <span className="brand-mark block h-[38px] w-[156px]" aria-hidden="true" />
+          <span className="brand-mark block h-[38px] w-[156px]" style={brandMaskStyle} aria-hidden="true" />
         </Reveal>
 
         <Reveal delay={0.12} className="section-label mb-6">
@@ -52,14 +57,14 @@ export function HeroSection3() {
               <span aria-hidden="true">→</span>
             </span>
           </a>
-          <a href="/docs/resume.html" className="glass-button-shell w-full sm:w-[min(520px,100%)] lg:flex-1 lg:min-w-0">
+          <a href="./resume.html" className="glass-button-shell w-full sm:w-[min(520px,100%)] lg:flex-1 lg:min-w-0">
             <span className="glass-button-sheen" aria-hidden="true" />
             <span className="glass-button-core text-[12px] tracking-[0.08em]">
               <strong className="font-sans font-semibold tracking-normal">查阅简历</strong>
               <span aria-hidden="true">→</span>
             </span>
           </a>
-          <a href="/docs/art/index.html" className="glass-button-shell w-full sm:w-[min(520px,100%)] lg:flex-1 lg:min-w-0">
+          <a href="./art/index.html" className="glass-button-shell w-full sm:w-[min(520px,100%)] lg:flex-1 lg:min-w-0">
             <span className="glass-button-sheen" aria-hidden="true" />
             <span className="glass-button-core text-[12px] tracking-[0.08em]">
               <strong className="font-sans font-semibold tracking-normal">艺术创想</strong>

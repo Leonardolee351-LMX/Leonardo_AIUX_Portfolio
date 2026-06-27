@@ -74,13 +74,13 @@ export function ContactSection3() {
               </a>
 
               <div className="mt-8 grid grid-cols-1 gap-3 text-[11px] uppercase tracking-[0.16em] text-white/40">
-                <a href="/docs/resume.html" target="_blank" rel="noreferrer" className="transition-colors hover:text-white/75">
+                <a href="./resume.html" target="_blank" rel="noreferrer" className="transition-colors hover:text-white/75">
                   Open resume
                 </a>
-                <a href="/docs/works.html" target="_blank" rel="noreferrer" className="transition-colors hover:text-white/75">
+                <a href="./works.html" target="_blank" rel="noreferrer" className="transition-colors hover:text-white/75">
                   Browse all works
                 </a>
-                <a href="/docs/about.html" target="_blank" rel="noreferrer" className="transition-colors hover:text-white/75">
+                <a href="./about.html" target="_blank" rel="noreferrer" className="transition-colors hover:text-white/75">
                   About
                 </a>
               </div>
@@ -107,4 +107,3 @@ export function ContactSection3() {
     </section>
   );
 }
-

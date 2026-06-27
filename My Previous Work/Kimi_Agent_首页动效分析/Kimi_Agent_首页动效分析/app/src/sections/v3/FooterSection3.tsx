@@ -26,6 +26,11 @@ const socials = [
 ] as const;
 
 export function FooterSection3() {
+  const brandMaskStyle = {
+    WebkitMaskImage: 'url("./img/icon/Vector.svg")',
+    maskImage: 'url("./img/icon/Vector.svg")',
+  } as const;
+
   return (
     <footer
       data-video-stage="footer"
@@ -57,7 +62,7 @@ export function FooterSection3() {
             <Reveal delay={0.16}>
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div className="flex min-h-[32px] items-center gap-4">
-                  <span className="brand-mark block h-[26px] w-[108px] shrink-0" aria-hidden="true" />
+                  <span className="brand-mark block h-[26px] w-[108px] shrink-0" style={brandMaskStyle} aria-hidden="true" />
                 </div>
 
                 <p className="text-[12px] tracking-[0.08em] text-white/46 md:text-center">
