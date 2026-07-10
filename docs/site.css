@@ -229,6 +229,12 @@ pre {
   border-color: var(--border);
 }
 
+.mobile-menu a.active {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  color: var(--text);
+}
+
 .mobile-menu .mobile-menu-title {
   font-size: 11px;
   letter-spacing: 2px;

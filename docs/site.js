@@ -24,7 +24,7 @@
 
   function normalizeNavigationLinks() {
     const pathname = String(location.pathname || '').replace(/\\/g, '/');
-    const isNested = /\/docs\/(?:art|cases)\//.test(pathname);
+    const isNested = /(?:^|\/)(art|cases)(?:\/|$)/.test(pathname);
     const prefix = isNested ? '../' : './';
     const routes = {
       home: `${prefix}index.html`,
@@ -40,28 +40,43 @@
       'resume.html': 'resume',
       'about.html': 'about',
     };
-    const inferredSection = pathname.includes('/art/') ? 'art' : pathname.includes('/cases/') ? 'work' : activeMap[currentPage];
+    const inferredSection = /(?:^|\/)art(?:\/|$)/.test(pathname)
+      ? 'art'
+      : /(?:^|\/)cases(?:\/|$)/.test(pathname)
+        ? 'work'
+        : activeMap[currentPage] || 'home';
+
+    function inferRouteFromLink(link) {
+      const explicitRoute = link.getAttribute('data-route');
+      if (explicitRoute && routes[explicitRoute]) return explicitRoute;
+
+      const href = String(link.getAttribute('href') || '').replace(/\\/g, '/').toLowerCase();
+      if (href.includes('works.html')) return 'work';
+      if (href.includes('art/index.html')) return 'art';
+      if (href.includes('resume.html')) return 'resume';
+      if (href.includes('about.html')) return 'about';
+      if (href.includes('index.html') || href === './' || href === '../' || href === '/') return 'home';
+
+      const label = (link.textContent || '').trim().toLowerCase();
+      if (label === 'home') return 'home';
+      if (label === 'work') return 'work';
+      if (label === 'art') return 'art';
+      if (label === 'resume') return 'resume';
+      if (label === 'about') return 'about';
+      return null;
+    }
 
     document.querySelectorAll('.unified-brand').forEach((brand) => {
       brand.setAttribute('href', routes.home);
     });
 
     document.querySelectorAll('.unified-nav a, #mobileMenu a').forEach((link) => {
-      const label = (link.textContent || '').trim().toLowerCase();
+      const routeKey = inferRouteFromLink(link);
       link.classList.remove('active');
-      if (label === 'home') link.setAttribute('href', routes.home);
-      else if (label === 'work') link.setAttribute('href', routes.work);
-      else if (label === 'art') link.setAttribute('href', routes.art);
-      else if (label === 'resume') link.setAttribute('href', routes.resume);
-      else if (label === 'about') link.setAttribute('href', routes.about);
+      if (!routeKey || !routes[routeKey]) return;
 
-      if (
-        (label === 'home' && inferredSection === 'home') ||
-        (label === 'work' && inferredSection === 'work') ||
-        (label === 'art' && inferredSection === 'art') ||
-        (label === 'resume' && inferredSection === 'resume') ||
-        (label === 'about' && inferredSection === 'about')
-      ) {
+      link.setAttribute('href', routes[routeKey]);
+      if (routeKey === inferredSection) {
         link.classList.add('active');
       }
     });
