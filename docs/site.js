@@ -33,6 +33,14 @@
       resume: `${prefix}resume.html`,
       about: `${prefix}about.html`,
     };
+    const currentPage = pathname.split('/').pop() || 'index.html';
+    const activeMap = {
+      'index.html': 'home',
+      'works.html': 'work',
+      'resume.html': 'resume',
+      'about.html': 'about',
+    };
+    const inferredSection = pathname.includes('/art/') ? 'art' : pathname.includes('/cases/') ? 'work' : activeMap[currentPage];
 
     document.querySelectorAll('.unified-brand').forEach((brand) => {
       brand.setAttribute('href', routes.home);
@@ -40,11 +48,22 @@
 
     document.querySelectorAll('.unified-nav a, #mobileMenu a').forEach((link) => {
       const label = (link.textContent || '').trim().toLowerCase();
+      link.classList.remove('active');
       if (label === 'home') link.setAttribute('href', routes.home);
       else if (label === 'work') link.setAttribute('href', routes.work);
       else if (label === 'art') link.setAttribute('href', routes.art);
       else if (label === 'resume') link.setAttribute('href', routes.resume);
       else if (label === 'about') link.setAttribute('href', routes.about);
+
+      if (
+        (label === 'home' && inferredSection === 'home') ||
+        (label === 'work' && inferredSection === 'work') ||
+        (label === 'art' && inferredSection === 'art') ||
+        (label === 'resume' && inferredSection === 'resume') ||
+        (label === 'about' && inferredSection === 'about')
+      ) {
+        link.classList.add('active');
+      }
     });
   }
 

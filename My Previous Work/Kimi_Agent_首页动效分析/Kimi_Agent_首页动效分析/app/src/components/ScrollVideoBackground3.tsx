@@ -184,7 +184,7 @@ export function ScrollVideoBackground3() {
       <div className="fixed inset-0 overflow-hidden" style={{ zIndex: 0 }}>
         <video
           ref={videoRef}
-          src="./video_333217361261360.mp4"
+          src="./background.mp4"
           autoPlay
           muted
           playsInline
@@ -197,9 +197,9 @@ export function ScrollVideoBackground3() {
             width: "100vw",
             height: "100dvh",
             objectFit: "cover",
-            objectPosition: isMobile ? "72% center" : "center center",
+            objectPosition: isMobile ? "62% center" : "center center",
             opacity: ready ? 0.98 : 0,
-            transform: isMobile ? "scale(1.08)" : "scale(1.01)",
+            transform: isMobile ? "scale(1.06)" : "scale(1.01)",
             filter: "saturate(0.95) brightness(0.88)",
             transition: "opacity 0.8s ease",
           }}

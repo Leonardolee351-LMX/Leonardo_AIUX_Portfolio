@@ -50,7 +50,7 @@ export function HeroSection3() {
         </Reveal>
 
         <Reveal delay={0.34} className="mt-9 flex w-full flex-col items-center justify-center gap-3 lg:flex-row lg:gap-4">
-          <a href="#works" className="glass-button-shell w-full sm:w-[min(520px,100%)] lg:flex-1 lg:min-w-0">
+          <a href="./works.html" className="glass-button-shell w-full sm:w-[min(520px,100%)] lg:flex-1 lg:min-w-0">
             <span className="glass-button-sheen" aria-hidden="true" />
             <span className="glass-button-core text-[12px] tracking-[0.08em]">
               <strong className="font-sans font-semibold tracking-normal">查看项目</strong>
