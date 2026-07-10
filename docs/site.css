@@ -42,14 +42,13 @@ pre {
   padding: 0 20px !important;
   height: 64px !important;
   background:
-    linear-gradient(180deg, rgba(7, 7, 9, 0.58), rgba(7, 7, 9, 0.16) 68%, rgba(7, 7, 9, 0)) !important,
+    linear-gradient(180deg, rgba(7, 7, 9, 0.58), rgba(7, 7, 9, 0.16) 68%, rgba(7, 7, 9, 0)),
     linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent 24%, transparent 76%, rgba(255, 255, 255, 0.04)) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
   backdrop-filter: blur(14px) saturate(150%) !important;
   -webkit-backdrop-filter: blur(14px) saturate(150%) !important;
   transition: all 0.3s ease;
 }
-
 .unified-topbar::before {
   content: "";
   position: absolute;
@@ -101,7 +100,7 @@ pre {
 }
 
 [data-theme="light"] .brand-mark {
-  background: #000;
+  background: #fff;
 }
 
 .unified-nav {
