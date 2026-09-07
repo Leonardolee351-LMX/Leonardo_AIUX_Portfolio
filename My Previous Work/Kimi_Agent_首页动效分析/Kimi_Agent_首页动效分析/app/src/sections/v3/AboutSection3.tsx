@@ -14,29 +14,29 @@ export function AboutSection3() {
 
         <Reveal delay={0.12}>
           <h2 className="mt-6 text-white font-semibold leading-[1.1] tracking-[-0.03em]" style={{ fontSize: "clamp(28px, 4vw, 46px)" }}>
-            Design Manager{" "}
+            AI Product Developer{" "}
             <span className="font-serif italic font-normal text-white/85">
-              · Design Engineer
+              · UX Researcher
             </span>
           </h2>
         </Reveal>
 
         <Reveal delay={0.18}>
           <div className="mt-7 space-y-4 text-[15px] leading-[1.9] text-white/62">
-            <p>我关注产品价值与用户体验之间的可验证闭环，从洞察到上线后的指标复盘。</p>
-            <p>我也会用设计系统与前端实现把细节做到可交付，让方案更接近真实上线的质量。</p>
+            <p>我做 AI Agent 产品与多模态交互：定义问题、设计对话与路径，再用原型和数据验证。</p>
+            <p>设计系统与 Vibe Coding 帮我把方案推到可演示、可评审、接近真实上线的质量。</p>
           </div>
         </Reveal>
 
         <Reveal delay={0.22}>
           <div className="mt-8 flex flex-wrap gap-2">
             {[
-              "Product Strategy",
+              "AI Agent UX",
               "User Research",
-              "PRD",
-              "Interaction Design",
+              "Multimodal",
               "Design Systems",
-              "Frontend",
+              "Rapid Prototype",
+              "Vibe Coding",
             ].map((tag) => (
               <span
                 key={tag}

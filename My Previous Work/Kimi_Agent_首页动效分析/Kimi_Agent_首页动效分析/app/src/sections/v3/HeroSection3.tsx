@@ -10,73 +10,99 @@ export function HeroSection3() {
     <section
       id="home"
       data-video-stage="hero"
-      className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center px-[5vw] pb-24 pt-28 text-center md:pt-32"
+      className="relative flex min-h-[100dvh] w-full flex-col justify-end px-[6vw] pb-28 pt-28 md:justify-center md:pb-24 md:pt-32"
     >
-      <div className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col items-center justify-center py-10">
-        <Reveal delay={0.05} className="mb-5">
-          <span className="brand-mark block h-[38px] w-[156px]" style={brandMaskStyle} aria-hidden="true" />
+      {/* soft vignette so type sits on aurora without fighting it */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_20%_45%,rgba(6,8,12,0.15),transparent_65%),linear-gradient(180deg,rgba(6,8,12,0.2)_0%,transparent_28%,transparent_62%,rgba(6,8,12,0.55)_100%)]"
+        aria-hidden="true"
+      />
+
+      <div className="relative z-[1] mx-auto flex w-full max-w-[1180px] flex-col items-start text-left">
+        <Reveal delay={0.06}>
+          <span
+            className="brand-mark mb-10 block h-[44px] w-[180px] md:mb-14 md:h-[52px] md:w-[214px]"
+            style={brandMaskStyle}
+            aria-label="Leonardo"
+          />
         </Reveal>
 
-        <Reveal delay={0.12} className="section-label mb-6">
-          Home
+        <Reveal delay={0.14}>
+          <p className="mb-5 text-[13px] font-normal tracking-[0.02em] text-white/55 md:mb-6 md:text-[15px]">
+            Hi, I&apos;m{" "}
+            <span className="font-serif italic text-white/88">Leonardo Li</span>
+          </p>
         </Reveal>
 
-        <Reveal delay={0.18}>
-          <h1
-            className="text-balance text-white font-semibold leading-[1.08] tracking-[-0.03em]"
-            style={{ fontSize: "clamp(42px, 6.5vw, 84px)" }}
-          >
-            Hi I'm{" "}
-            <span className="font-serif italic font-normal text-white">LeonardoLi黎铭晞</span>
-            <br />
+        <Reveal delay={0.2}>
+          <h1 className="font-semibold leading-[1.02] tracking-[-0.045em] text-white">
             <span
-              className="bg-gradient-to-r from-[var(--page-accent-a)] to-[var(--page-accent-b)] bg-clip-text font-sans font-semibold text-transparent"
-              style={{ paddingBottom: 2 }}
+              className="block whitespace-nowrap bg-gradient-to-br from-[#e8f7f4] via-[#a8c8e8] to-[#c4b5dc] bg-clip-text text-transparent"
+              style={{ fontSize: "clamp(28px, 6.5vw, 96px)" }}
             >
-              Design Manager
+              AI Product
             </span>
-            <span className="mt-3 block text-[0.24em] uppercase tracking-[0.28em] text-white/42">
-              Design Engineer
+            <span
+              className="mt-1 block whitespace-nowrap bg-gradient-to-br from-[#dceef8] via-[#9bb8e0] to-[#b5a6d4] bg-clip-text text-transparent"
+              style={{ fontSize: "clamp(28px, 6.5vw, 96px)" }}
+            >
+              Developer
+            </span>
+            <span
+              className="mt-5 block font-sans font-medium uppercase tracking-[0.36em] text-white/35"
+              style={{ fontSize: "clamp(10px, 1.1vw, 13px)" }}
+            >
+              &amp; UX Researcher
             </span>
           </h1>
         </Reveal>
 
-        <Reveal delay={0.26}>
-          <p className="mt-7 max-w-[680px] text-pretty text-[15px] leading-[1.85] text-white/66">
-            以产品目标和用户需求为起点，完成洞察、拆解、PRD 与指标闭环。
-            <br />
-            需要时我也会把方案写进前端，保证体验落地。
+        <Reveal delay={0.28}>
+          <p
+            className="mt-8 max-w-[34rem] text-pretty text-white/58 md:mt-10"
+            style={{ fontSize: "clamp(14px, 1.35vw, 17px)", lineHeight: 1.85 }}
+          >
+            面向 AI Agent 与多模态产品——从研究、交互架构到可验证原型，
+            把洞察写成可交付的体验。
           </p>
         </Reveal>
 
-        <Reveal delay={0.34} className="mt-9 flex w-full flex-col items-center justify-center gap-3 lg:flex-row lg:gap-4">
-          <a href="./works.html" className="glass-button-shell w-full sm:w-[min(520px,100%)] lg:flex-1 lg:min-w-0">
-            <span className="glass-button-sheen" aria-hidden="true" />
-            <span className="glass-button-core text-[12px] tracking-[0.08em]">
-              <strong className="font-sans font-semibold tracking-normal">查看项目</strong>
-              <span aria-hidden="true">→</span>
-            </span>
-          </a>
-          <a href="./resume.html" className="glass-button-shell w-full sm:w-[min(520px,100%)] lg:flex-1 lg:min-w-0">
-            <span className="glass-button-sheen" aria-hidden="true" />
-            <span className="glass-button-core text-[12px] tracking-[0.08em]">
-              <strong className="font-sans font-semibold tracking-normal">查阅简历</strong>
-              <span aria-hidden="true">→</span>
-            </span>
-          </a>
-          <a href="./art/index.html" className="glass-button-shell w-full sm:w-[min(520px,100%)] lg:flex-1 lg:min-w-0">
-            <span className="glass-button-sheen" aria-hidden="true" />
-            <span className="glass-button-core text-[12px] tracking-[0.08em]">
-              <strong className="font-sans font-semibold tracking-normal">艺术创想</strong>
-              <span aria-hidden="true">→</span>
-            </span>
-          </a>
+        <Reveal delay={0.36} className="mt-10 md:mt-12">
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a
+              href="./works.html"
+              className="group inline-flex items-center gap-3 text-[14px] font-medium tracking-[0.04em] text-white transition-opacity hover:opacity-90"
+            >
+              <span className="relative">
+                查看项目
+                <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-100 bg-gradient-to-r from-white/80 to-white/20 transition-transform duration-300 group-hover:scale-x-110" />
+              </span>
+              <span
+                className="translate-x-0 text-white/50 transition-transform duration-300 group-hover:translate-x-1"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            </a>
+            <a
+              href="./resume.html"
+              className="text-[13px] tracking-[0.06em] text-white/42 transition-colors hover:text-white/75"
+            >
+              简历
+            </a>
+            <a
+              href="./works.html"
+              className="text-[13px] tracking-[0.06em] text-white/42 transition-colors hover:text-white/75"
+            >
+              More
+            </a>
+          </div>
         </Reveal>
       </div>
 
-      <div className="pointer-events-none absolute bottom-9 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/40">
+      <div className="pointer-events-none absolute bottom-8 left-1/2 z-[1] flex -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.28em] text-white/28">
         <span>Scroll</span>
-        <span className="h-10 w-px bg-gradient-to-b from-white/50 to-transparent" aria-hidden="true" />
+        <span className="h-12 w-px bg-gradient-to-b from-white/40 to-transparent" aria-hidden="true" />
       </div>
     </section>
   );

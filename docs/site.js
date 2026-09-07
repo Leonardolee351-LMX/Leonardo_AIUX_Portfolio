@@ -29,7 +29,6 @@
     const routes = {
       home: `${prefix}index.html`,
       work: `${prefix}works.html`,
-      art: `${prefix}art/index.html`,
       resume: `${prefix}resume.html`,
       about: `${prefix}about.html`,
     };
@@ -41,7 +40,7 @@
       'about.html': 'about',
     };
     const inferredSection = /(?:^|\/)art(?:\/|$)/.test(pathname)
-      ? 'art'
+      ? 'work'
       : /(?:^|\/)cases(?:\/|$)/.test(pathname)
         ? 'work'
         : activeMap[currentPage] || 'home';
@@ -52,7 +51,6 @@
 
       const href = String(link.getAttribute('href') || '').replace(/\\/g, '/').toLowerCase();
       if (href.includes('works.html')) return 'work';
-      if (href.includes('art/index.html')) return 'art';
       if (href.includes('resume.html')) return 'resume';
       if (href.includes('about.html')) return 'about';
       if (href.includes('index.html') || href === './' || href === '../' || href === '/') return 'home';
@@ -60,11 +58,19 @@
       const label = (link.textContent || '').trim().toLowerCase();
       if (label === 'home') return 'home';
       if (label === 'work') return 'work';
-      if (label === 'art') return 'art';
       if (label === 'resume') return 'resume';
       if (label === 'about') return 'about';
       return null;
     }
+
+    // Art 已并入 Work/More：导航中移除 Art 入口
+    document.querySelectorAll('.unified-nav a, #mobileMenu a').forEach((link) => {
+      const href = String(link.getAttribute('href') || '').replace(/\\/g, '/').toLowerCase();
+      const label = (link.textContent || '').trim().toLowerCase();
+      if (href.includes('art/index.html') || label === 'art') {
+        link.remove();
+      }
+    });
 
     document.querySelectorAll('.unified-brand').forEach((brand) => {
       brand.setAttribute('href', routes.home);

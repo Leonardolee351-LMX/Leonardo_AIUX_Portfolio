@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About · 黎铭晞</title>
+  <title>About · Leonardo Li</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -127,6 +127,42 @@
       max-width: 1120px;
       margin: 0 auto;
       padding: 96px 28px 96px;
+    }
+
+    .construction-banner {
+      margin: 0 0 28px;
+      padding: 40px 28px;
+      border-radius: 22px;
+      border: 1px dashed rgba(126, 200, 195, 0.5);
+      background:
+        linear-gradient(135deg, rgba(126, 200, 195, 0.16), rgba(155, 142, 196, 0.12)),
+        rgba(255, 255, 255, 0.03);
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    }
+
+    .construction-banner .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .construction-banner .banner-title {
+      font-size: clamp(32px, 5.5vw, 52px);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .construction-banner .note {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-dim);
+      max-width: 460px;
+      margin: 0 auto;
     }
 
     .hero {
@@ -478,8 +514,7 @@
     <nav class="unified-nav">
       <a href="./index.html">Home</a>
       <a href="./works.html">Work</a>
-      <a href="./art/index.html">Art</a>
-      <a href="./resume.html">Resume</a>
+<a href="./resume.html">Resume</a>
       <a class="active" href="./about.html">About</a>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
         <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -511,20 +546,25 @@
     <div class="mobile-menu-section">
       <a href="./index.html">Home</a>
       <a href="./works.html">Work</a>
-      <a href="./art/index.html">Art</a>
-      <a href="./resume.html">Resume</a>
+<a href="./resume.html">Resume</a>
       <a href="./about.html">About</a>
     </div>
   </div>
 
   <main class="page">
+    <div class="construction-banner" role="status" aria-live="polite">
+      <div class="eyebrow">About</div>
+      <div class="banner-title">施工中，待完成</div>
+      <p class="note">本页仍在整理个人叙事与视觉。投递请先看 Work 主打项目与 Resume。</p>
+    </div>
+
     <section class="hero">
       <div>
         <div class="hero-kicker">About me</div>
-        <h1 class="hero-title">黎铭晞 <span>/ Leonardo Li</span></h1>
+        <h1 class="hero-title">Leonardo Li</h1>
         <p class="hero-desc">
-          AI 交互设计师。HCI 背景，擅长 AI 对话工作流、可解释性 AI 设计与多模态实时交互。<br>
-          我喜欢把想法做成“能点、能试、能跑起来”的原型，从用户洞察到 Vibe Coding 前端实现，尽量把体验做得更有温度一点。
+          AI Product Developer &amp; UX Researcher。HCI 背景，擅长 AI Agent 产品、多模态交互与可验证原型。<br>
+          从用户研究到设计系统与 Vibe Coding，对齐火山引擎 / 字节产品设计方向的投递叙事。
         </p>
         <div class="hero-links">
           <a class="pill" href="mailto:leonardolee351@gmail.com">Email · leonardolee351@gmail.com</a>

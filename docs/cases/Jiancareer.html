@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>简职 JianCareer · 黎铭晞</title>
+<title>简职 JianCareer · Leonardo Li</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -693,8 +693,7 @@ body {
     <div class="unified-nav">
       <a href="../index.html">Home</a>
       <a href="../works.html" class="active">Work</a>
-      <a href="../art/index.html">Art</a>
-      <a href="../resume.html">Resume</a>
+<a href="../resume.html">Resume</a>
       <a href="../about.html">About</a>
     </div>
     <button class="nav-theme-toggle" id="navThemeToggle" type="button" data-theme-toggle aria-label="切换主题">
@@ -726,8 +725,7 @@ body {
   <div class="mobile-menu-section">
     <a href="../index.html">Home</a>
     <a href="../works.html">Work</a>
-    <a href="../art/index.html">Art</a>
-    <a href="../resume.html">Resume</a>
+<a href="../resume.html">Resume</a>
     <a href="../about.html">About</a>
   </div>
   <div class="mobile-menu-section" data-mobile-toc></div>
@@ -748,16 +746,17 @@ body {
 
   <div class="toc-title">目录</div>
   <ul class="toc-list">
-    <li><a href="#assets">补充工程资料</a></li>
     <li><a href="#context" class="active">背景与问题</a></li>
     <li><a href="#role">我的角色</a></li>
-    <li><a href="#process">设计过程</a></li>
-    <li><a href="#process-1" class="sub">阶段一：工作流梳理</a></li>
-    <li><a href="#process-2" class="sub">阶段二：设计规范与原型</a></li>
-    <li><a href="#process-3" class="sub">阶段三：AI Mentor</a></li>
-    <li><a href="#process-4" class="sub">阶段四：设计系统</a></li>
-    <li><a href="#outcome">最终产出</a></li>
+    <li><a href="#architecture">多入口架构</a></li>
+    <li><a href="#process">关键交互决策</a></li>
+    <li><a href="#process-1" class="sub">决策一：结构化引导</a></li>
+    <li><a href="#process-2" class="sub">决策二：渐进式披露</a></li>
+    <li><a href="#process-3" class="sub">决策三：设计系统重构</a></li>
+    <li><a href="#result">成果与证据</a></li>
     <li><a href="#reflection">反思与收获</a></li>
+    <li><a href="#interview">面试思考题 · B 端</a></li>
+    <li><a href="#assets">工程资料</a></li>
   </ul>
 </aside>
 
@@ -767,18 +766,18 @@ body {
 <!-- HERO -->
 <div class="project-hero">
   <h1>简职 JianCareer</h1>
-  <div class="subtitle">AI Agent驱动的求职助手产品 · Case Study</div>
+  <div class="subtitle">AI Agent 求职平台 · 从混乱 Demo 到可交付的多入口体验系统</div>
 </div>
 
 <!-- META BAR -->
 <div class="meta-bar">
   <div class="meta-group">
     <h4>Role</h4>
-    <p>体验设计师<br>前端开发（Vibe Coding）</p>
+    <p>UI Designer &amp; Product Designer<br>0→1 体验与组件规范</p>
   </div>
   <div class="meta-group">
-    <h4>Credits</h4>
-    <p>产品经理 · 后端开发 · 2位设计实习生</p>
+    <h4>Focus</h4>
+    <p>多入口 IA · AI 对话框架<br>设计系统 · Vibe Coding</p>
   </div>
   <div class="meta-group">
     <h4>Time</h4>
@@ -811,28 +810,185 @@ body {
   </a>
 </div>
 
-<!-- KEY RESULTS (Moved from bottom) -->
+<!-- KEY RESULTS -->
 <section id="outcome-preview" class="section-block">
   <h2>项目成果</h2>
   <div class="results-grid">
     <div class="result-item">
       <div class="result-number">TOP 10%</div>
-      <div class="result-label">全平台 AI Agent 排名</div>
+      <div class="result-label">AI Agent 2025 toC 榜单</div>
     </div>
     <div class="result-item">
       <div class="result-number">NO. 1</div>
-      <div class="result-label">职业决策类细分榜单</div>
+      <div class="result-label">伯乐与千里马分榜</div>
     </div>
     <div class="result-item">
-      <div class="result-number">2026</div>
-      <div class="result-label">带领实习生团队工程推进</div>
+      <div class="result-number">40+</div>
+      <div class="result-label">页高保真 + 可复用组件库</div>
+    </div>
+  </div>
+</section>
+
+<section id="context" class="section-block">
+  <h2>背景与问题</h2>
+  <p>求职链路碎片化：简历重复填写、网申入口割裂、职业建议缺乏结构。传统平台给职位列表，却很少帮用户完成「理解自己 → 匹配岗位 → 行动投递」。</p>
+  <p>简职要把这件事做成 <strong>AI Agent 驱动的一站式求职助手</strong>。我入场时，手里是 PM 的一句话需求、草图，以及开发侧已经跑起来但<strong>页面不统一、交互逻辑断裂</strong>的演示原型——产品能演示，却还不能当「可交付体验」来讲。</p>
+
+  <div class="callout">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>核心体验问题</strong>：不是缺页面，而是缺一条可复用的信息架构——新用户注册、老用户 Dashboard、浏览器插件三条入口各自为政，用户每换一个入口都要重新学习。
+    </div>
+  </div>
+
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/00JIAN-HERO.png" alt="简职项目概览">
+    <div class="img-caption">简职 JianCareer — AI Agent 驱动的职业决策与智能行动系统</div>
+  </div>
+</section>
+
+<section id="role" class="section-block">
+  <h2>我的角色</h2>
+  <p>作为 <strong>UI Designer &amp; Product Designer</strong>，我独立拆解产品框架，主导从 Landing、注册登录、浏览器插件、Dashboard、AI 对话到社区的完整页面体系；并从零梳理 user flow 与组件规范，把混乱 Demo 收束成可协作交付的设计系统。后半段通过 Lovable 完成关键界面的 Vibe Coding，用可交互原型验证对话与路径假设。</p>
+</section>
+
+<section id="architecture" class="section-block">
+  <h2>多入口架构：先对齐路径，再谈单页好看</h2>
+  <p>我把体验拆成三条主路径，分别定义目标、关键页面与跳转约束：</p>
+  <p>• <strong>新用户注册路径</strong>：降低首次填写成本，尽快进入「可用简历」状态<br>
+     • <strong>老用户 Dashboard</strong>：进度可视化、投递管理、分析回看<br>
+     • <strong>浏览器插件</strong>：网申现场一键填写——把「已结构化的用户资料」送到真实投递场景</p>
+  <p>设计原则很简单：<strong>信息只录入一次，三端语义一致</strong>。插件不是另起一套表单，而是同一份用户模型的「现场执行层」。</p>
+
+  <div class="compare-block">
+    <div class="compare-item">
+      <img src="../img/projects/jiancareer/03JIAN-插件.png" alt="插件端界面">
+      <div class="compare-label before">插件 = 现场行动层</div>
+    </div>
+    <div class="compare-item">
+      <img src="../img/projects/jiancareer/05-工作台.png" alt="Dashboard界面">
+      <div class="compare-label after">Dashboard = 管理与复盘层</div>
+    </div>
+  </div>
+
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/Jian_01.png" alt="工作流梳理">
+    <div class="img-caption">先用 Miro 把 AI 交互与投递闭环钉死，再进入高保真——避免「先画界面再补逻辑」</div>
+  </div>
+</section>
+
+<section id="process" class="section-block">
+  <h2>关键交互决策</h2>
+
+  <h3 id="process-1">决策一：不用纯 ChatGPT 对话框，改用结构化引导</h3>
+  <p>AI Mentor 要帮用户挖优势、对照 JD、给成长路径。开放式对话框看起来「AI」，但在求职场景会放大不确定性：用户不知道该问什么，模型也容易跑偏。</p>
+  <div class="callout">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-content">
+      <strong>取舍</strong>：牺牲「任意闲聊」的自由度，换取可控的多轮状态机——每次对话只聚焦一个维度（技能 / 经历 / 目标），并明确意图反馈与结果展示模式，降低填写与决策的认知负荷。
+    </div>
+  </div>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/Jian_05.png" alt="AI Mentor界面">
+    <div class="img-caption">AI Mentor — 引导式对话，而不是空白输入框赌用户会提问</div>
+  </div>
+
+  <h3 id="process-2">决策二：个人信息用渐进式披露，而不是一页长表</h3>
+  <p>求职资料天然字段多。我把填写拆成可完成的小步，让用户始终看到「这一步为什么重要、完成后能解锁什么」（例如更准的匹配 / 插件可一键填）。目标是把完成率问题，从「愿不愿意填」转成「每一步都有即时回报」。</p>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/02JIAN-info.png" alt="信息填写">
+    <div class="img-caption">信息填写：分步推进，避免一次性长表劝退</div>
+  </div>
+
+  <h3 id="process-3">决策三：先重构规范，再堆页面数量</h3>
+  <p>面对开发交付的混乱 Demo，我没有直接「美化截图」，而是从 user flow 与组件层重建：色彩、字体、状态、业务模块组件化。40+ 页高保真是结果；真正交付物是<strong>后来实习生也能接着做的组件库与视觉规范</strong>。</p>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/JianCareer_05.png" alt="组件库">
+    <div class="img-caption">组件库与设计规范 —— 把「能演示」升级成「能协作迭代」</div>
+  </div>
+
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/Jian_03.png" alt="Figma高保真原型展示">
+    <div class="img-caption">覆盖官网、认证、填写、插件、Dashboard、分析与社区的完整求职周期</div>
+  </div>
+
+  <p>关键链路我用 <strong>Lovable</strong> 做了 Vibe Coding：设计稿转可点原型，用来验证对话节奏与跳转，而不是等工程排期后才发现交互不通。</p>
+</section>
+
+<section id="result" class="section-block">
+  <h2>成果与证据</h2>
+  <p>产品进入 <strong>AI Agent 2025 toC 软件榜单 TOP 10%</strong>，并在伯乐与千里马分榜取得 <strong>TOP 1</strong>。对我而言，榜单证明的是「垂直场景 + 可讲清的体验架构」比堆功能更有效；设计侧的可复用资产，则是后续工程与实习生协作能继续推进的基础。</p>
+
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/JianCareer_01.png" alt="最终产出">
+    <div class="img-caption">核心功能模块的最终视觉呈现</div>
+  </div>
+</section>
+
+<section id="reflection" class="section-block">
+  <h2>反思与收获</h2>
+
+  <p><strong>交互体验的真正瓶颈</strong>：早期反馈里「交互与体验有巨量提升空间」——拆开看，往往不是缺动效，而是<strong>入口语义不一致、对话状态不清晰、填写没有即时回报</strong>。多入口对齐 + 结构化 Mentor，是我后来反复强调的两条主线。</p>
+
+  <p><strong>关于 AI 产品温度</strong>：过度结构化会像表单机器；过度开放会让用户迷路。Mentor 的价值在中间态：有边界的引导，外加可解释的结果展示。</p>
+
+  <p><strong>如果再做一次</strong>：更早做 3–5 名应届生可用性测试，专门测「首次填写完成率」与「Mentor 下一问是否符合预期」，用任务成功率而不是审美偏好来迭代对话脚本。</p>
+
+  <div class="callout">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-content">
+      <strong>面试可追问点</strong>：为什么坚持三入口同一用户模型？为什么不做纯对话框？组件库如何从混乱 Demo 反推出来？——这三题对应本项目最硬的决策链。更完整的答题框架见下方「面试思考题」。
+    </div>
+  </div>
+</section>
+
+<section id="interview" class="section-block">
+  <h2>面试思考题 · 面向 B 端产品面试官</h2>
+  <p>简职表面是 toC 求职助手，但火山 / 字节类面试官常会把你往「系统、指标、协作、边界」上压。下面每题给<strong>答题骨架</strong>，面试时按自己的真实经历填充数字与反例。</p>
+
+  <h3>Q1 · 如果这是你们公司的 AI 求职产品，你怎么定义成功？</h3>
+  <p><strong>骨架</strong>：分层指标，而不是「用了 AI」。<br>
+  • 体验指标：首次资料完成率、Mentor 会话完成率、插件一键填成功率<br>
+  • 行为指标：7 日回访、投递动作转化（对话 → 投递）<br>
+  • 质量指标：推荐岗位点击后的「相关/不相关」轻反馈、Mentor 下一问是否被采纳<br>
+  • 明确<strong>不</strong>用：日活虚荣、模型回复长度、页面数量</p>
+
+  <h3>Q2 · 为什么不做纯 ChatGPT 对话框？这对「Agent 产品」意味着什么？</h3>
+  <p><strong>骨架</strong>：场景约束 &gt; 模型自由。<br>
+  求职是高认知负荷任务，开放闲聊会放大「不知道问什么」。结构化 Mentor = 有边界的状态机：每轮只挖一个维度，结果可解释。对 B 端表述：这是<strong>可控的 Agent 编排</strong>，不是套壳聊天——便于评测、可回放、可交给运营改脚本。</p>
+
+  <h3>Q3 · 三入口（注册 / Dashboard / 插件）如何证明是同一用户模型，而不是三套产品？</h3>
+  <p><strong>骨架</strong>：信息只录入一次；字段语义跨端一致；插件是「现场执行层」不是另起表单。<br>
+  追问防守：若业务要求插件加字段，先改用户模型契约，再三端同步——否则入口语义会再次撕裂。</p>
+
+  <h3>Q4 · 面对「开发 Demo 已能跑、但体验混乱」，你如何排优先级？</h3>
+  <p><strong>骨架</strong>：先 IA / 路径，再单页视觉；先组件规范，再堆页面数量。<br>
+  理由：演示能过会 ≠ 可协作交付。40+ 页是结果，组件库才是让实习生能接着做的资产。面试官爱听的是「你挡住了什么错误路径」。</p>
+
+  <h3>Q5 · 如果业务方要求「再多接三个 Agent 角色一起聊」，你怎么说不？</h3>
+  <p><strong>骨架</strong>：先问任务目标与验收标准。多 Agent 只有在「分工可解释、输出可拼接、可评测」时才值得上；否则增加延迟与幻觉面。简职阶段优先把单 Mentor 状态机做稳，再谈会诊式扩展。</p>
+
+  <h3>Q6 · 设计系统对工程协作的真实价值是什么？（防「只是好看」）</h3>
+  <p><strong>骨架</strong>：状态完备（空/加载/错误/权限）、业务模块组件化、命名与开发可对齐。<br>
+  证据链：从混乱 Demo → 规范 → Lovable 可点原型验证关键链路，缩短「设计稿好看但交互不通」的反馈环。</p>
+
+  <h3>Q7 · 若只能保留一个核心体验，你会留哪条？为什么？</h3>
+  <p><strong>骨架（选一个主答案并准备备选）</strong>：<br>
+  • 主推：多入口同一用户模型——没有它，后面 AI 再聪明也是重复填写<br>
+  • 备选：结构化 Mentor——没有它，对话无法验收<br>
+  说明取舍：插件炫技、社区热闹都可以后置。</p>
+
+  <div class="callout">
+    <div class="callout-icon">🧭</div>
+    <div class="callout-content">
+      <strong>对火山引擎表述习惯</strong>：少说「我负责了 UI」，多说「问题定义 → 约束 → 验证方式」。每题结尾准备一句：<em>如果指标不涨，我下一步会改什么</em>。
     </div>
   </div>
 </section>
 
 <section id="assets" class="section-block">
-  <h2>补充工程资料</h2>
-  <p>补充：简职后期组件库与网页工程文件（工作记录归档）。该链接可用于面试追问时展示后期工程推进痕迹与组件化沉淀。</p>
+  <h2>工程资料</h2>
+  <p>后期组件库与网页工程文件（工作记录归档），可用于面试追问时展示工程推进痕迹。</p>
   <div class="callout">
     <div class="callout-icon">🧩</div>
     <div class="callout-content">
@@ -840,122 +996,6 @@ body {
       <a href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1&t=0TkLYv2ivkakbyUG-1" target="_blank" rel="noopener noreferrer">简职工作记录（组件库 + 网页工程）</a>
     </div>
   </div>
-</section>
-
-<!-- CONTENT SECTIONS -->
-<section id="context" class="section-block">
-  <h2>背景与问题</h2>
-  <p>在当前竞争激烈的就业市场中，求职者面临着巨大的压力：简历重复填写、信息不对称、职业规划模糊。传统的求职平台往往只提供职位列表，缺乏个性化的指导。<strong>简职 JianCareer</strong> 的诞生，正是为了通过 AI Agent 架构解决这些核心痛点。</p>
-  
-  <div class="callout">
-    <div class="callout-icon">💡</div>
-    <div class="callout-content">
-      <strong>核心挑战</strong>：如何将零散的求职信息整合为一键式的智能行动，并提供具有“专家级”温度的职业指导？
-    </div>
-  </div>
-
-  <div class="img-block">
-    <img src="../img/projects/jiancareer/00JIAN-HERO.png" alt="简职项目概览">
-    <div class="img-caption">简职 JianCareer - AI Agent 驱动的职业决策与智能行动系统</div>
-  </div>
-</section>
-
-<section id="role" class="section-block">
-  <h2>我的角色</h2>
-  <p>作为<strong>体验设计师 (UX/UI)</strong> 与<strong>前端开发 (Vibe Coding)</strong>，我主导了从产品概念定义到高保真原型实现的全过程。同时，我也负责了组件库的搭建，并带领 2026 届设计实习生进行后期工程推进。</p>
-</section>
-
-<section id="process" class="section-block">
-  <h2>设计过程</h2>
-  <h3>01. 工作流梳理 (Workflows)</h3>
-  <p>利用 Miro 梳理了复杂的 AI 交互逻辑，明确了从“简历解析”到“模拟面试”再到“投递建议”的闭环路径。我们将产品定位为“AI Agent 驱动的求职助手”，用户只需填写一次信息即可多端复用。</p>
-  
-  <div class="img-block">
-    <img src="../img/projects/jiancareer/Jian_01.png" alt="工作流梳理">
-    <div class="img-caption">基于 Miro 的复杂 AI 交互工作流梳理</div>
-  </div>
-
-  <p>在Miro的基础上，我从0搭建了<strong>设计规范体系</strong>，包括色彩系统、字体层级、组件规范等，确保后续40+页Figma原型的一致性。</p>
-
-  <!-- Phase 2 -->
-  <h3 id="process-2">阶段二：40+页Figma高保真原型</h3>
-  <p>基于梳理好的工作流，我独立完成了<strong>40+页Figma高保真原型</strong>，覆盖以下核心模块：</p>
-  <p>• <strong>官网</strong>（<a href="https://jian-career.lovable.app/">jian-career.lovable.app</a>）：产品价值传达、功能介绍<br>
-     • <strong>注册登录</strong>：手机号+验证码+微信授权多方式登录<br>
-     • <strong>个人信息填写</strong>：渐进式披露，降低填写门槛<br>
-     • <strong>浏览器插件端</strong>：一键填写网申表单的核心场景<br>
-     • <strong>Dashboard工作台</strong>：求职进度可视化、数据分析<br>
-     • <strong>求职分析</strong>：AI生成的求职报告<br>
-     • <strong>社区</strong>：求职者交流互动空间</p>
-
-  <div class="compare-block">
-    <div class="compare-item">
-      <img src="../img/projects/jiancareer/03JIAN-插件.png" alt="插件端界面">
-      <div class="compare-label before">浏览器插件端</div>
-    </div>
-    <div class="compare-item">
-      <img src="../img/projects/jiancareer/05-工作台.png" alt="Dashboard界面">
-      <div class="compare-label after">Dashboard工作台</div>
-    </div>
-  </div>
-
-  <div class="img-block">
-    <img src="../img/projects/jiancareer/Jian_03.png" alt="Figma高保真原型展示">
-    <div class="img-caption">Figma 高保真原型展示 — 覆盖从网申到管理的完整求职周期</div>
-  </div>
-
-  <!-- Phase 3 -->
-  <h3 id="process-3">阶段三：AI Mentor — 从设计到代码</h3>
-  <p>AI Mentor（AI职业导师）是简职最具创新性的功能。通过<strong>对话式交互</strong>，AI Mentor帮助用户：</p>
-  <p>1. <strong>挖掘自身优势</strong>：通过引导式提问，帮助用户发现自己简历中的亮点<br>
-     2. <strong>分析职业匹配度</strong>：对比用户简历与目标JD的匹配程度<br>
-     3. <strong>推荐成长路径</strong>：基于用户背景推荐适合的职业发展方向</p>
-
-  <div class="callout">
-    <div class="callout-icon">⚡</div>
-    <div class="callout-content">
-      <strong>设计决策</strong>：为什么不直接用ChatGPT式的对话框？因为求职场景需要<strong>结构化的引导</strong>而非开放式对话。我采用了"渐进式披露"的交互模式——每次对话只聚焦一个维度（技能、经历、目标），降低用户的认知负担。
-    </div>
-  </div>
-
-  <p>我使用<strong>Lovable</strong>完成了AI Mentor界面的Vibe Coding开发——将Figma设计稿直接转化为可交互的前端原型。这种"设计即开发"的方式，让我可以在设计的同时验证交互可行性，大大缩短了设计-开发的迭代周期。</p>
-
-  <div class="img-block">
-    <img src="../img/projects/jiancareer/Jian_05.png" alt="AI Mentor界面">
-    <div class="img-caption">AI Mentor对话界面 — 通过引导式对话帮助用户挖掘职业优势</div>
-  </div>
-
-  <h3>02. 组件化设计 (Design System)</h3>
-  <p>为了确保产品的长期迭代与团队协作效率，我建立了一套完整的 Figma 组件库。涵盖了从原子组件到复杂业务模块的全部规范，这极大地加速了后期实习生团队的工程化进度。</p>
-  
-  <div class="img-block">
-    <img src="../img/projects/jiancareer/JianCareer_05.png" alt="组件库">
-    <div class="img-caption">Figma 组件库与设计规范沉淀</div>
-  </div>
-
-  <h3>03. AI Mentor 交互创新</h3>
-  <p>这是简职的核心竞争力。我们设计了一个能够通过对话感知用户优势、分析职业匹配度并提供即时反馈的 AI 导师。通过 Vibe Coding (Lovable) 技术，我们将这一概念快速转化为可运行的前端原型。</p>
-  
-  <div class="img-block">
-    <img src="../img/projects/jiancareer/JianCareer_04.png" alt="AI Mentor 界面">
-    <div class="img-caption">AI Mentor 核心交互界面展示</div>
-  </div>
-</section>
-
-<section id="result" class="section-block">
-  <h2>最终产出与反馈</h2>
-  <p>简职在发布后获得了极高的行业关注度。在多个 AI Agent 榜单中位列前茅，并在职业教育类细分领域夺得 TOP 1。这不仅验证了产品逻辑的正确性，也证明了 AI 在垂直赛道上的巨大潜力。</p>
-  
-  <div class="img-block">
-    <img src="../img/projects/jiancareer/JianCareer_01.png" alt="最终产出">
-    <div class="img-caption">简职核心功能模块最终视觉呈现</div>
-  </div>
-
-  <div class="video-block">
-    <div class="video-placeholder">🎬 AI Mentor 交互演示视频（请替换为实际视频）</div>
-  </div>
-
-  <p>我负责了比赛的<strong>PPT动画和页面制作</strong>，将产品的设计理念、技术架构和商业价值以清晰有力的方式呈现给评委。</p>
 </section>
 
 <!-- RELATED FILES -->
@@ -977,7 +1017,7 @@ body {
 <!-- VISUAL ARCHIVE -->
 <section id="archive" class="section-block">
   <h2>视觉资产存档</h2>
-  <p>以下为项目全周期的视觉资产与界面存档，涵盖从早期概念到最终落地的所有核心模块。</p>
+  <p>项目全周期界面与过程资产，按模块查阅即可；面试讲述优先看上方「多入口架构」与「关键交互决策」。</p>
   <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:16px; margin-top:24px;">
     <img src="../img/projects/jiancareer/01JIAN-REGISTER.png" alt="注册界面" style="width:100%; border-radius:8px; border:1px solid var(--border);">
     <img src="../img/projects/jiancareer/02JIAN-info.png" alt="信息填写" style="width:100%; border-radius:8px; border:1px solid var(--border);">
@@ -1003,29 +1043,11 @@ body {
   </div>
 </section>
 
-<!-- REFLECTION -->
-<section id="reflection" class="section-block">
-  <h2>反思与收获</h2>
-
-  <p><strong>关于"设计即开发"</strong>：通过Lovable/TRAE进行Vibe Coding，让我深刻理解了设计师掌握前端能力的价值。不再是"设计稿丢给开发"的线性流程，而是设计-开发一体化的敏捷迭代。这不仅是效率的提升，更是设计思维的延伸。</p>
-
-  <p><strong>关于AI产品的设计</strong>：AI Mentor的设计让我意识到，AI对话产品的核心挑战不是技术实现，而是<strong>如何让AI的回应既有用又有温度</strong>。过于结构化的引导会显得机械，过于开放又会让用户迷茫。找到这个平衡点，是AI交互设计的关键。</p>
-
-  <p><strong>如果再做一次</strong>：我希望能在更早的阶段引入<strong>用户测试</strong>。虽然项目节奏很快（创业团队的常态），但如果在AI Mentor的设计阶段能邀请3-5位应届生进行可用性测试，可能会在对话流程和交互细节上做出更精准的优化。</p>
-
-  <div class="callout">
-    <div class="callout-icon">🎯</div>
-    <div class="callout-content">
-      <strong>核心 takeaway</strong>：AI时代的设计师，需要同时具备<strong>产品思维</strong>（理解业务和用户）、<strong>设计能力</strong>（创造优秀的体验）和<strong>技术实现能力</strong>（用AI工具快速验证想法）。简职项目是我在这三个维度上一次完整的实践。
-    </div>
-  </div>
-</section>
-
 <!-- FOOTER NAV -->
 <div class="footer-nav">
-  <a href="Anxious-Kit.html" class="footer-btn">
+  <a href="Twin-City-Tale.html" class="footer-btn">
     <span class="btn-label">Next Project</span>
-    <span class="btn-title">Anxious Kit 焦虑包 →</span>
+    <span class="btn-title">Twin City Tales →</span>
   </a>
   <a href="../works.html" class="footer-btn">
     <span class="btn-label">Back to</span>

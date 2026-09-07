@@ -175,6 +175,174 @@ body {
   padding: 22px 18px 64px;
 }
 
+.works-head {
+  padding-bottom: 12px;
+}
+
+.works-note {
+  margin: 0 0 8px;
+  max-width: 640px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* ===== SELECTED FULL-BLEED ===== */
+.selected-bleed {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.bleed-panel {
+  position: sticky;
+  top: 64px;
+  display: block;
+  height: calc(100svh - 64px);
+  width: 100%;
+  overflow: hidden;
+  color: #fff;
+  text-decoration: none;
+}
+
+.bleed-panel img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1s ease;
+}
+
+.bleed-panel:hover img {
+  transform: scale(1.03);
+}
+
+.bleed-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.2) 100%),
+    radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.35) 100%);
+  pointer-events: none;
+}
+
+.bleed-meta {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 2;
+  padding: 0 5vw min(8vh, 64px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.bleed-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.bleed-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+}
+
+.bleed-year {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+.bleed-title {
+  font-size: clamp(28px, 4.5vw, 56px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  max-width: 16ch;
+}
+
+.bleed-desc {
+  margin-top: 12px;
+  max-width: 520px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.65);
+}
+
+.bleed-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.1);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+.bleed-panel:hover .bleed-cta {
+  border-color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.18);
+}
+
+.bleed-scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  pointer-events: none;
+}
+
+.more-wrap {
+  padding-top: 28px;
+}
+
+body[data-works-filter="selected"] .more-wrap {
+  display: none;
+}
+
+body[data-works-filter="more"] .selected-bleed {
+  display: none;
+}
+
+body[data-works-filter="selected"] .view-switcher {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .bleed-meta {
+    padding-bottom: 28px;
+  }
+  .bleed-title {
+    max-width: none;
+  }
+}
+
 .heading {
   margin: 8px 0 20px;
   display: flex;
@@ -588,8 +756,7 @@ body {
     <nav class="unified-nav">
       <a href="./index.html">Home</a>
       <a href="./works.html" class="active">Work</a>
-      <a href="./art/index.html">Art</a>
-      <a href="./resume.html">Resume</a>
+<a href="./resume.html">Resume</a>
       <a href="./about.html">About</a>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="切换主题">
         <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -620,208 +787,259 @@ body {
     <div class="mobile-menu-section">
       <a href="./index.html">Home</a>
       <a href="./works.html">Work</a>
-      <a href="./art/index.html">Art</a>
-      <a href="./resume.html">Resume</a>
+<a href="./resume.html">Resume</a>
       <a href="./about.html">About</a>
     </div>
   </div>
 
-  <main class="container">
-    <section class="heading">
-      <h1>Selected work(s)</h1>
-      <div class="heading-actions">
-        <div class="filters">
-          <button class="chip active" type="button" data-filter="all">All 9</button>
-          <button class="chip" type="button" data-filter="product">Product 6</button>
-          <button class="chip" type="button" data-filter="tech">Tech 2</button>
-          <button class="chip" type="button" data-filter="creative">Creative 1</button>
+  <main>
+    <div class="container works-head">
+      <section class="heading">
+        <h1>Selected work(s)</h1>
+        <div class="heading-actions">
+          <div class="filters">
+            <button class="chip active" type="button" data-filter="selected">Selected 4</button>
+            <button class="chip" type="button" data-filter="more">More</button>
+            <button class="chip" type="button" data-filter="all">All</button>
+          </div>
+          <div class="view-switcher">
+            <button class="view-btn active" id="viewGrid" title="网格视图">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </button>
+            <button class="view-btn" id="viewList" title="目录视图">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </button>
+          </div>
         </div>
-        <div class="view-switcher">
-          <button class="view-btn active" id="viewGrid" title="网格视图">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="7" height="7"></rect>
-              <rect x="14" y="3" width="7" height="7"></rect>
-              <rect x="14" y="14" width="7" height="7"></rect>
-              <rect x="3" y="14" width="7" height="7"></rect>
-            </svg>
-          </button>
-          <button class="view-btn" id="viewList" title="目录视图">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="8" y1="6" x2="21" y2="6"></line>
-              <line x1="8" y1="12" x2="21" y2="12"></line>
-              <line x1="8" y1="18" x2="21" y2="18"></line>
-              <line x1="3" y1="6" x2="3.01" y2="6"></line>
-              <line x1="3" y1="12" x2="3.01" y2="12"></line>
-              <line x1="3" y1="18" x2="3.01" y2="18"></line>
-            </svg>
-          </button>
+      </section>
+      <p class="works-note" id="worksNote">
+        Selected 全屏翻页浏览；其余小品与新媒体在 More。今晚起主攻简职与 StoryVibe。
+      </p>
+    </div>
+
+    <section class="selected-bleed" id="selectedBleed" aria-label="Selected works">
+      <a class="bleed-panel" href="./cases/Jiancareer.html" style="z-index:1">
+        <img src="./project_cover/jiancareer.jpg" alt="" loading="eager">
+        <div class="bleed-meta">
+          <div>
+            <div class="bleed-kicker">
+              <span class="bleed-badge">Selected 01</span>
+              <span class="bleed-year">2025</span>
+            </div>
+            <h2 class="bleed-title">JianCareer · AI 求职助手</h2>
+            <p class="bleed-desc">0→1 产品搭建 · AI 对话界面 · 设计系统</p>
+          </div>
+          <span class="bleed-cta">View case →</span>
         </div>
-      </div>
+        <span class="bleed-scroll-hint">Scroll</span>
+      </a>
+
+      <a class="bleed-panel" href="./cases/StoryVibe.html" style="z-index:2">
+        <img src="./project_cover/storyvibe.jpg" alt="" loading="lazy">
+        <div class="bleed-meta">
+          <div>
+            <div class="bleed-kicker">
+              <span class="bleed-badge">Selected 02</span>
+              <span class="bleed-year">ON GOING</span>
+            </div>
+            <h2 class="bleed-title">StoryVibe</h2>
+            <p class="bleed-desc">AIGC 视频叙事中间层 · 生成可控的故事节奏</p>
+          </div>
+          <span class="bleed-cta">View case →</span>
+        </div>
+        <span class="bleed-scroll-hint">Scroll</span>
+      </a>
+
+      <a class="bleed-panel" href="./cases/Twin-City-Tale.html" style="z-index:3">
+        <img src="./project_cover/twincity.jpg" alt="" loading="lazy">
+        <div class="bleed-meta">
+          <div>
+            <div class="bleed-kicker">
+              <span class="bleed-badge">Selected 03</span>
+              <span class="bleed-year">2025–26</span>
+            </div>
+            <h2 class="bleed-title">Twin City Tales</h2>
+            <p class="bleed-desc">深港双城数据叙事 · PacificVis Shortlist</p>
+          </div>
+          <span class="bleed-cta">View case →</span>
+        </div>
+        <span class="bleed-scroll-hint">Scroll</span>
+      </a>
+
+      <a class="bleed-panel" href="./cases/Attunia.html" style="z-index:4">
+        <img src="./project_cover/attunia.jpg" alt="" loading="lazy">
+        <div class="bleed-meta">
+          <div>
+            <div class="bleed-kicker">
+              <span class="bleed-badge">Selected 04</span>
+              <span class="bleed-year">2026</span>
+            </div>
+            <h2 class="bleed-title">Attunia</h2>
+            <p class="bleed-desc">AI Agent · Soft Healthcare · WLB 调节</p>
+          </div>
+          <span class="bleed-cta">View case →</span>
+        </div>
+      </a>
     </section>
 
-    <section class="grid">
-      <!-- 1. JianCareer (Priority 1) -->
-      <article class="card card--xl" data-category="product">
-        <a class="card-primary-link" href="./cases/Jiancareer.html">
-        <div class="thumb">
-          <img src="./project_cover/jiancareer.jpg" alt="JianCareer">
-          <div class="meta">
-            <div class="title">JianCareer · AI 求职助手</div>
-            <div class="desc">体验设计 · Vibe Coding · 设计系统</div>
-            <div class="tags"><span class="tag">#Product</span><span class="tag">#AI</span><span class="tag">#Design System</span></div>
-          </div>
-        </div>
-        </a>
-        <div class="card-actions">
-          <a class="card-action" href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1&t=0TkLYv2ivkakbyUG-1" target="_blank" rel="noopener noreferrer">Figma</a>
-        </div>
-      </article>
-
-      <!-- 2. Anxious Kit (Priority 2) -->
-      <article class="card card--sm" data-category="product">
-        <a class="card-primary-link" href="./cases/Anxious-Kit.html">
-        <div class="thumb">
-          <img src="./project_cover/anxious.jpg" alt="Anxious Kit">
-          <div class="meta">
-            <div class="title">Anxious Kit</div>
-            <div class="desc">可穿戴情绪辅助系统 · 生理信号监测</div>
-            <div class="tags"><span class="tag">#Product</span><span class="tag">#AI Agent</span><span class="tag">#Wearable</span></div>
-          </div>
-        </div>
-        </a>
-        <div class="card-actions">
-          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=438-34&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
-        </div>
-      </article>
-
-      <!-- 3. StoryVibe (Priority 3) -->
-      <article class="card card--wide" data-category="product">
-        <a class="card-primary-link" href="./cases/StoryVibe.html">
-        <div class="thumb">
-          <img src="./project_cover/storyvibe.jpg" alt="StoryVibe">
-          <div class="meta">
-            <div class="title">StoryVibe</div>
-            <div class="desc">AI 视频叙事中间层 · 创意工作流</div>
-            <span class="status">ON GOING</span>
-            <div class="tags"><span class="tag">#Product</span><span class="tag">#GenAI</span><span class="tag">#Interaction</span></div>
-          </div>
-        </div>
-        </a>
-        <div class="card-actions">
-          <a class="card-action" href="https://www.figma.com/design/W3hR0cyqjajMyKIcNMExTe/GenAI-Video?node-id=0-1&t=Q6eDkj0oiaODBjGm-1" target="_blank" rel="noopener noreferrer">Figma</a>
-        </div>
-      </article>
-
-      <!-- 4. MemoryLens (Priority 4) -->
-      <article class="card card--tall" data-category="tech">
+    <div class="container more-wrap" id="moreWrap">
+      <section class="grid" id="moreGrid">
+      <article class="card card--sm" data-category="more product">
         <a class="card-primary-link" href="./cases/MemoryLens.html">
         <div class="thumb">
           <img src="./project_cover/memorylens.jpg" alt="MemoryLens">
           <div class="meta">
             <div class="title">MemoryLens</div>
-            <div class="desc">VisionPro · 多模态交互 · 黑客松</div>
-            <div class="tags"><span class="tag">#Tech</span><span class="tag">#MR</span><span class="tag">#Multimodal</span></div>
+            <div class="desc">VisionPro · 多模态寻物 · 黑客松</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#MR</span></div>
           </div>
         </div>
         </a>
-        <div class="card-actions">
-          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=436-5&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
-        </div>
       </article>
 
-      <!-- 5. Toys (Priority 5) -->
-      <article class="card card--sm" data-category="product">
+      <article class="card card--sm" data-category="more product">
         <a class="card-primary-link" href="./cases/Toys.html">
         <div class="thumb">
           <img src="./project_cover/toys.png" alt="AI 启蒙代练屋">
           <div class="meta">
             <div class="title">AI 启蒙代练屋</div>
-            <div class="desc">AI 教育玩具 · 用户研究 · 交互定义</div>
-            <div class="tags"><span class="tag">#Product</span><span class="tag">#AI</span><span class="tag">#Research</span></div>
+            <div class="desc">用户研究 · 多模态儿童交互</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#Research</span></div>
           </div>
         </div>
         </a>
-        <div class="card-actions">
-          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=438-46&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
-        </div>
       </article>
 
-      <!-- 6. Twin City Tales (Priority 6) -->
-      <article class="card card--wide" data-category="tech">
-        <a class="card-primary-link" href="./cases/Twin-City-Tale.html">
+      <article class="card card--sm" data-category="more product">
+        <a class="card-primary-link" href="./cases/Anxious-Kit.html">
         <div class="thumb">
-          <img src="./project_cover/twincity.jpg" alt="Twin City Tale">
+          <img src="./project_cover/anxious.jpg" alt="Anxious Kit">
           <div class="meta">
-            <div class="title">Twin City Tale</div>
-            <div class="desc">深港双城数据叙事 · 前端开发</div>
-            <div class="tags"><span class="tag">#Tech</span><span class="tag">#DataVis</span><span class="tag">#Frontend</span></div>
+            <div class="title">Anxious Kit</div>
+            <div class="desc">可穿戴情绪辅助 · Attunia 前序探索</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#Wearable</span></div>
           </div>
         </div>
         </a>
-        <div class="card-actions">
-          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=689-28&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
-        </div>
       </article>
 
-      <!-- 7. CO-EVO (Creative) -->
-      <article class="card card--sm" data-category="creative">
-        <a class="card-primary-link" href="./cases/CO-EVO.html">
-        <div class="thumb">
-          <img src="./project_cover/coevo.jpg" alt="CO-EVO">
-          <div class="meta">
-            <div class="title">CO-EVO 互动剧场</div>
-            <div class="desc">TouchDesigner · YOLO · 实时交互</div>
-            <div class="tags"><span class="tag">#Creative</span><span class="tag">#Install</span><span class="tag">#Realtime</span></div>
-          </div>
-        </div>
-        </a>
-        <div class="card-actions">
-          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=848-13&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
-        </div>
-      </article>
-
-      <!-- 8. Stariver (UI) -->
-      <article class="card card--sm" data-category="product">
-        <a class="card-primary-link" href="./cases/Stariver.html">
-        <div class="thumb">
-          <img src="./project_cover/stariver.jpg" alt="渡星河交互界面设计">
-          <div class="meta">
-            <div class="title">渡星河界面设计</div>
-            <div class="desc">界面设计 · IP形象快设 · 交付落地</div>
-            <div class="tags"><span class="tag">#Product</span><span class="tag">#UI</span><span class="tag">#Brand</span></div>
-          </div>
-        </div>
-        </a>
-        <div class="card-actions">
-          <a class="card-action" href="https://www.figma.com/design/rx3fASf9UORfWOYpYWEqkd/%E6%B8%A1%E6%98%9F%E6%B2%B3%E9%AB%98%E4%BF%9D%E7%9C%9F%E3%80%90%E4%BA%A4%E4%BB%98%E3%80%91?node-id=73-4495&t=MHO2CWudVzccZL6I-1" target="_blank" rel="noopener noreferrer">Figma</a>
-        </div>
-      </article>
-
-      <!-- 9. Leke (Product Analysis) -->
-      <article class="card card--sm" data-category="product">
+      <article class="card card--sm" data-category="more product">
         <a class="card-primary-link" href="./cases/Leke.html">
         <div class="thumb">
           <img src="./project_cover/leke.jpg" alt="乐刻新手成长系统">
           <div class="meta">
             <div class="title">乐刻新手成长系统</div>
-            <div class="desc">品牌服务系统分析 · 留存体验优化</div>
-            <div class="tags"><span class="tag">#Product</span><span class="tag">#UX</span><span class="tag">#Service</span></div>
+            <div class="desc">留存体验 · 服务设计分析</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#UX</span></div>
           </div>
         </div>
         </a>
-        <div class="card-actions">
-          <a class="card-action" href="https://www.figma.com/design/rwHLputL2eIpqr91OtV1EF/LMX%E4%B8%AA%E4%BA%BA%E4%BD%9C%E5%93%81%E9%9B%86%E5%88%B6%E4%BD%9C--?node-id=0-1&t=lV4KMbHcHR63JHFF-1" target="_blank" rel="noopener noreferrer">Figma</a>
-        </div>
       </article>
-    </section>
+
+      <article class="card card--sm" data-category="more product">
+        <a class="card-primary-link" href="./cases/Stariver.html">
+        <div class="thumb">
+          <img src="./project_cover/stariver.jpg" alt="渡星河交互界面设计">
+          <div class="meta">
+            <div class="title">渡星河界面设计</div>
+            <div class="desc">界面快设 · IP 并行交付</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#UI</span></div>
+          </div>
+        </div>
+        </a>
+      </article>
+
+      <article class="card card--sm" data-category="more creative">
+        <a class="card-primary-link" href="./cases/CO-EVO.html">
+        <div class="thumb">
+          <img src="./project_cover/coevo.jpg" alt="CO-EVO">
+          <div class="meta">
+            <div class="title">CO-EVO 互动剧场</div>
+            <div class="desc">实时装置 · 创意向小品</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#Install</span></div>
+          </div>
+        </div>
+        </a>
+      </article>
+
+      <article class="card card--sm" data-category="more creative">
+        <a class="card-primary-link" href="./art/looming-dreamer.html">
+        <div class="thumb">
+          <img src="./img/art/portfolio/looming-dreamer/page_03.png" alt="Looming Dreamer">
+          <div class="meta">
+            <div class="title">Looming Dreamer</div>
+            <div class="desc">新媒体 · 公共空间交互装置</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#Art</span></div>
+          </div>
+        </div>
+        </a>
+      </article>
+
+      <article class="card card--sm" data-category="more creative">
+        <a class="card-primary-link" href="./art/luminous-and-silhouette.html">
+        <div class="thumb">
+          <img src="./img/art/portfolio/luminous-and-silhouette/page_09.png" alt="Luminous & Silhouette">
+          <div class="meta">
+            <div class="title">Luminous &amp; Silhouette</div>
+            <div class="desc">新媒体 · 视听互动 VJ</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#Art</span></div>
+          </div>
+        </div>
+        </a>
+      </article>
+
+      <article class="card card--sm" data-category="more creative">
+        <a class="card-primary-link" href="./art/fingertip-praying.html">
+        <div class="thumb">
+          <img src="./img/art/portfolio/fingertip-praying/page_15.png" alt="FingerTip praying">
+          <div class="meta">
+            <div class="title">FingerTip praying</div>
+            <div class="desc">新媒体 · 手势互动装置</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#Art</span></div>
+          </div>
+        </div>
+        </a>
+      </article>
+
+      <article class="card card--sm" data-category="more creative">
+        <a class="card-primary-link" href="./art/surreal-wanderer.html">
+        <div class="thumb">
+          <img src="./img/art/portfolio/surreal-wanderer/page_21.png" alt="Surreal Wanderer">
+          <div class="meta">
+            <div class="title">Surreal Wanderer</div>
+            <div class="desc">新媒体 · 空间叙事实验</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#Art</span></div>
+          </div>
+        </div>
+        </a>
+      </article>
+      </section>
+    </div>
   </main>
   <script>
     (() => {
-      const grid = document.querySelector('.grid');
+      const grid = document.getElementById('moreGrid');
       const chips = [...document.querySelectorAll('.chip[data-filter]')];
-      const cards = [...document.querySelectorAll('.card[data-category]')];
+      const note = document.getElementById('worksNote');
       const viewGridBtn = document.getElementById('viewGrid');
       const viewListBtn = document.getElementById('viewList');
+      const notes = {
+        selected: 'Selected 全屏翻页浏览；点封面进入案例。今晚起主攻简职与 StoryVibe。',
+        more: '小品与新媒体作品；不进主投递叙事。',
+        all: '上方 Selected 全屏翻页，下方为 More 网格。'
+      };
 
       function updateGridUnit() {
         if (!grid || grid.classList.contains('view-list')) return;
@@ -834,11 +1052,9 @@ body {
       }
 
       function applyFilter(filter) {
-        cards.forEach((card) => {
-          const cat = card.dataset.category || '';
-          const show = filter === 'all' || cat.includes(filter);
-          card.style.display = show ? '' : 'none';
-        });
+        document.body.dataset.worksFilter = filter;
+        if (note) note.textContent = notes[filter] || notes.selected;
+        updateGridUnit();
       }
 
       chips.forEach((chip) => {
@@ -846,7 +1062,6 @@ body {
           chips.forEach((c) => c.classList.remove('active'));
           chip.classList.add('active');
           applyFilter(chip.dataset.filter);
-          updateGridUnit();
         });
       });
 
@@ -864,8 +1079,7 @@ body {
       });
 
       window.addEventListener('resize', updateGridUnit);
-      updateGridUnit();
-      applyFilter('all');
+      applyFilter('selected');
     })();
   </script>
 </body>

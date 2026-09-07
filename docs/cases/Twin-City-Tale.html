@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Twin City Tale · 黎铭晞</title>
+<title>Twin City Tale · Leonardo Li</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -218,11 +218,24 @@ body {
   letter-spacing: 1px;
 }
 
+.section-block h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 28px 0 12px;
+  letter-spacing: 0.5px;
+}
+
 .section-block p {
   font-size: 15px;
   color: var(--text-dim);
   line-height: 1.9;
   margin-bottom: 16px;
+}
+
+.section-block p strong {
+  color: var(--text);
+  font-weight: 600;
 }
 
 .section-block a {
@@ -425,8 +438,7 @@ body {
     <div class="unified-nav">
       <a href="../index.html">Home</a>
       <a href="../works.html" class="active">Work</a>
-      <a href="../art/index.html">Art</a>
-      <a href="../resume.html">Resume</a>
+<a href="../resume.html">Resume</a>
       <a href="../about.html">About</a>
     </div>
     <button class="nav-theme-toggle" id="navThemeToggle" type="button" data-theme-toggle aria-label="切换主题">
@@ -458,8 +470,7 @@ body {
   <div class="mobile-menu-section">
     <a href="../index.html">Home</a>
     <a href="../works.html">Work</a>
-    <a href="../art/index.html">Art</a>
-    <a href="../resume.html">Resume</a>
+<a href="../resume.html">Resume</a>
     <a href="../about.html">About</a>
   </div>
   <div class="mobile-menu-section" data-mobile-toc></div>
@@ -501,6 +512,7 @@ body {
     <li><a href="#iterations">核心迭代</a></li>
     <li><a href="#result">最终结果</a></li>
     <li><a href="#reflection">个人反思</a></li>
+    <li><a href="#interview">面试思考题 · B 端</a></li>
     <li><a href="#archive">视觉资产</a></li>
   </ul>
 </aside>
@@ -605,6 +617,46 @@ body {
 <section id="reflection" class="section-block">
   <h2>个人反思</h2>
   <p>这个项目让我进一步确认：数据可视化投递场景里，叙事节奏比图形复杂度更关键。面试官更在意你如何定义问题、如何做取舍、如何验证信息传达，而不是只看视觉奇观。</p>
+</section>
+
+<section id="interview" class="section-block">
+  <h2>面试思考题 · 面向 B 端 / 机构向叙事</h2>
+  <p>Twin City 容易被听成「做了个炫的可视化网站」。面对 B 端产品、数据平台或研究向面试官时，要把话术扳到：<strong>受众、决策价值、信息架构、验证与伦理</strong>。下面每题给答题骨架。</p>
+
+  <h3>Q1 · 这是给谁看的？他们看完要做什么决定？</h3>
+  <p><strong>骨架</strong>：先定受众分层——普通公众 / 跨境通勤者 / 政策与城市研究者。<br>
+  本项目主路径是「让非专家理解跨境流动的时间—空间—行为结构」，不是给分析师的 BI 仪表盘。若受众是政府侧，成功标准会变成「能否支撑一次 briefing 讲清峰谷与卡口压力」——产品形态会从滚动叙事转向可筛选的洞察页。面试时主动说清<strong>你选了哪一层受众、放弃了哪一层</strong>。</p>
+
+  <h3>Q2 · 为什么用滚动叙事，而不是 Dashboard？</h3>
+  <p><strong>骨架</strong>：问题是「理解情境与情绪节奏」，不是「任意下钻指标」。<br>
+  Dashboard 适合已知问题的探索；叙事适合建立心智模型。代价是探索自由度下降——用章节结构与关键图表补偿。对 B 端表述：这是<strong>沟通型数据产品</strong>，KPI 是理解度与转发/停留，不是查询次数。</p>
+
+  <h3>Q3 · 「时间 / 空间 / 行为」三维怎么落到可验收的信息架构？</h3>
+  <p><strong>骨架</strong>：每个章节只回答一个主问题；跨章用同一套视觉编码（颜色、方向、单位）保持可比。<br>
+  验收方式：找 3–5 个未参与项目的人，让其复述「高峰出现在哪、人往哪边流、通勤者一天像什么」——复述对了才算叙事成立。</p>
+
+  <h3>Q4 · 数据从哪来、你信哪一段、哪里必须加脚注？</h3>
+  <p><strong>骨架</strong>：公开客流数据有粒度与口径限制；田野补充「体验」，不能伪造精确人数。<br>
+  B 端加分点：主动讲<strong>数据边界与误读风险</strong>（例如把日客流当成实时拥堵）。可信度 &gt; 戏剧性。</p>
+
+  <h3>Q5 · 早期「图形太复杂」你怎么判断是设计问题而不是用户太菜？</h3>
+  <p><strong>骨架</strong>：观察任务失败点——用户说得出好看但说不出结论 = 编码失败。<br>
+  迭代策略：引入「典型通勤者」视角，把统计压成可共鸣的路径。原则：<strong>先降低解码成本，再谈视觉奇观</strong>。</p>
+
+  <h3>Q6 · 如果你要把这套能力迁到公司内部的数据故事工具，你会抽哪三块？</h3>
+  <p><strong>骨架</strong>：① 章节化叙事模板（问题→证据→含义）② 统一视觉编码规范 ③ 滚动/步骤触发的可视化状态机（D3 绑定滚动进度）<br>
+  不抽：特定深港题材美术。强调可复用的是<strong>叙事操作系统</strong>，不是一张海报。</p>
+
+  <h3>Q7 · PacificVis Shortlist 证明了什么、没证明什么？</h3>
+  <p><strong>骨架</strong>：证明同行认可叙事与实现完成度；不证明商业转化或大规模用户验证。<br>
+  诚实这句很加分：比赛激励把「讲清楚」做到位；若产品化，下一步要补可用性与指标闭环。</p>
+
+  <div class="callout">
+    <div class="callout-icon">🧭</div>
+    <div class="callout-content">
+      <strong>对火山 / 数据产品面试官</strong>：把 Twin City 讲成「面向沟通的数据产品原型」——有受众假设、有结构取舍、有验证方法。少停在「我用了 D3」。
+    </div>
+  </div>
 </section>
 
 <section id="archive" class="section-block">

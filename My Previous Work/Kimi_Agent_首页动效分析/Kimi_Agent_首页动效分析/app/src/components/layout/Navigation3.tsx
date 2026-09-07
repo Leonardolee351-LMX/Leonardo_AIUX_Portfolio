@@ -4,7 +4,6 @@ import gsap from "gsap";
 const navItems = [
   { label: "Home", href: "./index.html#home" },
   { label: "Work", href: "./works.html" },
-  { label: "Art", href: "./art/index.html" },
   { label: "Resume", href: "./resume.html" },
   { label: "About", href: "./about.html" },
 ] as const;

@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attunia · Leonardo Li</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: rgba(255,255,255,0.03);
+  --text: #e8e6e1;
+  --text-dim: #8a8580;
+  --text-muted: #5a5550;
+  --accent: #7c6fae;
+  --accent-soft: rgba(124,111,174,0.15);
+  --link: #00ff87;
+  --link-soft: rgba(0, 255, 135, 0.25);
+  --border: rgba(255,255,255,0.06);
+  --g-1: #1a0a2e;
+  --sidebar-bg: linear-gradient(to right, rgba(10,10,15,0.98), rgba(10,10,15,0.95));
+  --card-bg: rgba(255,255,255,0.02);
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ef;
+  --bg-elevated: rgba(0,0,0,0.03);
+  --text: #1a1a1a;
+  --text-dim: #5a5a5a;
+  --text-muted: #8a8a8a;
+  --accent: #5b4fa0;
+  --accent-soft: rgba(91,79,160,0.1);
+  --link: #0066cc;
+  --link-soft: rgba(0, 102, 204, 0.22);
+  --border: rgba(0,0,0,0.08);
+  --g-1: #e8e0f0;
+  --sidebar-bg: linear-gradient(to right, rgba(245,243,239,0.98), rgba(245,243,239,0.95));
+  --card-bg: rgba(0,0,0,0.03);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+/* ===== LAYOUT ===== */
+.page { display: flex; min-height: 100vh; }
+
+/* ===== LEFT SIDEBAR (TOC) ===== */
+.sidebar {
+  width: 260px;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  padding: 32px 24px;
+  overflow-y: auto;
+  z-index: 100;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.theme-toggle:hover {
+  background: var(--card-bg);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.theme-toggle .sun { display: none; }
+.theme-toggle .moon { display: block; }
+[data-theme="light"] .theme-toggle .sun { display: block; }
+[data-theme="light"] .theme-toggle .moon { display: none; }
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 32px;
+  transition: color 0.3s;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 16px; height: 16px; }
+
+.toc-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 4px; }
+.toc-list a {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-left: 2px solid transparent;
+}
+.toc-list a:hover { color: var(--text); background: var(--bg-elevated); }
+.toc-list a.active { color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); }
+.toc-list a.sub { padding-left: 24px; font-size: 12px; }
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 48px 64px 120px;
+}
+
+/* ===== HERO BANNER ===== */
+.project-hero {
+  margin: -48px -64px 48px;
+  padding: 100px 64px 60px;
+  background: linear-gradient(135deg, #4b6cb7, #182848);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.project-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
+  filter: blur(60px);
+}
+.project-hero h1 {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  position: relative;
+  color: #fff;
+}
+.project-hero .subtitle {
+  font-size: 18px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 12px;
+}
+
+/* ===== META BAR ===== */
+.meta-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.meta-group h4 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.meta-group p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+/* ===== CONTENT BLOCKS ===== */
+.section-block { margin-bottom: 64px; }
+
+.section-block h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.section-block h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 32px 0 16px;
+  letter-spacing: 1px;
+}
+
+.section-block p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.section-block p strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.section-block a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid var(--link-soft);
+  transition: border-color 0.3s;
+}
+.section-block a:hover { border-bottom-color: var(--link); }
+
+.section-block ul {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.section-block li {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  line-height: 1.8;
+}
+
+.compare-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 32px 0;
+}
+.compare-item {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.compare-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.compare-item img { width: 100%; display: block; }
+.compare-label {
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  letter-spacing: 0.5px;
+}
+
+.shot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 32px 0;
+}
+.shot-item {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.shot-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.shot-item img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  object-position: top center;
+  background: #111;
+}
+.shot-item.shot-item--wide img {
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  background: #0a0a0f;
+}
+.shot-caption {
+  padding: 10px 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  letter-spacing: 0.3px;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+.result-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.result-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.result-number {
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.result-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+.project-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 0 0 48px;
+}
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.link-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.link-icon { font-size: 20px; flex-shrink: 0; }
+.link-info { display: flex; flex-direction: column; gap: 2px; }
+.link-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+.link-name {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .compare-block { grid-template-columns: 1fr; }
+  .results-grid { grid-template-columns: 1fr; }
+  .shot-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .shot-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== CALLOUT ===== */
+.callout {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.callout-icon { font-size: 20px; flex-shrink: 0; }
+.callout-content { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+.callout-content a { color: var(--link); text-decoration: none; border-bottom: 1px solid var(--link-soft); }
+
+/* ===== IMAGE BLOCKS ===== */
+.img-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.img-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.img-block img {
+  width: 100%;
+  display: block;
+}
+.img-caption {
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+}
+
+/* ===== FOOTER NAV ===== */
+.footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 48px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+}
+.footer-nav a {
+  font-size: 14px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-nav a:hover { color: var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
+  .project-hero h1 { font-size: 28px; }
+  .meta-bar { grid-template-columns: 1fr; gap: 16px; }
+}
+
+.back-wrap { max-width: 900px; margin: 14px auto 0; padding: 0 18px; }
+.back-work { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; letter-spacing: .02em; color: var(--text-muted); text-decoration: none; transition: color .2s ease; }
+.back-work:hover { color: var(--text); }
+
+/* Top Navigation Bar */
+.unified-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .unified-topbar {
+  background: rgba(255, 255, 255, 0.7);
+}
+.unified-brand {
+  font-size: 14px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+.unified-nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.unified-nav a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.unified-nav a:hover, .unified-nav a.active {
+  color: var(--text);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+}
+
+.nav-theme-toggle:hover {
+  background: var(--card-bg);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.nav-theme-toggle svg { width: 16px; height: 16px; }
+.nav-theme-toggle .sun { display: none; }
+.nav-theme-toggle .moon { display: block; }
+[data-theme="light"] .nav-theme-toggle .sun { display: block; }
+[data-theme="light"] .nav-theme-toggle .moon { display: none; }
+</style>
+<link rel="stylesheet" href="../site.css">
+<script src="../site.js" defer></script>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="unified-topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 200;">
+  <a href="../index.html" class="unified-brand" aria-label="LeonardoLi"><span class="brand-mark" aria-hidden="true"></span></a>
+  <div class="nav-actions">
+    <div class="unified-nav">
+      <a href="../index.html">Home</a>
+      <a href="../works.html" class="active">Work</a>
+<a href="../resume.html">Resume</a>
+      <a href="../about.html">About</a>
+    </div>
+    <button class="nav-theme-toggle" id="navThemeToggle" type="button" data-theme-toggle aria-label="切换主题">
+      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="mobile-menu-section">
+    <a href="../index.html">Home</a>
+    <a href="../works.html">Work</a>
+<a href="../resume.html">Resume</a>
+    <a href="../about.html">About</a>
+  </div>
+  <div class="mobile-menu-section" data-mobile-toc></div>
+</div>
+
+<!-- Spacer for nav -->
+<div style="height: 64px;"></div>
+<div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
+
+<div class="page">
+
+<!-- SIDEBAR TOC -->
+<aside class="sidebar">
+  <button class="theme-toggle" id="themeToggle" type="button" data-theme-toggle aria-label="切换主题">
+    <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+    <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </button>
+  <a href="../works.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to Index
+  </a>
+
+  <div class="toc-title">目录</div>
+  <ul class="toc-list">
+    <li><a href="#context" class="active">背景与问题</a></li>
+    <li><a href="#role">我的角色</a></li>
+    <li><a href="#loop">产品闭环</a></li>
+    <li><a href="#scenes">六景介入</a></li>
+    <li><a href="#agent">Agent 架构决策</a></li>
+    <li><a href="#system">设计系统 · 合规 · 评测</a></li>
+    <li><a href="#outcome">当前进展</a></li>
+    <li><a href="#reflection">反思</a></li>
+    <li><a href="#links">参考链接</a></li>
+  </ul>
+</aside>
+
+<main class="main">
+
+<div class="project-hero">
+  <h1>Attunia</h1>
+  <div class="subtitle">对准 Work–Life 落差的 Soft Healthcare 调节系统</div>
+  <span class="tag">Agent · EEG · Soft Healthcare</span>
+</div>
+
+<div class="meta-bar">
+  <div class="meta-group">
+    <h4>角色</h4>
+    <p>产品设计师 &amp; Agent 交互架构</p>
+  </div>
+  <div class="meta-group">
+    <h4>范畴</h4>
+    <p>脑电感知 · 六景短训<br>Tuno / 会诊 · 评测与合规</p>
+  </div>
+  <div class="meta-group">
+    <h4>时间</h4>
+    <p>2026.05 – 2026.09<br><a href="https://github.com/Leonardolee351-LMX/Attunia_Brainlink-meditation" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+  </div>
+</div>
+
+<div class="project-links">
+  <a href="https://leonardolee351-lmx.github.io/Attunia_Brainlink-meditation/" target="_blank" rel="noopener noreferrer" class="link-card">
+    <div class="link-icon">🌐</div>
+    <div class="link-info">
+      <span class="link-label">Preview</span>
+      <span class="link-name">静态 UI 预览</span>
+    </div>
+  </a>
+  <a href="https://github.com/Leonardolee351-LMX/Attunia_Brainlink-meditation" target="_blank" rel="noopener noreferrer" class="link-card">
+    <div class="link-icon">⌘</div>
+    <div class="link-info">
+      <span class="link-label">Repo</span>
+      <span class="link-name">开源仓库</span>
+    </div>
+  </a>
+</div>
+
+<section id="context" class="section-block">
+  <h2>背景与问题</h2>
+  <p>晚上七点，电脑合上了，通勤开始了——但脑子没有合上。未回的消息、没推完的文档，像没关干净的标签页，在地铁晃动里反复弹出。人已经离开工位，情绪还停在「未完成」。</p>
+  <p>早上九点，人已经坐进工位，咖啡也喝了——但状态还没到岗。日历第一格在闪，手指放在键盘上，却迟迟进不了第一个真正的任务。不是懒，是「还没准备好工作」的那段空白。</p>
+  <p>工作进行到半途，更难被自己看见：注意其实已经漂走，或肩颈还挂着高唤醒，人却仍对自己说「再撑一下」。走神与过劳常常没有戏剧性崩塌，只有不被意识到的损耗。</p>
+  <p>这三段落差——<strong>下班后的未完成感、上班后的未就绪感、工作中未被察觉的走神与过劳</strong>——共同指向状态切换的真空。Attunia 正是为这类 Work–Life 节奏里的真实落差而设计的 Soft Healthcare 调节产品：做日常身心调适与陪伴，明确<strong>不是诊断、处方或医疗器械</strong>。</p>
+
+  <div class="callout">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>核心痛点</strong>：市面上的冥想 App 多为被动内容库，和当下的工作/休息节奏脱节；人在落差时刻未必会主动打开 App。缺的是「对准 WLB 节点、可在 3–10 分钟内走完」的调节式介入，而不是更长的冥想课表。
+    </div>
+  </div>
+
+  <div class="img-block">
+    <img src="../img/projects/attunia/15-splash.jpg" alt="Attunia 开屏">
+    <div class="img-caption">Attunia 开屏 — Brain Attunement · 让冥想疗法和人的大脑进行调律</div>
+  </div>
+</section>
+
+<section id="role" class="section-block">
+  <h2>我的角色</h2>
+  <p>作为<strong>产品设计师与 Agent 交互架构</strong>，我把「感知 → 理解 → 响应 → 反馈」钉成可演示的产品闭环：主导开屏 / 设备校准、六景介入、训练 Session、Tuno 对话与 Multi-Agent 会诊的体验路径；定义 Agent 人格边界、思考可视化与危机转介话术；并落地跨疗法模块的组件规范、机内合规弹层，以及 eval_No.1 / No.2 两套可跑评测。</p>
+  <p>前序探索 <a href="./Anxious-Kit.html">Anxious Kit</a> 偏可穿戴情绪采样；Attunia 把它升级为完整 Agent 产品架构。作品集里 Anxious Kit 降为小品，主叙事走 Attunia。</p>
+
+  <div class="compare-block">
+    <div class="compare-item">
+      <img src="../img/projects/attunia/03-manual.png" alt="说明书">
+      <div class="compare-label">说明书 · 戴上 → 看见 → 练习</div>
+    </div>
+    <div class="compare-item">
+      <img src="../img/projects/attunia/02-know-you.png" alt="校准认识你">
+      <div class="compare-label">校准前 · 设备先「认识你」</div>
+    </div>
+  </div>
+</section>
+
+<section id="loop" class="section-block">
+  <h2>产品闭环：先把路径跑通，再谈「更像 AI」</h2>
+  <p>Attunia 不是单一聊天入口。硬件侧现阶段联调 <strong>BrainLink Lite</strong> 脑电头环（架构预留多品牌接入）；无头环时可用演示信号走完流程。闭环链路是：</p>
+  <p>• <strong>感知</strong>：脑电本机处理与基线校准<br>
+     • <strong>理解</strong>：场景选择 / Tuno 意图理解 / 工作态窗口判定<br>
+     • <strong>响应</strong>：3–10 分钟短训 Session，或会诊拼出的目录方案<br>
+     • <strong>反馈</strong>：练完复盘 + 本机记忆，反作用于后续推荐</p>
+  <p>设计原则很简单：<strong>原始脑电不上传、不进外部 LLM</strong>；Agent 只在「调节与陪伴」边界内工作；用户随时能看见推荐从何而来。</p>
+
+  <div class="compare-block">
+    <div class="compare-item">
+      <img src="../img/projects/attunia/07-home-rec.png" alt="首页推荐卡">
+      <div class="compare-label">首页推荐 — 对准「此刻」的短训 CTA</div>
+    </div>
+    <div class="compare-item">
+      <img src="../img/projects/attunia/04-home-chat.png" alt="首页对话入口">
+      <div class="compare-label">对话入口 — 直接对 Tuno 说出状态</div>
+    </div>
+  </div>
+
+  <div class="shot-grid">
+    <div class="shot-item">
+      <img src="../img/projects/attunia/11-scene-path.png" alt="场景路径">
+      <div class="shot-caption">选景着陆</div>
+    </div>
+    <div class="shot-item">
+      <img src="../img/projects/attunia/12-duration-sheet.png" alt="时长选择">
+      <div class="shot-caption">时长 Bottom Sheet</div>
+    </div>
+    <div class="shot-item">
+      <img src="../img/projects/attunia/08-debrief.png" alt="复盘">
+      <div class="shot-caption">练完复盘</div>
+    </div>
+  </div>
+</section>
+
+<section id="scenes" class="section-block">
+  <h2>六景介入：对准上班族的节奏节点</h2>
+  <p>与其做一个「万能冥想库」，我把介入钉在 Work–Life 的六个高频节点上：开工前奏、会后留白、午憩、超载减负、摸鱼回笼、下工仪式。每条路径都是<strong>选景 → 选时长 → Session → 复盘</strong>，尽量不打断一天的节奏。</p>
+  <p>场景化的价值在于降低决策成本：用户不必先搞懂自己「该减压还是该专注」，而是认领一个自己正在经历的时刻——产品再据此推荐 tempo 更匹配的练习。</p>
+
+  <div class="img-block">
+    <img src="../img/projects/attunia/05-explore.png" alt="探索六景">
+    <div class="img-caption">探索页 — 六景仪式 + 17 个疗法模块可自选开练</div>
+  </div>
+
+  <div class="compare-block">
+    <div class="compare-item">
+      <img src="../img/projects/attunia/11-scene-path.png" alt="场景路径">
+      <div class="compare-label">场景路径 · 进训前的情绪着陆</div>
+    </div>
+    <div class="compare-item">
+      <img src="../img/projects/attunia/12-duration-sheet.png" alt="时长选择">
+      <div class="compare-label">碎片可完成 · 滑动选分钟</div>
+    </div>
+  </div>
+
+  <div class="img-block">
+    <img src="../img/projects/attunia/06-session.png" alt="训练 Session">
+    <div class="img-caption">训练 Session — 视效 / 声景 / 引导同屏；真机脑电 HUD（唤醒 / 专注 / 平静）可开关</div>
+  </div>
+</section>
+
+<section id="agent" class="section-block">
+  <h2>Agent 架构决策</h2>
+
+  <h3 id="agent-1">决策一：单 Agent「Tuno」做陪伴入口，会诊是可选加深</h3>
+  <p>多数时候，用户只需要说清当下状态（累、飘、睡不好），拿到一条可练的推荐。Tuno 负责意图理解、疗法导向与陪伴语气；思考链路做成可展开/折叠的可视化——在身心调节这种高信任场景里，黑盒回复不可接受。</p>
+  <div class="callout">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-content">
+      <strong>取舍</strong>：牺牲「任意闲聊」的自由度，换取可控的推荐状态机——对话始终导向练习目录，而不是开放式心理咨询。
+    </div>
+  </div>
+  <div class="img-block">
+    <img src="../img/projects/attunia/13-chat-tuno.png" alt="Tuno 对话">
+    <div class="img-caption">Tuno 对话 — 「此刻脑状态」+ 7 步思考过程可展开 + 目录内推荐卡</div>
+  </div>
+
+  <h3 id="agent-2">决策二：Multi-Agent 只「拼目录」，禁止即兴创作</h3>
+  <p>需要多人视角时，走「Tuno &amp; Friends」会诊：中枢先判定训练方向与顺序（最多两步），再按擅长把环节派给专家；专家<strong>只从已有疗法目录里挑模块、调已有参数</strong>，由 Tuno 拼成一条可练方案。</p>
+  <p>明确禁止：创作新练习、生图、作曲、专家多轮互改。用户能在会诊记录里看见派工与拼接——可解释性优先于「看起来更像一群 AI 在开会」。</p>
+  <div class="img-block">
+    <img src="../img/projects/attunia/14-consult.png" alt="Tuno &amp; Friends 会诊">
+    <div class="img-caption">会诊 — 派工可见、只拼目录内物料</div>
+  </div>
+
+  <h3 id="agent-3">决策三：危机识别必须有兜底，不能只靠「温柔回复」</h3>
+  <p>涉及危机词时，走安全转介话术，并指向全国 24 小时心理援助热线。Soft Healthcare 的边界写进产品行为，而不是写在页脚小字里。</p>
+</section>
+
+<section id="system" class="section-block">
+  <h2>设计系统 · 合规 · 评测</h2>
+
+  <h3>组件化：17 个疗法模块共用一套语言</h3>
+  <p>呼吸调节、身体扫描、音景疗愈等模块，统一卡片、进度、动效与声景播放器语言。训练播放器支持多模块上一/下一与多段进度，让「目录拼装」在界面上也能被感知。</p>
+
+  <h3>合规：机内弹层 + 渐进披露，而不是门禁式勾选</h3>
+  <p>开屏/校准前用深色圆角弹层呈现「身心放松练习 · 非医疗用途」；训练页免责声明用 ⓘ 渐进披露，替代必须勾选才能开练——降低进入摩擦，同时保留告知义务。</p>
+  <div class="img-block">
+    <img src="../img/projects/attunia/01-compliance-popup.png" alt="合规声明弹层">
+    <div class="img-caption">P3 合规声明 — 分段可读，热线加粗；调节可以，诊断不行</div>
+  </div>
+
+  <h3>评测：用可跑的切片约束 Agent，而不是事后拍脑袋</h3>
+  <p>• <strong>eval_No.1</strong>：对话 / 意图 / 危机切片<br>
+     • <strong>eval_No.2</strong>：工作态 10 分钟聚合窗（超载→减压倾向 / 走神→专注回笼）</p>
+  <p>现有评测是可演示的规则与窗切片，尚非大规模脑电数据训练后的稳定状态机——这一点在对外叙事里必须诚实。</p>
+
+  <div class="shot-grid">
+    <div class="shot-item">
+      <img src="../img/projects/attunia/09-debrief-loading.png" alt="复盘加载">
+      <div class="shot-caption">复盘加载 · 解读生成中</div>
+    </div>
+    <div class="shot-item">
+      <img src="../img/projects/attunia/08-debrief.png" alt="练完复盘">
+      <div class="shot-caption">状态曲线与派生洞察</div>
+    </div>
+    <div class="shot-item">
+      <img src="../img/projects/attunia/10-debrief-actions.png" alt="复盘行动区">
+      <div class="shot-caption">行动区 · 交给会诊 / 再练 / 回首页</div>
+    </div>
+  </div>
+</section>
+
+<section id="outcome" class="section-block">
+  <h2>当前进展</h2>
+  <div class="results-grid">
+    <div class="result-item">
+      <div class="result-number">主路径</div>
+      <div class="result-label">开屏→校准→六景→Session→对话/会诊可演示</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">2 套</div>
+      <div class="result-label">eval 切片可跑（对话/危机 + 工作态窗）</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">0 上传</div>
+      <div class="result-label">原始脑电本机处理，不进外部 LLM</div>
+    </div>
+  </div>
+  <p>一句话定位：<strong>Attunia = Soft Healthcare 下，对准 WLB 真空期 + 工作中走神/超负荷的脑电调律 + 美的短训与 Tuno 陪伴</strong>。</p>
+  <p>后续重点：严苛管控下的主动提醒闭环、视效/声景/轻游戏感加深、在现有 eval 上扩样本降误报。硬件形态也会探索更轻的佩戴方式。</p>
+
+  <div class="shot-grid">
+    <div class="shot-item">
+      <img src="../img/projects/attunia/03-manual.png" alt="说明书">
+      <div class="shot-caption">开屏说明书</div>
+    </div>
+    <div class="shot-item">
+      <img src="../img/projects/attunia/05-explore.png" alt="六景">
+      <div class="shot-caption">六景探索</div>
+    </div>
+    <div class="shot-item">
+      <img src="../img/projects/attunia/13-chat-tuno.png" alt="Tuno">
+      <div class="shot-caption">Tuno 陪伴</div>
+    </div>
+  </div>
+</section>
+
+<section id="reflection" class="section-block">
+  <h2>反思</h2>
+  <p><strong>Agent 产品的真正瓶颈</strong>往往不是「模型够不够聪明」，而是边界清不清楚：会诊禁止即兴，是为了让输出可追溯、可验收；思考可视化，是为了让信任可建立。</p>
+  <p><strong>关于 Soft Healthcare 温度</strong>：过度医疗化会越界；过度娱乐化会失信。Attunia 选中间态——有场景的短训、有边界的陪伴、有兜底的危机转介。</p>
+  <p><strong>如果再做一次</strong>：更早把「提醒→开练→完成」做成可测漏斗，用采纳率而不是界面完成度来排优先级。</p>
+  <div class="callout">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-content">
+      <strong>面试可追问点</strong>：为什么六景而不是内容库？为什么会诊只拼目录？脑电为什么不进 LLM？合规为何用弹层而不是勾选？——对应本项目最硬的决策链。Pitch 页到位后，本页叙事会再对照校准一版。
+    </div>
+  </div>
+</section>
+
+<section id="links" class="section-block">
+  <h2>参考链接</h2>
+  <div class="project-links" style="margin-top:8px;">
+    <a href="https://github.com/Leonardolee351-LMX/Attunia_Brainlink-meditation" target="_blank" rel="noopener noreferrer" class="link-card">
+      <div class="link-icon">⌘</div>
+      <div class="link-info">
+        <span class="link-label">GitHub</span>
+        <span class="link-name">Attunia_Brainlink-meditation</span>
+      </div>
+    </a>
+    <a href="https://leonardolee351-lmx.github.io/Attunia_Brainlink-meditation/" target="_blank" rel="noopener noreferrer" class="link-card">
+      <div class="link-icon">🌐</div>
+      <div class="link-info">
+        <span class="link-label">Pages</span>
+        <span class="link-name">静态 UI 预览</span>
+      </div>
+    </a>
+    <a href="./Anxious-Kit.html" class="link-card">
+      <div class="link-icon">↗</div>
+      <div class="link-info">
+        <span class="link-label">Related</span>
+        <span class="link-name">Anxious Kit 小品</span>
+      </div>
+    </a>
+  </div>
+  <div class="callout" style="margin-top:20px;">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      Pages 为静态 UI；完整 Agent 原型需本地跑仓库（Windows + Chrome/Edge，BrainLink Lite 可选）。原始脑电不进外部 LLM。
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER NAV -->
+<footer class="footer-nav">
+  <a href="Twin-City-Tale.html">← Twin City Tales</a>
+  <a href="../works.html">Back to Works →</a>
+</footer>
+
+
+</main>
+</div>
+
+<script>
+(function(){
+  const observerOptions = { threshold: 0.1 };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.img-block, .result-item, .compare-item, .shot-item, .video-block').forEach(el => {
+    observer.observe(el);
+  });
+
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (pageYOffset >= sectionTop - 100) current = section.getAttribute('id');
+    });
+
+    tocLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
