@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>工作台 · JianCareer</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/lab.css">
+<link rel="stylesheet" href="assets/dashboard.css?v=dash9">
+<link rel="stylesheet" href="assets/jc-nav.css?v=nav8">
+</head>
+<body>
+<header id="jc-nav" data-active="dashboard"></header>
+<script src="assets/session.js?v=auth4"></script>
+<script src="assets/jc-nav.js?v=nav8"></script>
+<main class="container dash">
+  <section class="dash-head">
+    <div>
+      <h1>欢迎回来，林晓舟</h1>
+      <p class="sub" id="dashLead">先看进程，再决定下一封投递。</p>
+    </div>
+    <div class="dash-head-actions">
+      <a class="btn btn-secondary" href="resumes.html">管理简历</a>
+      <a class="btn btn-primary" href="grounding-lab.html">去适配一份 JD</a>
+    </div>
+  </section>
+
+  <section class="dash-kpis" id="kpis" aria-label="本周求职指标"></section>
+
+  <section class="cv-split" aria-label="我的简历">
+    <article class="card pad dash-card">
+      <div class="split">
+        <div>
+          <h2 class="dash-h">这份简历</h2>
+          <p class="small muted" id="cv-focus-name">选一份右侧简历，看缺口和建议。</p>
+        </div>
+        <a class="dash-link" id="cv-adapt" href="grounding-lab.html">对着 JD 改写</a>
+      </div>
+      <div class="p2-grid p2-analysis">
+        <div class="p2-donut" id="cv-donut" aria-label="资料完整度"><span id="cv-score">78%<small id="cv-grade">良好</small></span></div>
+        <div class="p2-status" id="cv-status"></div>
+        <div class="p2-suggest">
+          <h3>完善建议</h3>
+          <ul id="cv-tips"></ul>
+          <a class="dash-link" id="cv-fix" href="#">去完善资料 →</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="card pad dash-card">
+      <div class="split">
+        <h2 class="dash-h">选择简历</h2>
+        <a class="dash-link" href="resumes.html">全部</a>
+      </div>
+      <ul class="cv-list cv-list-compact" id="cv-list"></ul>
+      <div class="p2-cta">
+        <a class="btn btn-secondary" href="resumes.html">上传新简历</a>
+        <a class="btn btn-primary" id="cv-edit" href="#">修改已有简历</a>
+      </div>
+    </article>
+  </section>
+
+  <section class="dash-grid">
+    <div class="dash-main">
+      <article class="card pad dash-card">
+        <div class="split">
+          <div>
+            <h2 class="dash-h">投递进度</h2>
+            <p class="small muted" id="progressHint">状态来自 Tracker，不另做一套数字。</p>
+          </div>
+          <a class="dash-link" href="flywheel-lab.html">去飞轮改状态</a>
+        </div>
+        <div class="prog-grid mt2">
+          <div class="donut-lg" id="mixDonut" aria-hidden="true"><i><b id="mixNum">—</b><small id="mixLabel">面试转化</small></i></div>
+          <ul class="legend" id="mixLegend"></ul>
+        </div>
+      </article>
+
+      <article class="card pad dash-card">
+        <div class="split">
+          <h2 class="dash-h">最近投递</h2>
+          <a class="dash-link" href="flywheel-lab.html">全部记录</a>
+        </div>
+        <div class="pipe-tabs" id="pipeTabs" role="tablist" aria-label="按状态筛选"></div>
+        <div class="table-wrap">
+          <table class="app-table">
+            <colgroup>
+              <col style="width:150px">
+              <col style="width:118px">
+              <col style="width:96px">
+              <col style="width:76px">
+              <col style="width:52px">
+              <col>
+              <col style="width:76px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>公司</th>
+                <th>岗位</th>
+                <th>日期</th>
+                <th>状态</th>
+                <th>匹配</th>
+                <th>下一步</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="appRows"></tbody>
+          </table>
+        </div>
+        <p class="small muted" id="appEmpty" hidden>这一栏还没有记录。</p>
+      </article>
+    </div>
+
+    <aside class="dash-side">
+      <article class="card pad dash-card">
+        <h2 class="dash-h">下一步</h2>
+        <p class="small muted">来自投递结果，不是鸡汤。</p>
+        <div class="next-list" id="nextList"></div>
+      </article>
+
+      <article class="card pad dash-card">
+        <div class="split">
+          <h2 class="dash-h">为你匹配</h2>
+          <a class="dash-link" href="flywheel-lab.html">投递飞轮</a>
+        </div>
+        <div class="match-list" id="jobPush"></div>
+      </article>
+    </aside>
+  </section>
+</main>
+
+<script src="assets/app.js"></script>
+<script src="assets/jc-cv.js?v=cv3"></script>
+<script>
+function labState() {
+  try { return JSON.parse(localStorage.getItem("jc_lab_v1") || "{}"); } catch (err) { return {}; }
+}
+
+const TABS = [
+  ["all", "全部"],
+  ["progress", "投递中"],
+  ["interview", "面试"],
+  ["offer", "Offer"],
+  ["rejected", "未通过"]
+];
+const DEMO_APPS = [
+  { company: "腾讯科技", role: "产品经理", status: "interview", match: 88, date: "2025-08-14", gap: "" },
+  { company: "字节跳动", role: "AI 产品经理", status: "rejected", match: 81, date: "2025-08-21", gap: "量化结果不足：用走查页数 / 测试人数，不要编转化率" },
+  { company: "早期 Agent 团队", role: "Founding Designer", status: "applied", match: 90, date: "2025-08-28", gap: "" },
+  { company: "美团", role: "产品经理", status: "viewed", match: 76, date: "2025-08-05", gap: "" },
+  { company: "阿里巴巴", role: "体验设计师", status: "offer", match: 91, date: "2025-07-30", gap: "" },
+  { company: "小红书", role: "AI UX", status: "ready", match: 84, date: "", gap: "" }
+];
+const STATUS = {
+  ready: { label: "准备投递", cls: "neutral", tab: "progress" },
+  applied: { label: "已投递", cls: "info", tab: "progress" },
+  viewed: { label: "已查看", cls: "warn", tab: "progress" },
+  interview: { label: "面试中", cls: "teal", tab: "interview" },
+  offer: { label: "Offer", cls: "success", tab: "offer" },
+  rejected: { label: "未通过", cls: "danger", tab: "rejected" }
+};
+const MIX = [
+  ["applied", "已投递", "#3296e8"],
+  ["viewed", "已查看", "#8aa0ad"],
+  ["interview", "面试中", "#09afc1"],
+  ["offer", "Offer", "#18b66a"],
+  ["rejected", "未通过", "#e94b5f"],
+  ["ready", "待投递", "#d4e3ea"]
+];
+const ICO = {
+  send: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h16"/><path d="M16 9l4 3-4 3"/></svg>',
+  talk: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16v9H8l-4 4V6z"/></svg>',
+  offer: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 11V7a4 4 0 018 0v4"/><rect x="5" y="11" width="14" height="9" rx="2"/></svg>',
+  save: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 4h12v16l-6-3-6 3V4z"/></svg>',
+  chev: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>'
+};
+
+let tab = "all";
+
+function stageOf(raw) {
+  const s = String(raw || "applied");
+  if (/ready|准备/.test(s)) return "ready";
+  if (/offer|录用/i.test(s)) return "offer";
+  if (/reject|拒绝|未通过|不合适/.test(s)) return "rejected";
+  if (/interview|面试/.test(s)) return "interview";
+  if (/view|沟通|screen/.test(s)) return "viewed";
+  return "applied";
+}
+function logoTone(name) {
+  if (/腾讯/.test(name)) return "#1677ff";
+  if (/字节/.test(name)) return "#111827";
+  if (/美团/.test(name)) return "#f5a623";
+  if (/阿里/.test(name)) return "#ff6a00";
+  if (/小红书/.test(name)) return "#ff2442";
+  if (/早期|Agent/.test(name)) return "#078fa4";
+  return "#078fa4";
+}
+function suggestion(app) {
+  if (app.stage === "rejected") return app.gap || "回 Grounding，用过程指标补事实";
+  if (app.stage === "interview") return "准备 2 个可验证案例，不要编转化率";
+  if (app.stage === "offer") return "对比大厂 / 初创路径再决定";
+  if (app.stage === "ready") return "适配后再投，保留原事实";
+  if (app.stage === "viewed") return "跟进沟通要点，写入 Tracker";
+  return "等查看结果，或去飞轮标状态";
+}
+function hrefOf(app) {
+  if (app.stage === "rejected" || app.stage === "ready") return "grounding-lab.html";
+  if (app.stage === "offer") return "../mentor/index.html";
+  if (app.stage === "interview") return "flywheel-lab.html";
+  return "flywheel-lab.html";
+}
+function norm(a) {
+  const stage = stageOf(a.status);
+  return {
+    company: a.company || "未命名公司",
+    role: a.role || a.title || "岗位",
+    stage,
+    match: Number(a.match) || 80,
+    date: a.date || "—",
+    gap: a.gap || a.reason || ""
+  };
+}
+function countsOf(apps) {
+  const c = { ready: 0, applied: 0, viewed: 0, interview: 0, offer: 0, rejected: 0 };
+  apps.forEach((a) => { c[a.stage] = (c[a.stage] || 0) + 1; });
+  return c;
+}
+
+function render() {
+  const live = (labState().apps || []).map(norm);
+  const apps = live.length ? live : DEMO_APPS.map(norm);
+  const c = countsOf(apps);
+  const sent = apps.filter((a) => a.stage !== "ready").length;
+  const interviewRate = sent ? Math.round(((c.interview + c.offer) / sent) * 100) : 0;
+  const interviews = c.interview;
+  const lead = interviews
+    ? `有 ${interviews} 场面试待准备。先看进程，再决定下一封投递。`
+    : c.rejected
+      ? "上一封未通过。先补证据，再发出下一封。"
+      : "同一份档案，下一封投递从这里开始。";
+  document.getElementById("dashLead").textContent = lead;
+
+  document.getElementById("kpis").innerHTML = [
+    [ICO.send, "已投递", sent, sent ? `进入面试 ${interviewRate}%` : "还没有发出"],
+    [ICO.talk, "面试中", c.interview, c.interview ? "待准备案例" : "暂无面试"],
+    [ICO.offer, "Offer", c.offer, c.offer ? "去 Mentor 对比路径" : "还没有 Offer"],
+    [ICO.save, "待投递", c.ready, c.ready ? "已匹配，未发出" : "暂无待投"]
+  ].map(([ico, k, n, hint]) => `
+    <div class="dash-kpi">
+      <span class="ico">${ico}</span>
+      <div>
+        <div class="k">${k}</div>
+        <div class="n">${n}</div>
+        <div class="hint">${hint}</div>
+      </div>
+    </div>`).join("");
+
+  const mixTotal = apps.length || 1;
+  let acc = 0;
+  const stops = MIX.map(([key, , color]) => {
+    const n = c[key] || 0;
+    if (!n) return "";
+    const start = (acc / mixTotal) * 100;
+    acc += n;
+    const end = (acc / mixTotal) * 100;
+    return `${color} ${start}% ${end}%`;
+  }).filter(Boolean);
+  const donut = document.getElementById("mixDonut");
+  donut.style.background = `conic-gradient(${stops.join(",") || "#e6f3f6 0 100%"})`;
+  donut.setAttribute("aria-label", `投递 ${sent} 份，面试转化 ${interviewRate}%`);
+  document.getElementById("mixNum").textContent = sent ? interviewRate + "%" : "—";
+  document.getElementById("mixLabel").textContent = "面试转化";
+  document.getElementById("progressHint").textContent = sent
+    ? `${sent} 份已发出 · 面试转化按「面试 + Offer / 已投递」计算`
+    : "还没有投递记录。适配一份 JD 后再回来。";
+  document.getElementById("mixLegend").innerHTML = MIX.filter(([key]) => c[key]).map(([key, label, color]) => `
+    <li><i style="background:${color}"></i>${label}<b>${c[key]}</b></li>`).join("");
+
+  const tabCount = Object.fromEntries(TABS.map(([id]) => [
+    id,
+    id === "all" ? apps.length : apps.filter((a) => STATUS[a.stage].tab === id).length
+  ]));
+  document.getElementById("pipeTabs").innerHTML = TABS.map(([id, name]) =>
+    `<button type="button" role="tab" aria-selected="${tab===id}" data-tab="${id}" class="${tab===id?"on":""}">${name}<em>${tabCount[id]}</em></button>`
+  ).join("");
+
+  const shown = tab === "all" ? apps : apps.filter((a) => STATUS[a.stage].tab === tab);
+  const empty = document.getElementById("appEmpty");
+  const body = document.getElementById("appRows");
+  empty.hidden = shown.length > 0;
+  body.innerHTML = shown.map((a) => {
+    const st = STATUS[a.stage];
+    return `<tr>
+      <td>
+        <div class="co">
+          <span class="co-logo" style="background:${logoTone(a.company)}">${a.company.slice(0, 1)}</span>
+          <b>${a.company}</b>
+        </div>
+      </td>
+      <td class="role-cell">${a.role}</td>
+      <td class="muted">${a.date}</td>
+      <td><span class="status ${st.cls}">${st.label}</span></td>
+      <td class="match-cell">${a.match}%</td>
+      <td class="tip-cell">${suggestion(a)}</td>
+      <td><a class="btn btn-secondary btn-xs" href="${hrefOf(a)}">查看</a></td>
+    </tr>`;
+  }).join("");
+
+  document.querySelectorAll("[data-tab]").forEach((btn) => {
+    btn.onclick = () => { tab = btn.dataset.tab; render(); };
+  });
+
+  const next = [];
+  if (c.interview) next.push(["准备腾讯面试", "2 个可验证案例，不要编数字", "flywheel-lab.html"]);
+  if (c.rejected) next.push(["补字节拒绝原因", "用走查页数 / 测试人数改写", "grounding-lab.html"]);
+  next.push(["看 Mentor 路径", "大厂 / 中厂 vs 初创的技能缺口不同", "../mentor/index.html"]);
+  if (c.ready) next.push(["发出已匹配岗位", "适配后再投，保留原事实", "grounding-lab.html"]);
+  document.getElementById("nextList").innerHTML = next.slice(0, 3).map(([title, sub, href]) => `
+    <a class="next-item" href="${href}">
+      <span>
+        <b>${title}</b>
+        <small>${sub}</small>
+      </span>
+      ${ICO.chev}
+    </a>`).join("");
+
+  const recs = [
+    { company: "腾讯", title: "产品经理 · PCG", why: "要 0→1 收束 + 跨端同一数据", match: 92 },
+    { company: "字节跳动", title: "AI 产品经理", why: "要可评测的 Agent 编排", match: 86 },
+    { company: "早期 Agent 团队", title: "Founding Designer", why: "把混乱 Demo 收成可演示闭环", match: 78 }
+  ];
+  document.getElementById("jobPush").innerHTML = recs.map((j) => `
+    <a class="match-item" href="grounding-lab.html">
+      <span class="co-logo" style="background:${logoTone(j.company)}">${j.company.slice(0, 1)}</span>
+      <span>
+        <b>${j.title}</b>
+        <small>${j.company} · ${j.why}</small>
+      </span>
+      <em>${j.match}%</em>
+    </a>`).join("");
+}
+render();
+
+(function () {
+  if (!window.JCCv) return;
+  const profile = JCCv.product + "profile.html";
+  const listRoot = document.getElementById("cv-list");
+  const nameEl = document.getElementById("cv-focus-name");
+  const donut = document.getElementById("cv-donut");
+  const scoreEl = document.getElementById("cv-score");
+  const gradeEl = document.getElementById("cv-grade");
+  const statusEl = document.getElementById("cv-status");
+  const tipsEl = document.getElementById("cv-tips");
+  const fixEl = document.getElementById("cv-fix");
+  const editEl = document.getElementById("cv-edit");
+  const adaptEl = document.getElementById("cv-adapt");
+  let selected = (JCCv.get() || {}).id;
+
+  function paint() {
+    const item = JCCv.get(selected);
+    if (!item) return;
+    selected = item.id;
+    const a = JCCv.analysisOf(item);
+    const mark = a.score >= 75 ? "#16a34a" : a.score >= 55 ? "#d97706" : "#3b82f6";
+    nameEl.textContent = item.name + " · " + item.role;
+    scoreEl.innerHTML = a.score + "%<small id=\"cv-grade\">" + a.grade + "</small>";
+    const gradeNow = scoreEl.querySelector("small");
+    if (gradeNow) gradeNow.style.color = mark;
+    donut.style.background = "conic-gradient(#00b0c2 0 " + a.score + "%, #e7f1f4 0)";
+    donut.setAttribute("aria-label", item.name + " 资料完整度 " + a.score + "%，" + a.grade);
+    statusEl.innerHTML = a.items.map(function (row) {
+      const ico = row[1] === "ok" ? "✓" : row[1] === "warn" ? "!" : "i";
+      return '<div class="p2-item"><span class="dot ' + row[1] + '">' + ico + "</span>" + row[0] + "<span>" + row[2] + "</span></div>";
+    }).join("");
+    tipsEl.innerHTML = a.tips.map(function (row) {
+      return "<li>" + row[0] + " <em>+" + row[1] + "%</em></li>";
+    }).join("");
+    fixEl.href = profile;
+    editEl.href = profile;
+    adaptEl.href = "grounding-lab.html";
+    JCCv.renderList(listRoot, {
+      pick: true,
+      compact: true,
+      selected: selected,
+      onPick: function (id) {
+        selected = id;
+        paint();
+      }
+    });
+  }
+  paint();
+})();
+</script>
+</body>
+</html>

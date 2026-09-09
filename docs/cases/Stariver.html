@@ -393,7 +393,7 @@ body {
 [data-theme="light"] .nav-theme-toggle .sun { display: block; }
 [data-theme="light"] .nav-theme-toggle .moon { display: none; }
 </style>
-<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../site.css?v=20260909">
 <script src="../site.js" defer></script>
 </head>
 <body>
@@ -556,9 +556,15 @@ body {
 </section>
 
 <!-- FOOTER NAV -->
-<footer class="footer-nav">
-  <a href="CO-EVO.html">← 上一个项目: CO-EVO</a>
-  <a href="Leke.html">下一个项目: 乐刻品牌分析 →</a>
+<footer class="footer-nav" aria-label="项目翻页">
+  <a href="CO-EVO.html" class="footer-btn footer-btn--prev">
+    <span class="btn-label">上一个项目</span>
+    <span class="btn-title">← CO-EVO</span>
+  </a>
+  <a href="Light-Robotics.html" class="footer-btn footer-btn--next">
+    <span class="btn-label">下一个项目</span>
+    <span class="btn-title">Light Robotics →</span>
+  </a>
 </footer>
 
 </main>

@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JianCareer Design System</title>
+<link rel="icon" href="assets/img/icon-logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/catalog.css?v=spec10">
+<link rel="stylesheet" href="assets/page-kit.css?v=live2">
+<link rel="stylesheet" href="../prototype/assets/jc-nav.css?v=nav8">
+</head>
+<body>
+<header id="jc-nav" data-active="ds"></header>
+<script src="../prototype/assets/session.js?v=auth4"></script>
+<script src="../prototype/assets/jc-nav.js?v=nav8"></script>
+<div class="shell" id="app" data-density="comfortable">
+<aside class="sidebar">
+  <div class="brand-lockup">
+    <img class="jc-mark" src="assets/img/icon-logo.png" alt="">
+    <div><b>JDS</b><small>Design System · v2.1</small></div>
+  </div>
+  <input id="search" class="search" placeholder="搜索组件 / Token / 资产">
+  <nav class="nav">
+    <div class="navtitle">Start</div>
+    <a class="active" href="#overview">Overview</a>
+    <a href="#gallery">All Components</a>
+    <div class="navtitle">Foundation</div>
+    <a href="#brand">Logo</a>
+    <a href="#assets">Graphic Assets</a>
+    <a href="#color">Color</a>
+    <a href="#type">Typography</a>
+    <a href="#space">Spacing</a>
+    <div class="navtitle">System</div>
+    <a href="#core">Core UI</a>
+    <a href="#auth">Auth</a>
+    <a href="#onboard">Upload / Profile</a>
+    <a href="#dash">Dashboard</a>
+    <a href="#patterns">Pages</a>
+    <div class="navtitle">Engineering</div>
+    <a href="#tokens">Token Mapping</a>
+    <a href="#rules">Visual Rules</a>
+    <a href="#source">Source</a>
+  </nav>
+</aside>
+<div class="workspace">
+<header class="topbar">
+  <div class="crumb">JDS / <strong>Visual Catalog</strong></div>
+  <div class="top-actions">
+    <div class="seg" id="density">
+      <button class="active" data-density="comfortable">Web · Comfortable</button>
+      <button data-density="compact">Plugin · Compact</button>
+    </div>
+    <button class="ghostbtn" id="openGallery">组件总览</button>
+  </div>
+</header>
+<main class="main">
+
+<section class="hero" id="overview">
+  <h1>JianCareer Design System</h1>
+  <p>标本只从「简职 · 注册登录基本调性」落地页抽取：<code>完整网页原型逐页实现</code>。组件库里看到的，就是那些真实页面里出现过的东西。</p>
+  <div class="links">
+    <a href="#patterns">页面标本</a>
+    <a href="#auth">登录 / 注册</a>
+    <a href="#onboard">上传 / 档案</a>
+    <a href="#dash">工作台</a>
+    <a href="./tokens.html">Token 表</a>
+  </div>
+  <div class="hero-grid">
+    <div class="hero-panel"><strong>以真实页面为准</strong><span>首页 / 登录 / 注册 / 上传 / 档案 / 工作台 / 设定。每页抽关键组件，不另造一套。</span></div>
+    <div class="hero-panel"><strong>同一套青绿调性</strong><span>CTA 用 #00B0C2 渐变胶囊；顶栏登录用 #00A9BC 实心胶囊；上传主路径用橙色。</span></div>
+  </div>
+</section>
+
+<section class="section" id="gallery">
+  <div class="section-head"><h2>All Components</h2><p>点击卡片打开详情。预览按真实尺寸放在标本台上。</p></div>
+  <div class="component-grid" id="componentGrid"></div>
+</section>
+
+<section class="section" id="brand">
+  <div class="section-head"><h2>Logo 三态 + 现网 Lockup</h2><p>同一套锁：品牌色、浅底单色、深底反白。现网首页用 logo-jiancareer；实验室顶栏用 logo-brand。</p></div>
+  <div class="gallery">
+    <div class="card span4" data-search="Logo Brand teal lockup">
+      <div class="card-head"><div><div class="card-title">Brand</div><div class="card-sub">实验室顶栏 / 品牌色</div></div><span class="pill">logo-brand</span></div>
+      <div class="canvas stage-dark"><img src="../brand/logo-brand.png" alt="简职品牌色" style="max-width:240px;height:auto"></div>
+      <div class="meta"><code>teal lockup</code><code>40px nav</code></div>
+    </div>
+    <div class="card span4" data-search="Logo on light 浅底">
+      <div class="card-head"><div><div class="card-title">On Light</div><div class="card-sub">浅底工作台 / 文档</div></div><span class="pill">logo-on-light</span></div>
+      <div class="canvas stage-light"><img src="../brand/logo-on-light.png" alt="浅底 Logo" style="max-width:240px;height:auto"></div>
+      <div class="meta"><code>ink</code><code>light header</code></div>
+    </div>
+    <div class="card span4" data-search="Logo on dark 反白">
+      <div class="card-head"><div><div class="card-title">On Dark</div><div class="card-sub">深底条 / 插件深色壳</div></div><span class="pill">logo-on-dark</span></div>
+      <div class="canvas stage-dark"><img src="../brand/logo-on-dark.png" alt="深底反白 Logo" style="max-width:240px;height:auto"></div>
+      <div class="meta"><code>inverse</code><code>plugin dark</code></div>
+    </div>
+    <div class="card span6" data-search="现网 lockup logo-jiancareer 首页">
+      <div class="card-head"><div><div class="card-title">Homepage Lockup</div><div class="card-sub">现网 index.html 顶栏</div></div><span class="pill">logo-jiancareer</span></div>
+      <div class="canvas stage-light"><img src="assets/img/logo-jiancareer.png" alt="现网 Lockup" style="height:48px;width:auto"></div>
+      <div class="meta"><code>chrome.js</code><code>guest + app</code></div>
+    </div>
+    <div class="card span6" data-search="icon-logo mark favicon">
+      <div class="card-head"><div><div class="card-title">Mark / Favicon</div><div class="card-sub">箭头文件标，单独使用</div></div><span class="pill">icon-logo</span></div>
+      <div class="canvas stage-light"><img src="assets/img/icon-logo.png" alt="简职标" style="height:56px;width:56px"></div>
+      <div class="meta"><code>favicon</code><code>sidebar mark</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="assets">
+  <div class="section-head"><h2>Graphic Assets</h2><p>现网首页、登录、注册、上传页用到的全部 PNG。组件库标本必须引用这些文件，不要再描一遍。</p></div>
+  <div class="gallery">
+    <div class="card span12" data-search="icons search mail bell menu upload trash logout">
+      <div class="card-head"><div><div class="card-title">UI Icons</div><div class="card-sub">顶栏与上传 / 删除。20–22px 渲染。</div></div><span class="pill">PNG</span></div>
+      <div class="canvas matrix">
+        <div class="asset-grid">
+          <div class="asset-tile"><img src="assets/img/icon-search.png" alt=""><span>icon-search</span></div>
+          <div class="asset-tile"><img src="assets/img/icon-mail.png" alt=""><span>icon-mail</span></div>
+          <div class="asset-tile"><img src="assets/img/icon-bell.png" alt=""><span>icon-bell</span></div>
+          <div class="asset-tile"><img src="assets/img/icon-menu.png" alt=""><span>icon-menu</span></div>
+          <div class="asset-tile"><img src="assets/img/icon-logout.png" alt=""><span>icon-logout</span></div>
+          <div class="asset-tile"><img src="assets/img/icon-upload.png" alt=""><span>icon-upload</span></div>
+          <div class="asset-tile"><img src="assets/img/icon-trash.png" alt=""><span>icon-trash</span></div>
+          <div class="asset-tile"><img src="assets/img/icon-logo.png" alt=""><span>icon-logo</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card span12" data-search="avatars 头像 评价 social proof">
+      <div class="card-head"><div><div class="card-title">Avatars</div><div class="card-sub">首页社会证明与评价卡</div></div><span class="pill">JPG</span></div>
+      <div class="canvas matrix">
+        <div class="asset-grid">
+          <div class="asset-tile avatar"><img src="assets/img/avatar-01.jpg" alt=""><span>avatar-01</span></div>
+          <div class="asset-tile avatar"><img src="assets/img/avatar-02.jpg" alt=""><span>avatar-02</span></div>
+          <div class="asset-tile avatar"><img src="assets/img/avatar-03.jpg" alt=""><span>avatar-03</span></div>
+          <div class="asset-tile avatar"><img src="assets/img/avatar-04.jpg" alt=""><span>avatar-04</span></div>
+          <div class="asset-tile avatar"><img src="assets/img/avatar-05.jpg" alt=""><span>avatar-05</span></div>
+          <div class="asset-tile avatar"><img src="assets/img/avatar-06.jpg" alt=""><span>avatar-06</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card span4" data-search="auth login visual 登录插画">
+      <div class="card-head"><div><div class="card-title">Auth Login</div><div class="card-sub">login.html 左栏</div></div></div>
+      <div class="canvas"><img src="assets/img/auth-login-visual.png" alt="登录插画" style="width:100%;border-radius:12px"></div>
+    </div>
+    <div class="card span4" data-search="auth register visual 注册插画">
+      <div class="card-head"><div><div class="card-title">Auth Register</div><div class="card-sub">register.html 左栏</div></div></div>
+      <div class="canvas"><img src="assets/img/auth-register-visual.png" alt="注册插画" style="width:100%;border-radius:12px"></div>
+    </div>
+    <div class="card span4" data-search="upload hero 上传">
+      <div class="card-head"><div><div class="card-title">Upload Hero</div><div class="card-sub">upload.html</div></div></div>
+      <div class="canvas"><img src="assets/img/upload-hero.png" alt="上传插画" style="width:100%;border-radius:12px"></div>
+    </div>
+    <div class="card span8" data-search="profile orbit 一份档案">
+      <div class="card-head"><div><div class="card-title">Profile Orbit</div><div class="card-sub">首页「一份档案」</div></div></div>
+      <div class="canvas"><img src="assets/img/profile-orbit.png" alt="一份档案" style="width:min(420px,100%)"></div>
+    </div>
+    <div class="card span4" data-search="qr 关注 二维码">
+      <div class="card-head"><div><div class="card-title">QR Follow</div><div class="card-sub">页脚关注我们</div></div></div>
+      <div class="canvas stage-light"><img src="assets/img/qr-follow.png" alt="二维码" style="width:120px;height:120px"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="color">
+  <div class="section-head"><h2>Color</h2><p>Reference Token。主按钮用 Teal 500 <code>#00B0C2</code>，悬浮 Teal 400，激活更深。高亮金 <code>#FCB000</code>。现网首页 CTA 仍是 <code>#00A9BC</code>。</p></div>
+  <div class="gallery">
+    <div class="card span8">
+      <div class="card-head"><div><div class="card-title">Brand Teal</div><div class="card-sub">reference.json</div></div><span class="pill">Color Token</span></div>
+      <div class="canvas"><div class="swatches">
+        <div class="swatch light" style="background:#E8F9FA">50<br>#E8F9FA</div>
+        <div class="swatch light" style="background:#C9F0F3">100<br>#C9F0F3</div>
+        <div class="swatch" style="background:#00B0C2">500<br>#00B0C2</div>
+        <div class="swatch" style="background:#087C8E">700<br>#087C8E</div>
+        <div class="swatch" style="background:#104F5C">900<br>#104F5C</div>
+      </div></div>
+      <div class="meta"><code>brand / button = teal.500</code><code>highlight = gold.500</code><code>homepage CTA = #00A9BC</code></div>
+    </div>
+    <div class="card span4">
+      <div class="card-head"><div><div class="card-title">Semantic Status</div><div class="card-sub">Success / Warning / Danger / Info</div></div></div>
+      <div class="canvas stack">
+        <div class="alert success"><b>Success</b>投递成功并同步</div>
+        <div class="alert warning"><b>Warning</b>还有 4 项资料待补</div>
+        <div class="alert danger"><b>Danger</b>页面识别失败</div>
+        <div class="alert info"><b>Info</b>AI 正在分析岗位</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="type">
+  <div class="section-head"><h2>Typography</h2><p>现网首页：Inter + PingFang SC。组件引用语义层级，不直接绑 H1。</p></div>
+  <div class="gallery">
+    <div class="card span7">
+      <div class="card-head"><div><div class="card-title">Type Scale</div><div class="card-sub">Inter / PingFang SC</div></div></div>
+      <div class="canvas stack">
+        <div class="type-row"><b style="font-size:32px">规划清楚，改好简历，一键投递</b><span class="type-meta">display · 32</span></div>
+        <div class="type-row"><b style="font-size:24px">AI 职业行动系统</b><span class="type-meta">heading / 2xl · 24</span></div>
+        <div class="type-row"><b style="font-size:18px">岗位匹配与行动建议</b><span class="type-meta">heading / lg · 18</span></div>
+        <div class="type-row"><span style="font-size:14px">Mentor 帮你拆成长路径，Grounding 只改写已有经历。</span><span class="type-meta">body / sm · 14</span></div>
+        <div class="type-row"><span style="font-size:12px;font-weight:600">查看匹配详情</span><span class="type-meta">label / sm · 12</span></div>
+      </div>
+    </div>
+    <div class="card span5">
+      <div class="card-head"><div><div class="card-title">Content Hierarchy</div><div class="card-sub">Display / Heading / Body / Label</div></div></div>
+      <div class="canvas stack">
+        <span class="tag info">Display · Marketing</span>
+        <span class="tag">Heading · Page / Section</span>
+        <span class="tag">Body · Main content</span>
+        <span class="tag">Label · Button / Form</span>
+        <span class="tag">Caption · Metadata</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="space">
+  <div class="section-head"><h2>Spacing, Radius, Elevation</h2><p>4px 原子步进，8px 主节奏。顶栏 72px。Web Comfortable / Plugin Compact。</p></div>
+  <div class="gallery">
+    <div class="card span4"><div class="card-head"><div><div class="card-title">Spacing</div><div class="card-sub">4px atom · 8px rhythm</div></div></div><div class="canvas"><div class="spacebars"><div class="spacebar" style="height:12px">4</div><div class="spacebar" style="height:20px">8</div><div class="spacebar" style="height:29px">12</div><div class="spacebar" style="height:38px">16</div><div class="spacebar" style="height:56px">24</div><div class="spacebar" style="height:76px">32</div><div class="spacebar" style="height:94px">48</div></div></div></div>
+    <div class="card span4"><div class="card-head"><div><div class="card-title">Radius</div><div class="card-sub">Component hierarchy</div></div></div><div class="canvas"><div class="radiusgrid"><div class="radiusbox" style="border-radius:4px">xs 4</div><div class="radiusbox" style="border-radius:8px">md 8</div><div class="radiusbox" style="border-radius:12px">lg 12</div><div class="radiusbox" style="border-radius:24px">2xl 24</div></div></div></div>
+    <div class="card span4"><div class="card-head"><div><div class="card-title">Elevation</div><div class="card-sub">Card → Popover → Modal</div></div></div><div class="canvas"><div class="shadowgrid"><div class="shadowbox" style="box-shadow:0 1px 3px rgba(8,24,32,.08)">1</div><div class="shadowbox" style="box-shadow:0 8px 24px rgba(8,24,32,.10)">2</div><div class="shadowbox" style="box-shadow:0 18px 44px rgba(8,24,32,.14)">3</div></div></div></div>
+  </div>
+</section>
+
+<section class="section" id="core">
+  <div class="section-head"><h2>Core UI</h2><p>顶栏、按钮规格、表单、标签。全部对应完整网页原型里的 chrome / landing / auth。</p></div>
+  <div class="gallery">
+    <div class="card span12" data-search="Guest Nav 首页 登录 注册 功能介绍">
+      <div class="card-head"><div><div class="card-title">Guest Nav</div><div class="card-sub">现网未登录：白底 + lockup + 功能介绍 / 关于我们 + 登录注册</div></div><span class="pill">Core / Nav</span></div>
+      <div class="canvas matrix">
+        <div class="guest-nav">
+          <div class="guest-nav-inner">
+            <img class="nav-logo" src="assets/img/logo-jiancareer.png" alt="简职">
+            <div class="guest-nav-links"><span>功能介绍</span><span>关于我们</span></div>
+            <div class="guest-nav-actions"><button class="pill-btn fill">登录</button><button class="pill-btn line">注册</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="props"><code>logo-jiancareer</code><code>CTA #00A9BC</code><code>72px bar</code></div>
+    </div>
+    <div class="card span12" data-search="App Nav 工作台 简历 PNG icons">
+      <div class="card-head"><div><div class="card-title">App Nav</div><div class="card-sub">登录后：五入口 + search / mail / bell PNG</div></div><span class="pill">Core / Nav</span></div>
+      <div class="canvas matrix">
+        <div class="app-nav">
+          <div class="app-nav-inner">
+            <img class="nav-logo" src="assets/img/logo-jiancareer.png" alt="简职">
+            <div class="app-nav-links"><span>工作台</span><span>简历修改</span><span class="is-on">AI职场导师</span><span>求职跟踪</span><span>组件库系统</span></div>
+            <div class="app-nav-tools">
+              <button class="nav-ico" type="button"><img src="assets/img/icon-search.png" alt=""></button>
+              <button class="nav-ico" type="button"><img src="assets/img/icon-mail.png" alt=""></button>
+              <button class="nav-ico" type="button"><img src="assets/img/icon-bell.png" alt=""></button>
+              <img class="nav-avatar" src="assets/img/avatar-03.jpg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="props"><code>logo-jiancareer</code><code>icon-search</code><code>icon-mail</code><code>icon-bell</code></div>
+    </div>
+    <div class="card span12" data-search="Button 按钮 默认 勾边 高亮 icon variable">
+      <div class="card-head"><div><div class="card-title">Button</div><div class="card-sub">默认 / 勾边 / 高亮。icon 是可选 Variable，可有可无。</div></div><span class="pill">Core</span></div>
+      <div class="canvas matrix btn-spec"><div class="spec-board spec-matrix">
+        <div class="spec-row"><span class="spec-k">正常</span><div class="spec-cells">
+          <div><span class="spec-size">Small · icon 可选</span><div class="spec-group">
+            <figure class="spec-cell"><button class="btn solid" type="button">Button</button><figcaption>默认</figcaption></figure>
+            <figure class="spec-cell"><button class="btn outline" type="button">Button</button><figcaption>勾边</figcaption></figure>
+            <figure class="spec-cell"><button class="btn highlight" type="button">Button</button><figcaption>高亮</figcaption></figure>
+            <figure class="spec-cell"><button class="btn solid" type="button"><i class="ico check" aria-hidden="true"></i>Button</button><figcaption>默认 + icon</figcaption></figure>
+            <figure class="spec-cell"><button class="btn outline" type="button"><i class="ico plus" aria-hidden="true"></i>Button</button><figcaption>勾边 + icon</figcaption></figure>
+            <figure class="spec-cell"><button class="btn highlight" type="button"><i class="ico check" aria-hidden="true"></i>Button</button><figcaption>高亮 + icon</figcaption></figure>
+          </div></div>
+          <div><span class="spec-size">Large · icon 可选</span><div class="spec-group">
+            <figure class="spec-cell"><button class="btn lg solid" type="button">Button</button><figcaption>默认</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg outline" type="button">Button</button><figcaption>勾边</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg highlight" type="button">Button</button><figcaption>高亮</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg solid" type="button"><i class="ico check" aria-hidden="true"></i>Button</button><figcaption>默认 + icon</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg outline" type="button"><i class="ico plus" aria-hidden="true"></i>Button</button><figcaption>勾边 + icon</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg highlight" type="button"><i class="ico check" aria-hidden="true"></i>Button</button><figcaption>高亮 + icon</figcaption></figure>
+          </div></div>
+        </div></div>
+        <div class="spec-row"><span class="spec-k">悬浮</span><div class="spec-cells">
+          <div class="spec-group">
+            <figure class="spec-cell"><button class="btn solid show-hover" type="button">Button</button><figcaption>默认</figcaption></figure>
+            <figure class="spec-cell"><button class="btn outline show-hover" type="button">Button</button><figcaption>勾边</figcaption></figure>
+            <figure class="spec-cell"><button class="btn highlight show-hover" type="button">Button</button><figcaption>高亮</figcaption></figure>
+            <figure class="spec-cell"><button class="btn solid show-hover" type="button"><i class="ico check" aria-hidden="true"></i>Button</button><figcaption>默认 + icon</figcaption></figure>
+            <figure class="spec-cell"><button class="btn outline show-hover" type="button"><i class="ico plus" aria-hidden="true"></i>Button</button><figcaption>勾边 + icon</figcaption></figure>
+            <figure class="spec-cell"><button class="btn highlight show-hover" type="button"><i class="ico check" aria-hidden="true"></i>Button</button><figcaption>高亮 + icon</figcaption></figure>
+          </div>
+          <div class="spec-group">
+            <figure class="spec-cell"><button class="btn lg solid show-hover" type="button">Button</button><figcaption>默认</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg outline show-hover" type="button">Button</button><figcaption>勾边</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg highlight show-hover" type="button">Button</button><figcaption>高亮</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg solid show-hover" type="button"><i class="ico check" aria-hidden="true"></i>Button</button><figcaption>默认 + icon</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="spec-row"><span class="spec-k">激活</span><div class="spec-cells">
+          <div class="spec-group">
+            <figure class="spec-cell"><button class="btn solid show-active" type="button">Button</button><figcaption>默认</figcaption></figure>
+            <figure class="spec-cell"><button class="btn outline show-active" type="button">Button</button><figcaption>勾边</figcaption></figure>
+            <figure class="spec-cell"><button class="btn highlight show-active" type="button">Button</button><figcaption>高亮</figcaption></figure>
+            <figure class="spec-cell"><button class="btn solid show-active" type="button"><i class="ico check" aria-hidden="true"></i>Button</button><figcaption>默认 + icon</figcaption></figure>
+          </div>
+          <div class="spec-group">
+            <figure class="spec-cell"><button class="btn lg solid show-active" type="button">Button</button><figcaption>默认</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg outline show-active" type="button">Button</button><figcaption>勾边</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg highlight show-active" type="button">Button</button><figcaption>高亮</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="spec-row"><span class="spec-k">禁用</span><div class="spec-cells">
+          <div class="spec-group">
+            <figure class="spec-cell"><button class="btn solid" type="button" disabled>Button</button><figcaption>默认</figcaption></figure>
+            <figure class="spec-cell"><button class="btn outline" type="button" disabled>Button</button><figcaption>勾边</figcaption></figure>
+            <figure class="spec-cell"><button class="btn highlight" type="button" disabled>Button</button><figcaption>高亮</figcaption></figure>
+            <figure class="spec-cell"><button class="btn solid" type="button" disabled><i class="ico check" aria-hidden="true"></i>Button</button><figcaption>默认 + icon</figcaption></figure>
+          </div>
+          <div class="spec-group">
+            <figure class="spec-cell"><button class="btn lg solid" type="button" disabled>Button</button><figcaption>默认</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg outline" type="button" disabled>Button</button><figcaption>勾边</figcaption></figure>
+            <figure class="spec-cell"><button class="btn lg highlight" type="button" disabled>Button</button><figcaption>高亮</figcaption></figure>
+          </div>
+        </div></div>
+        <div class="spec-row"><span class="spec-k">加载中</span><div class="spec-cells">
+          <div class="spec-group">
+            <figure class="spec-cell"><button class="btn solid is-loading" type="button"><span class="spinner"></span>Loading...</button><figcaption>Small · min-width</figcaption></figure>
+          </div>
+          <div class="spec-group">
+            <figure class="spec-cell"><button class="btn lg solid is-loading" type="button"><span class="spinner"></span>Loading...</button><figcaption>Large · min-width</figcaption></figure>
+          </div>
+        </div></div>
+      </div></div>
+      <div class="props"><code>variant: default | outline | highlight</code><code>icon?: optional</code><code>size: sm | lg</code><code>radius 12</code><code>来自调性 Button 规格</code></div>
+    </div>
+    <div class="card span12" data-search="页面按钮 立即体验 登录 注册 上传">
+      <div class="card-head"><div><div class="card-title">页面里的 Button</div><div class="card-sub">从首页 / 顶栏 / 上传页直接抽出来。胶囊主按钮、描边、橙色主路径。</div></div><span class="pill">index / chrome / upload</span></div>
+      <div class="canvas"><div class="pg live-stack">
+        <div class="row">
+          <a class="btn btn-primary btn-lg">立即体验</a>
+          <a class="btn btn-ghost btn-lg">观看演示</a>
+          <a class="btn btn-text">查看功能介绍 →</a>
+        </div>
+        <div class="row">
+          <button class="jc-btn jc-btn-fill" type="button">登录</button>
+          <button class="jc-btn jc-btn-line" type="button">注册</button>
+          <button class="btn btn-primary btn-block" type="button" style="max-width:220px">登录</button>
+        </div>
+        <div class="choice-paths" style="max-width:360px">
+          <button class="choice-btn choice-btn-orange" type="button">自动识别，填写更方便</button>
+          <button class="choice-btn choice-btn-teal" type="button">跳过此步骤，直接填写</button>
+          <button class="choice-btn choice-btn-ghost" type="button">进去首页随便看看</button>
+        </div>
+      </div></div>
+      <div class="props"><code>btn-primary 胶囊渐变</code><code>jc-btn-fill #00A9BC</code><code>choice-btn-orange #F38118</code></div>
+    </div>
+    <div class="card span7" data-search="Text Field 输入框 邮箱 密码">
+      <div class="card-head"><div><div class="card-title">Text Field</div><div class="card-sub">登录 / 注册表单。左侧图标，圆角 10px，聚焦青绿环。</div></div><span class="pill">login / register</span></div>
+      <div class="canvas"><div class="pg">
+        <div class="field">
+          <label for="spec-id">邮箱 / 用户ID</label>
+          <div class="input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+            <input id="spec-id" value="alex@jiancareer.demo">
+          </div>
+        </div>
+        <div class="field">
+          <label for="spec-pass">密码</label>
+          <div class="input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            <input id="spec-pass" type="password" value="password">
+            <button class="ghost" type="button">显示</button>
+          </div>
+          <p class="hint">演示页随便填即可，下一步进入建档。</p>
+        </div>
+      </div></div>
+      <div class="props"><code>auth.css .input</code><code>radius 10</code><code>icon + ghost action</code></div>
+    </div>
+    <div class="card span5" data-search="Pill Tag 技能 状态">
+      <div class="card-head"><div><div class="card-title">Pill / Tag / Status</div><div class="card-sub">首页 kicker、工作台技能标签、Tracker 状态。</div></div><span class="pill">index / dashboard</span></div>
+      <div class="canvas"><div class="pg live-stack">
+        <span class="pill"><span class="pill-dot"></span>职业规划 · 改简历 · 快速投递</span>
+        <div class="row">
+          <span class="tag on">AI 产品</span>
+          <span class="tag">Figma</span>
+          <span class="tag">交互设计</span>
+          <button class="tag add" type="button">+ 添加技能</button>
+        </div>
+        <div class="row">
+          <span class="st int">面试邀请</span>
+          <span class="st view">已查看</span>
+          <span class="st wait">待处理</span>
+        </div>
+      </div></div>
+      <div class="props"><code>.pill</code><code>.tag / .tag.on</code><code>.st.int .view .wait</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="auth">
+  <div class="section-head"><h2>Auth</h2><p>从 login.html / register.html 抽取。点阵底、平面构成插画、右侧白卡片。</p></div>
+  <div class="gallery">
+    <div class="card span7" data-search="登录表单 账号 验证码 微信">
+      <div class="card-head"><div><div class="card-title">Login Card</div><div class="card-sub">欢迎回来 · 账号 / 验证码 Tab · 社交登录</div></div><span class="pill">login.html</span></div>
+      <div class="canvas"><div class="pg">
+        <div class="auth-card" style="margin:0;box-shadow:none;max-width:none">
+          <h2>欢迎回来</h2>
+          <p class="sub">登录后继续同一份档案：职业规划、简历改写、确认后再投。</p>
+          <div class="auth-tabs">
+            <button type="button" class="is-on">账号登录</button>
+            <button type="button">验证码登录</button>
+          </div>
+          <div class="field">
+            <label>邮箱 / 用户ID</label>
+            <div class="input">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+              <input value="邮箱 / 用户ID">
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" type="button">登录</button>
+          <div class="or">或使用以下方式登录</div>
+          <div class="socials">
+            <button class="social wechat" type="button" aria-label="微信"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 7.2c-3.7 0-6.7 2.5-6.7 5.5 0 1.7.9 3.2 2.4 4.3L4.6 19l2.6-1.4c.7.2 1.5.3 2.3.3.3 0 .6 0 .9-.1-.2-.6-.3-1.2-.3-1.8 0-3.2 3.1-5.8 6.9-5.8.2 0 .4 0 .6 0C16.9 8.7 13.5 7.2 9.5 7.2Z"/></svg></button>
+            <button class="social apple" type="button" aria-label="Apple"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.3 2.9 2.3 1.1 0 1.6-.7 3-.7s1.8.7 3 .7 2-.1 2.9-2.3c1.1-1.5 1.5-3 1.5-3.1-.1 0-2.8-1.1-2.8-4.3Z"/></svg></button>
+            <button class="social google" type="button" aria-label="Google"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.4 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.3a4.5 4.5 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3Z"/></svg></button>
+          </div>
+        </div>
+      </div></div>
+      <div class="props"><code>auth-card 24</code><code>auth-tabs</code><code>social wechat/apple/google</code></div>
+    </div>
+    <div class="card span5" data-search="注册 插画 badge 统计">
+      <div class="card-head"><div><div class="card-title">Register Visual</div><div class="card-sub">平面构成插画 + 浮动徽章 + 数据卡</div></div><span class="pill">register.html</span></div>
+      <div class="canvas"><div class="pg live-stack">
+        <img src="assets/img/auth-register-visual.png" alt="" style="width:100%;border-radius:20px">
+        <div class="row">
+          <span class="planar-badge badge-teal"><i>识</i>智能解析</span>
+          <span class="planar-badge badge-green"><i>入</i>一键导入</span>
+        </div>
+        <div class="reg-stat"><b>2W+</b><span>自动填写简历</span></div>
+        <div class="row">
+          <span class="auth-stat"><b>100万+</b> 用户信赖</span>
+          <span class="store-btn">Chrome 应用商店</span>
+        </div>
+      </div></div>
+      <div class="props"><code>auth-register-visual</code><code>planar-badge</code><code>reg-stat</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="onboard">
+  <div class="section-head"><h2>Upload / Profile</h2><p>从 upload.html、profile.html 抽取。建档三路径 + 分步表单。</p></div>
+  <div class="gallery">
+    <div class="card span6" data-search="上传简历 dropzone">
+      <div class="card-head"><div><div class="card-title">Resume Dropzone</div><div class="card-sub">虚线青绿框 + 上传图标。upload.html 左侧。</div></div><span class="pill">upload.html</span></div>
+      <div class="canvas"><div class="pg">
+        <div class="choice-drop">
+          <img src="assets/img/icon-upload.png" alt="" width="48" height="48">
+          <small>上传文件不大于 2MB / 目前支持格式 .pdf / .docx / .jpg / .png</small>
+        </div>
+      </div></div>
+      <div class="props"><code>choice-drop</code><code>icon-upload</code></div>
+    </div>
+    <div class="card span6" data-search="Agent 读取简历 步骤">
+      <div class="card-head"><div><div class="card-title">Agent Overlay</div><div class="card-sub">上传后遮罩。只整理简历里的事实。</div></div><span class="pill">upload.html</span></div>
+      <div class="canvas" style="background:#e8eef1"><div class="pg">
+        <div class="agent-card" style="box-shadow:none">
+          <header>
+            <img src="assets/img/icon-logo.png" alt="">
+            <div>
+              <h2>Agent 正在读取简历</h2>
+              <p>识别结构 · 抽取经历 · 核对事实缺口</p>
+            </div>
+          </header>
+          <ol class="agent-steps">
+            <li class="done"><b>1</b>识别简历结构</li>
+            <li class="is-on"><b>2</b>抽取经历与技能</li>
+            <li><b>3</b>核对事实缺口（不编造数字）</li>
+            <li><b>4</b>生成完整预览</li>
+          </ol>
+        </div>
+      </div></div>
+      <div class="props"><code>agent-card</code><code>agent-steps</code></div>
+    </div>
+    <div class="card span12" data-search="完善个人资料 步骤 表单">
+      <div class="card-head"><div><div class="card-title">Profile Form</div><div class="card-sub">分步圆点 + 资料卡。必填用红星。禁止编造量化。</div></div><span class="pill">profile.html</span></div>
+      <div class="canvas"><div class="pg live-stack">
+        <nav class="pf-steps">
+          <span class="pf-step done"><span class="pf-ico">✓</span>基本信息</span>
+          <span class="pf-step is-on"><span class="pf-ico">2</span>教育经历</span>
+          <span class="pf-step"><span class="pf-ico">3</span>工作经历</span>
+          <span class="pf-step"><span class="pf-ico">4</span>项目经历</span>
+          <span class="pf-step"><span class="pf-ico">5</span>技能</span>
+        </nav>
+        <article class="pf-card">
+          <h3><i>人</i>基本信息</h3>
+          <div class="pf-grid">
+            <div class="pf-field"><label>姓名<em>*</em></label><input value="林晓舟"></div>
+            <div class="pf-field"><label>现居城市<em>*</em></label><input value="深圳"></div>
+            <div class="pf-field"><label>邮箱<em>*</em></label><input value="name@example.com"></div>
+            <div class="pf-field"><label>求职状态</label><select><option>在职-考虑机会</option></select></div>
+          </div>
+          <button class="add-btn" type="button">＋ 添加教育经历</button>
+        </article>
+      </div></div>
+      <div class="props"><code>pf-steps</code><code>pf-card</code><code>pf-field</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="dash">
+  <div class="section-head"><h2>Dashboard</h2><p>从 dashboard.html / settings.html 抽取。完整度、技能标签、投递表、Mentor 提示。</p></div>
+  <div class="gallery">
+    <div class="card span7" data-search="档案完整度 donut">
+      <div class="card-head"><div><div class="card-title">Profile Completion</div><div class="card-sub">工作台 01 修改简历。缺口明确标出。</div></div><span class="pill">dashboard.html</span></div>
+      <div class="canvas"><div class="pg" style="display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center;width:100%">
+        <div class="donut"><span>78%<small>良好</small></span></div>
+        <div class="status-grid">
+          <div class="status-item"><span class="dot ok">✓</span>基本信息<span class="hint">已完成</span></div>
+          <div class="status-item"><span class="dot ok">✓</span>工作经历<span class="hint">已完成</span></div>
+          <div class="status-item"><span class="dot warn">!</span>技能标签<span class="hint">未完成</span></div>
+          <div class="status-item"><span class="dot info">i</span>个人简介<span class="hint">待完善</span></div>
+        </div>
+      </div></div>
+      <div class="props"><code>donut 78%</code><code>status-item</code><code>dot ok/warn/info</code></div>
+    </div>
+    <div class="card span5" data-search="Mentor 提示">
+      <div class="card-head"><div><div class="card-title">Mentor Tip</div><div class="card-sub">工作台右上角。不是对话框。</div></div><span class="pill">dashboard.html</span></div>
+      <div class="canvas"><div class="pg live-stack">
+        <aside class="mentor-tip"><strong>AI Mentor</strong><br>技能标签和个人简介还空着。先补档案，再按目标岗位改写；没有的数据保持空白。</aside>
+        <div class="mentor-float">
+          <header>
+            <span style="width:28px;height:28px;border-radius:50%;background:#00b0c2;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:700">AI</span>
+            <div><h4>AI Mentor</h4><small>在线</small></div>
+          </header>
+          <div class="bubble">今天优先改「系统边界」这一段。没有量化数据就留空，确认后再投。</div>
+        </div>
+      </div></div>
+      <div class="props"><code>mentor-tip</code><code>mentor-float · index hero</code></div>
+    </div>
+    <div class="card span12" data-search="投递跟踪 Tracker 表格">
+      <div class="card-head"><div><div class="card-title">Tracker Table</div><div class="card-sub">工作台 04。状态胶囊来自真实投递，不是匹配分卡片。</div></div><span class="pill">dashboard.html</span></div>
+      <div class="canvas"><div class="pg live-stack">
+        <div class="stats">
+          <div class="stat"><div class="k">已投递</div><div class="v">128</div><div class="d">本月 +18</div></div>
+          <div class="stat"><div class="k">已查看</div><div class="v">23</div><div class="d">18%</div></div>
+          <div class="stat"><div class="k">面试邀请</div><div class="v">12</div><div class="d">9%</div></div>
+          <div class="stat"><div class="k">待处理</div><div class="v">5</div><div class="d">4%</div></div>
+        </div>
+        <table class="jobs">
+          <thead><tr><th>岗位 / 公司</th><th>状态</th><th>改写</th><th>下一步建议</th></tr></thead>
+          <tbody>
+            <tr><td>AI 产品经理 · 字节跳动</td><td><span class="st int">面试邀请</span></td><td>已确认</td><td>准备系统边界与一次真实协作案例</td></tr>
+            <tr><td>UX Researcher · 腾讯</td><td><span class="st view">已查看</span></td><td>待补证据</td><td>补充研究方法与样本说明</td></tr>
+            <tr><td>产品设计师 · 美团</td><td><span class="st wait">待处理</span></td><td>未填写量化</td><td>量化一次改版带来的指标变化</td></tr>
+          </tbody>
+        </table>
+      </div></div>
+      <div class="props"><code>.stats</code><code>table.jobs</code><code>.st</code></div>
+    </div>
+    <div class="card span12" data-search="设定 账户 退出">
+      <div class="card-head"><div><div class="card-title">Settings Card</div><div class="card-sub">settings.html。保存用主按钮，退出用描边。</div></div><span class="pill">settings.html</span></div>
+      <div class="canvas"><div class="pg">
+        <article class="set-card">
+          <h3 style="margin:0 0 16px;font-size:16px">账户</h3>
+          <div class="set-field"><label>显示名称</label><input value="Alex"></div>
+          <div class="set-field"><label>邮箱</label><input value="alex@jiancareer.demo"></div>
+          <label class="set-check"><input type="checkbox" checked>投递状态变化时发邮件</label>
+          <div class="row" style="margin-top:8px">
+            <button class="btn btn-primary" type="button">保存账户信息</button>
+            <button class="btn btn-ghost" type="button">退出登录</button>
+          </div>
+        </article>
+      </div></div>
+      <div class="props"><code>set-card</code><code>set-field</code><code>set-check</code></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="patterns">
+  <div class="section-head"><h2>Pages</h2><p>首页 Hero、四列功能、评价卡；功能介绍 / 关于我们的 Story Card。</p></div>
+  <div class="gallery">
+    <div class="card span12" data-search="Landing 首页 规划清楚">
+      <div class="card-head"><div><div class="card-title">Homepage pieces</div><div class="card-sub">index.html：Guest 顶栏、主句、信任企业、评价。</div></div><span class="pill">index.html</span></div>
+      <div class="canvas matrix" style="padding:16px"><div class="pg live-stack">
+        <div class="guest-nav" style="border:0">
+          <div class="guest-nav-inner">
+            <img class="nav-logo" src="assets/img/logo-jiancareer.png" alt="简职">
+            <div class="guest-nav-links"><span>功能介绍</span><span>关于我们</span></div>
+            <div class="guest-nav-actions"><button class="pill-btn fill">登录</button><button class="pill-btn line">注册</button></div>
+          </div>
+        </div>
+        <div>
+          <span class="pill"><span class="pill-dot"></span>职业规划 · 改简历 · 快速投递</span>
+          <h3 style="margin:12px 0 8px;font-size:28px;letter-spacing:-.03em">规划清楚，改好简历，一键投递</h3>
+          <div class="row">
+            <a class="btn btn-primary btn-lg">立即体验</a>
+            <a class="btn btn-ghost btn-lg">观看演示</a>
+          </div>
+        </div>
+        <div class="row">
+          <span class="logo-chip"><span class="logo-dot" style="background:#1d6cff"></span>字节跳动</span>
+          <span class="logo-chip"><span class="logo-dot" style="background:#1aad19"></span>腾讯</span>
+          <span class="logo-chip"><span class="logo-dot" style="background:#ff6a00"></span>阿里巴巴</span>
+          <span class="logo-chip plus" style="color:#087c8e">1000+ 企业</span>
+        </div>
+      </div></div>
+      <div class="props"><code>index.html</code><code>Guest Nav</code><code>logo-chip</code></div>
+    </div>
+    <div class="card span6" data-search="Job Card 首页 mock">
+      <div class="card-head"><div><div class="card-title">Hero Job Card</div><div class="card-sub">首页右侧工作台浮层里的卡片，不是岗位广场。</div></div><span class="pill">index.html</span></div>
+      <div class="canvas"><div class="pg">
+        <article class="job-card">
+          <div class="job-head">
+            <div>
+              <h3>系统边界表达</h3>
+              <p>Grounding · 已有经历</p>
+            </div>
+            <span class="match">不编造</span>
+          </div>
+          <div class="bar"><span style="width:72%"></span></div>
+        </article>
+      </div></div>
+      <div class="props"><code>.job-card</code><code>.match</code><code>.bar</code></div>
+    </div>
+    <div class="card span6" data-search="评价卡 Quote">
+      <div class="card-head"><div><div class="card-title">Quote Card</div><div class="card-sub">首页「他们都在用简职」。</div></div><span class="pill">index.html</span></div>
+      <div class="canvas"><div class="pg">
+        <article class="quote-card">
+          <div class="stars">★★★★★</div>
+          <p>最怕 AI 替我编经历。简职会标出证据和缺口，没有的数字就让我写「没有」。</p>
+          <div class="quote-user">
+            <img src="assets/img/avatar-04.jpg" alt="">
+            <div><b>赵衡</b><span>前端工程师</span></div>
+          </div>
+        </article>
+      </div></div>
+      <div class="props"><code>quote-card</code><code>avatar-04</code></div>
+    </div>
+    <div class="card span12" data-search="四列功能 修改简历 职业规划">
+      <div class="card-head"><div><div class="card-title">Feature Grid</div><div class="card-sub">首页四列。圆形青绿图标 + 短说明。</div></div><span class="pill">index.html</span></div>
+      <div class="canvas"><div class="pg">
+        <div class="feature-grid">
+          <article>
+            <div class="feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></div>
+            <h3>修改简历</h3>
+            <p>经历锚定：对照 JD 改写已有事实，缺口标出，不编造量化结果。</p>
+          </article>
+          <article>
+            <div class="feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 4 7v5c0 5 3.4 8.4 8 9 4.6-.6 8-4 8-9V7l-8-4Z"/></svg></div>
+            <h3>职业规划</h3>
+            <p>结构化 Mentor：解释路径、预览建议、确认后再行动。</p>
+          </article>
+          <article>
+            <div class="feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+            <h3>快速投递</h3>
+            <p>插件识别网申字段，一份档案填完。确认后才提交。</p>
+          </article>
+          <article>
+            <div class="feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5M10 19V9M16 19V7M22 19H2"/></svg></div>
+            <h3>投递跟踪</h3>
+            <p>投递进 Tracker，结果回流下一句改写建议。</p>
+          </article>
+        </div>
+      </div></div>
+      <div class="props"><code>feature-grid</code><code>feature-ico 圆形</code></div>
+    </div>
+    <div class="card span12" data-search="功能介绍 关于我们 story-card">
+      <div class="card-head"><div><div class="card-title">Story Card</div><div class="card-sub">功能介绍 / 关于我们 共用这套白卡片栅格。</div></div><span class="pill">features / about</span></div>
+      <div class="canvas"><div class="pg">
+        <div class="story-cards">
+          <article class="story-card"><h2>修改简历</h2><p>对照真实 JD 改写已有事实。缺口标成待补证据，没有的量化结果就留空。</p></article>
+          <article class="story-card"><h2>职业规划</h2><p>结构化 Mentor：解释路径、预览建议、确认后再行动。不是纯对话框。</p></article>
+          <article class="story-card"><h2>我们在做什么</h2><p>把职业成长和 Job Fit 放在同一条链路上。用户始终能看见 Agent 在做什么。</p></article>
+          <article class="story-card"><h2>边界</h2><p>不编造量化结果，不刷岗位广场，不做社区。</p></article>
+        </div>
+      </div></div>
+      <div class="props"><code>story-card 20</code><code>features.html</code><code>about.html</code></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="tokens">
+  <div class="section-head"><h2>Token Mapping</h2><p>任何视觉值都能从组件追溯到 Reference Token。</p></div>
+  <div class="gallery"><div class="card span12"><div class="canvas"><div class="tokenmap">
+    <div class="tok"><code>Reference</code><b>color.teal.500</b></div>
+    <div class="tok"><code>Semantic</code><b>color.action.brand.default</b></div>
+    <div class="tok"><code>Component</code><b>button.primary.bg.default</b></div>
+    <div class="tok"><code>Runtime</code><b>--jc-color-action-brand-default</b></div>
+  </div></div></div></div>
+</section>
+
+<section class="section" id="rules">
+  <div class="section-head"><h2>Visual Rules</h2><p>以「简职 · 注册登录基本调性」落地页为准。</p></div>
+  <div class="rulesgrid">
+    <div class="rule"><b>01 · 标本等于页面</b><p>组件库只展示 index / login / register / upload / profile / dashboard / settings / features / about 里出现过的组件。</p></div>
+    <div class="rule"><b>02 · 顶栏用同一套 PNG</b><p>Logo 用 logo-jiancareer。search / mail / bell / menu 用 icon-*.png。</p></div>
+    <div class="rule"><b>03 · 按钮分两层</b><p>规格矩阵保留调性里的 12px / 高亮金。真实页面 CTA 是胶囊渐变；顶栏登录是 #00A9BC；上传主路径是橙色。</p></div>
+    <div class="rule"><b>04 · 表单跟登录页</b><p>输入框左侧图标、圆角 10px、聚焦青绿环。档案页字段圆角 8px、必填红星。</p></div>
+    <div class="rule"><b>05 · 首页不是岗位广场</b><p>主句「规划清楚，改好简历，一键投递」。Hero 右侧是工作台浮层，不是真实刷岗。</p></div>
+    <div class="rule"><b>06 · 不编造量化</b><p>Agent 只整理简历事实。Tracker 状态来自投递记录，不用假匹配分卡片。</p></div>
+  </div>
+</section>
+
+<section class="section" id="source">
+  <div class="section-head"><h2>Source</h2><p>组件库标本的源文件是 <code>jiancareer/完整网页原型逐页实现/</code>。</p></div>
+  <div class="gallery">
+    <div class="card span6">
+      <div class="card-head"><div><div class="card-title">页面</div><div class="card-sub">抽取来源</div></div></div>
+      <div class="canvas"><pre class="code">index.html     首页 / Guest Nav / Quote / 四列
+login.html     Auth Card / Field / Social
+register.html  插画徽章 / 数据卡
+upload.html    Dropzone / 三路径 / Agent
+profile.html   分步表单 / pf-card
+dashboard.html Donut / Tracker / Mentor
+settings.html  设定卡 / 退出登录
+features.html  Story Card 四宫格
+about.html     同一套 Story Card</pre></div>
+    </div>
+    <div class="card span6">
+      <div class="card-head"><div><div class="card-title">Chrome</div><div class="card-sub">chrome.js + chrome.css</div></div></div>
+      <div class="canvas"><pre class="code">logo-jiancareer.png
+icon-search / mail / bell / menu
+
+Guest: 功能介绍 / 关于我们
+       登录实心 · 注册描边
+App:   工作台 / 简历修改 /
+       AI职场导师 / 求职跟踪</pre></div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">组件总览只是入口。点击任意组件打开详情 Drawer，可切换 Preview / Tokens / Usage / Guidelines / Source。</div>
+</main>
+</div>
+</div>
+
+<div class="drawer-layer" id="drawerLayer" aria-hidden="true">
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="Component detail">
+    <div class="drawer-head">
+      <div class="drawer-title"><h3 id="drawerName">Component</h3><p id="drawerDesc"></p></div>
+      <button class="close" id="closeDrawer" aria-label="Close">×</button>
+    </div>
+    <div class="drawer-body">
+      <div class="detail-tabs" id="detailTabs">
+        <button class="active" data-tab="preview">Preview</button>
+        <button data-tab="tokens">Tokens</button>
+        <button data-tab="usage">Usage</button>
+        <button data-tab="guidelines">Guidelines</button>
+        <button data-tab="source">Source</button>
+      </div>
+      <div class="detail-pane active" data-pane="preview"><div class="detail-card"><h4>Live Preview</h4><div class="detail-pad"><div class="livepreview" id="livePreview"></div></div></div></div>
+      <div class="detail-pane" data-pane="tokens"><div class="detail-card"><h4>Token Dependencies</h4><div class="detail-pad token-list" id="tokenDetail"></div></div></div>
+      <div class="detail-pane" data-pane="usage"><div class="detail-card"><h4>Usage</h4><div class="detail-pad usage-list" id="usageDetail"></div></div></div>
+      <div class="detail-pane" data-pane="guidelines"><div class="detail-card"><h4>Guidelines</h4><div class="detail-pad usage-list" id="guidelineDetail"></div></div></div>
+      <div class="detail-pane" data-pane="source"><div class="detail-card"><h4>React / TSX</h4><div class="detail-pad"><pre class="code" id="sourceDetail"></pre></div></div></div>
+    </div>
+  </aside>
+</div>
+<script src="assets/catalog.js?v=spec10"></script>
+</body>
+</html>

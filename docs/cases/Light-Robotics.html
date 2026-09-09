@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Light Robotics · Leonardo Li</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: rgba(255,255,255,0.03);
+  --text: #e8e6e1;
+  --text-dim: #8a8580;
+  --text-muted: #5a5550;
+  --accent: #7c6fae;
+  --accent-soft: rgba(124,111,174,0.15);
+  --link: #00ff87;
+  --link-soft: rgba(0, 255, 135, 0.25);
+  --border: rgba(255,255,255,0.06);
+  --g-1: #1a0a2e;
+  --sidebar-bg: linear-gradient(to right, rgba(10,10,15,0.98), rgba(10,10,15,0.95));
+  --card-bg: rgba(255,255,255,0.02);
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ef;
+  --bg-elevated: rgba(0,0,0,0.03);
+  --text: #1a1a1a;
+  --text-dim: #5a5a5a;
+  --text-muted: #8a8a8a;
+  --accent: #5b4fa0;
+  --accent-soft: rgba(91,79,160,0.1);
+  --link: #0066cc;
+  --link-soft: rgba(0, 102, 204, 0.22);
+  --border: rgba(0,0,0,0.08);
+  --g-1: #e8e0f0;
+  --sidebar-bg: linear-gradient(to right, rgba(245,243,239,0.98), rgba(245,243,239,0.95));
+  --card-bg: rgba(0,0,0,0.03);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+/* ===== LAYOUT ===== */
+.page { display: flex; min-height: 100vh; }
+
+/* ===== LEFT SIDEBAR (TOC) ===== */
+.sidebar {
+  width: 260px;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  padding: 32px 24px;
+  overflow-y: auto;
+  z-index: 100;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.theme-toggle:hover {
+  background: var(--card-bg);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.theme-toggle .sun { display: none; }
+.theme-toggle .moon { display: block; }
+[data-theme="light"] .theme-toggle .sun { display: block; }
+[data-theme="light"] .theme-toggle .moon { display: none; }
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 32px;
+  transition: color 0.3s;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 16px; height: 16px; }
+
+.toc-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 4px; }
+.toc-list a {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-left: 2px solid transparent;
+}
+.toc-list a:hover { color: var(--text); background: var(--bg-elevated); }
+.toc-list a.active { color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); }
+.toc-list a.sub { padding-left: 24px; font-size: 12px; }
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 48px 64px 120px;
+}
+
+/* ===== HERO BANNER ===== */
+.project-hero {
+  margin: -48px -64px 48px;
+  padding: 100px 64px 60px;
+  background: linear-gradient(135deg, #0a1f14 0%, #06110c 42%, #0c2a18 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.project-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
+  filter: blur(60px);
+}
+.project-hero h1 {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  position: relative;
+  color: #fff;
+}
+.project-hero .subtitle {
+  font-size: 18px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 12px;
+}
+
+/* ===== META BAR ===== */
+.meta-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.meta-group h4 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.meta-group p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+/* ===== CONTENT BLOCKS ===== */
+.section-block { margin-bottom: 64px; }
+
+.section-block h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.section-block p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.section-block a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid var(--link-soft);
+  transition: border-color 0.3s;
+}
+.section-block a:hover { border-bottom-color: var(--link); }
+
+.section-block ul {
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+
+.section-block li {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+/* ===== CALLOUT ===== */
+.callout {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.callout-icon { font-size: 20px; flex-shrink: 0; }
+.callout-content { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+.callout-content a { color: var(--link); text-decoration: none; border-bottom: 1px solid var(--link-soft); }
+
+/* ===== IMAGE BLOCKS ===== */
+.img-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.img-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.img-block img {
+  width: 100%;
+  display: block;
+}
+.img-caption {
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+}
+
+.video-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+  padding-bottom: 56.25%;
+  background: #000;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.video-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.video-block video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+  background: #000;
+}
+
+.phone-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 32px 0;
+}
+.phone-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+}
+.phone-card img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 9 / 19.5;
+  object-fit: cover;
+  object-position: top center;
+  background: #000;
+}
+.phone-card .img-caption {
+  padding: 10px 12px;
+}
+@media (max-width: 900px) {
+  .phone-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.process-step {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 32px 0 12px;
+}
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 8px;
+}
+.process-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+}
+.process-card img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  background: #111;
+}
+.process-card.feel img { aspect-ratio: 4 / 3; }
+.process-card.story img { aspect-ratio: 2 / 3; object-position: center; }
+.process-card.phone img { aspect-ratio: 9 / 19.5; object-position: top center; }
+.process-card.asset img { aspect-ratio: 1 / 1; object-fit: contain; padding: 24px; }
+.process-card.asset-wide { grid-column: 1 / -1; }
+.process-card.asset-wide img { aspect-ratio: 16 / 10; object-fit: cover; padding: 0; }
+.process-card .img-caption { padding: 10px 12px; }
+@media (max-width: 900px) {
+  .process-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .process-card.asset-wide { grid-column: 1 / -1; }
+}
+
+.project-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0 0;
+}
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+}
+.link-card:hover {
+  transform: translateY(-4px);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.link-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--accent);
+  font-size: 18px;
+}
+.link-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.link-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.link-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ===== FOOTER NAV ===== */
+.footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 48px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 64px;
+}
+.footer-nav a {
+  font-size: 14px;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-nav a:hover { color: var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
+  .project-hero h1 { font-size: 28px; }
+  .meta-bar { grid-template-columns: 1fr; gap: 16px; }
+}
+
+.back-wrap { max-width: 900px; margin: 14px auto 0; padding: 0 18px; }
+.back-work { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; letter-spacing: .02em; color: var(--text-muted); text-decoration: none; transition: color .2s ease; }
+.back-work:hover { color: var(--text); }
+
+/* Top Navigation Bar */
+.unified-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .unified-topbar {
+  background: rgba(255, 255, 255, 0.7);
+}
+.unified-brand {
+  font-size: 14px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+.unified-nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.unified-nav a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.unified-nav a:hover, .unified-nav a.active {
+  color: var(--text);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+}
+
+.nav-theme-toggle:hover {
+  background: var(--card-bg);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.nav-theme-toggle svg { width: 16px; height: 16px; }
+.nav-theme-toggle .sun { display: none; }
+.nav-theme-toggle .moon { display: block; }
+[data-theme="light"] .nav-theme-toggle .sun { display: block; }
+[data-theme="light"] .nav-theme-toggle .moon { display: none; }
+</style>
+<link rel="stylesheet" href="../site.css?v=20260909">
+<script src="../site.js" defer></script>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="unified-topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 200;">
+  <a href="../index.html" class="unified-brand" aria-label="LeonardoLi"><span class="brand-mark" aria-hidden="true"></span></a>
+  <div class="nav-actions">
+    <div class="unified-nav">
+      <a href="../index.html">Home</a>
+      <a href="../works.html" class="active">Work</a>
+<a href="../resume.html">Resume</a>
+      <a href="../about.html">About</a>
+    </div>
+    <button class="nav-theme-toggle" id="navThemeToggle" type="button" data-theme-toggle aria-label="切换主题">
+      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="mobile-menu-section">
+    <a href="../index.html">Home</a>
+    <a href="../works.html">Work</a>
+<a href="../resume.html">Resume</a>
+    <a href="../about.html">About</a>
+  </div>
+  <div class="mobile-menu-section" data-mobile-toc></div>
+</div>
+
+<!-- Spacer for nav -->
+<div style="height: 64px;"></div>
+<div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
+
+<div class="page">
+
+<!-- SIDEBAR TOC -->
+<aside class="sidebar">
+  <button class="theme-toggle" id="themeToggle" type="button" data-theme-toggle aria-label="切换主题">
+    <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+    <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </button>
+  <a href="../works.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to Index
+  </a>
+
+  <div class="toc-title">目录</div>
+  <ul class="toc-list">
+    <li><a href="#context" class="active">项目背景</a></li>
+    <li><a href="#process">设计过程</a></li>
+    <li><a href="#focus">设计重心</a></li>
+    <li><a href="#screens">关键界面</a></li>
+    <li><a href="#demo">流程演示</a></li>
+    <li><a href="#links">参考链接</a></li>
+  </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- HERO -->
+<div class="project-hero">
+  <h1>Light Robotics</h1>
+  <div class="subtitle">基于机器人形象的登录注册界面</div>
+  <span class="tag">UI · Auth Flow · Motion</span>
+</div>
+
+<!-- META BAR -->
+<div class="meta-bar">
+  <div class="meta-group">
+    <h4>角色</h4>
+    <p>界面设计 / 动效实现</p>
+  </div>
+  <div class="meta-group">
+    <h4>范畴</h4>
+    <p>登录注册 / 品牌开屏 / 三通道验证</p>
+  </div>
+  <div class="meta-group">
+    <h4>类型</h4>
+    <p>视效笔试题作业</p>
+  </div>
+</div>
+
+<section id="context" class="section-block">
+  <h2>项目背景</h2>
+  <p>这是一份登录注册页的视效笔试题。品牌是 <strong>Light Robotics</strong>（亮源智能），口号 “Light Intelligence, embodied your real world.” 要把陪伴型机器人放进真实家庭场景里，而不是做成冷冰冰的工业面板。</p>
+  <p>完整路径很短、但必须能一口气讲完：开屏选 Login / Sign Up → 登录页在验证码、密码、指纹之间切换 → 四位验证码 → Start Journey 进入产品。信息只出现一次，社交登录和条款始终垫在底部。</p>
+</section>
+
+<section id="process" class="section-block">
+  <h2>设计过程</h2>
+  <p>Figma 按四页推进，而不是直接画四张手机图：<strong>情绪版</strong>定感觉 → <strong>Hero 分镜</strong>写清机器人在家里发生了什么 → <strong>设计资产</strong>把 logo / IP / 背景做成可复用件 → <strong>交付稿</strong>把登录注册走完。面试官能从同一份文件里看见决策，而不是只看见结果。</p>
+
+  <div class="process-step">03 · 情绪版 | 参考图</div>
+  <p>先收「界面的大感觉」：深色玻璃拟态、雾状光、少即是多。Day 1 就把机器人放进家庭照片里试 logo——屏幕上的两点眼睛要和实体机器人的脸对得上。</p>
+  <div class="process-grid">
+    <div class="process-card feel">
+      <img src="../img/projects/robo-login/process/mood-feel-1.png" alt="情绪版：深色玻璃拟态助手界面参考">
+      <div class="img-caption">界面的大感觉 · 参考 1</div>
+    </div>
+    <div class="process-card feel">
+      <img src="../img/projects/robo-login/process/mood-feel-2.png" alt="情绪版：深色光雾界面参考">
+      <div class="img-caption">界面的大感觉 · 参考 2</div>
+    </div>
+    <div class="process-card feel">
+      <img src="../img/projects/robo-login/process/mood-feel-3.png" alt="情绪版：深色电影感参考">
+      <div class="img-caption">界面的大感觉 · 参考 3</div>
+    </div>
+    <div class="process-card phone">
+      <img src="../img/projects/robo-login/process/mood-day1.png" alt="Day 1 开屏草稿：家庭场景中的机器人与 Login / Sign Up">
+      <div class="img-caption">Day 1 · 上手找感觉</div>
+    </div>
+  </div>
+
+  <div class="process-step">04 · Hero 页背景的分镜剧情</div>
+  <p>开屏不是一张静图。先用分镜写角色登场、在家里怎么动、最后怎么回到充电座——再决定登录页背后那张照片拍什么。</p>
+  <div class="process-grid">
+    <div class="process-card story">
+      <img src="../img/projects/robo-login/process/story-01.png" alt="分镜 01：机器人角色登场">
+      <div class="img-caption">01 · 角色登场</div>
+    </div>
+    <div class="process-card story">
+      <img src="../img/projects/robo-login/process/story-02.png" alt="分镜 02">
+      <div class="img-caption">02</div>
+    </div>
+    <div class="process-card story">
+      <img src="../img/projects/robo-login/process/story-03.png" alt="分镜 03">
+      <div class="img-caption">03</div>
+    </div>
+    <div class="process-card story">
+      <img src="../img/projects/robo-login/process/story-04.png" alt="分镜 04">
+      <div class="img-caption">04</div>
+    </div>
+    <div class="process-card story">
+      <img src="../img/projects/robo-login/process/story-05.png" alt="分镜 05">
+      <div class="img-caption">05</div>
+    </div>
+    <div class="process-card story">
+      <img src="../img/projects/robo-login/process/story-10.png" alt="分镜 10：机器人沿光路回到充电座">
+      <div class="img-caption">10 · 回家 / 回充</div>
+    </div>
+  </div>
+
+  <div class="process-step">02 · 设计资产</div>
+  <p>logo 的两点 + 霓虹绿点，就是机器人脸上的 OO.。IP 表把表情和动作定死，AIGC 背景只服务 Hero，不让登录表单自己发光。</p>
+  <div class="process-grid">
+    <div class="process-card asset">
+      <img src="../img/projects/robo-login/process/asset-logo.png" alt="Light Robotics 标志：交织环与霓虹绿点">
+      <div class="img-caption">标志</div>
+    </div>
+    <div class="process-card asset">
+      <img src="../img/projects/robo-login/process/asset-wordmark.png" alt="Light Robotics 字标">
+      <div class="img-caption">字标</div>
+    </div>
+    <div class="process-card asset">
+      <img src="../img/projects/robo-login/process/asset-bg.png" alt="AIGC 生成的 Hero 几何背景">
+      <div class="img-caption">Hero 背景资产</div>
+    </div>
+    <div class="process-card asset-wide">
+      <img src="../img/projects/robo-login/process/asset-ip.png" alt="机器人 IP 形象延展：三视图、动作与表情">
+      <div class="img-caption">IP 形象简单延展 · OO.</div>
+    </div>
+  </div>
+</section>
+
+<section id="demo" class="section-block">
+  <h2>流程演示</h2>
+  <p>下面是录屏：手机样机里走完登录注册，机器人脸、霓虹绿点和玻璃拟态输入框跟着状态一起变。</p>
+  <div class="video-block visible">
+    <video controls playsinline preload="metadata" poster="../img/projects/robo-login/frame-42.jpg" aria-label="Light Robotics 登录注册流程演示">
+      <source src="../img/projects/robo-login/demo.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+<section id="focus" class="section-block">
+  <h2>设计重心</h2>
+  <ul>
+    <li>机器人形象贯穿全程：开屏是家庭场景里的实体机器人，登录页用同一套 logo 与霓虹绿点把品牌钉住。</li>
+    <li>验证码 / 密码 / 指纹三条通道共用一套布局，用户换方式时不换页面骨架。</li>
+    <li>深色底 + 霓虹绿只服务焦点：激活的输入框、当前 Tab、主按钮，避免整屏发光。</li>
+    <li>条款与社交登录始终可见，注册不另开一套视觉语言。</li>
+  </ul>
+  <div class="callout">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>决策：</strong>登录不是一张表单，而是带角色的品牌入口。先让用户看见机器人在真实世界里，再要求输入手机号——视效题的得分点在「形象能跟着流程走」，而不只是把输入框做圆。
+    </div>
+  </div>
+</section>
+
+<section id="screens" class="section-block">
+  <h2>关键界面</h2>
+  <p>交付稿四屏：Home 开屏、Login、Verify、Start Journey。机器人形象、霓虹绿点和玻璃拟态输入框从分镜落到可点的登录注册。</p>
+  <div class="phone-row">
+    <div class="phone-card">
+      <img src="../img/projects/robo-login/figma-home.png" alt="Light Robotics 开屏：机器人与 Login / Sign Up">
+      <div class="img-caption">Home — Login via Phone / Sign Up</div>
+    </div>
+    <div class="phone-card">
+      <img src="../img/projects/robo-login/figma-login.png" alt="Light Robotics 登录：验证码、密码、指纹三通道">
+      <div class="img-caption">Login — Code / Password / Fingerprint</div>
+    </div>
+    <div class="phone-card">
+      <img src="../img/projects/robo-login/figma-verify.png" alt="Light Robotics 验证码页">
+      <div class="img-caption">Verify — 四位验证码</div>
+    </div>
+    <div class="phone-card">
+      <img src="../img/projects/robo-login/figma-start.png" alt="Light Robotics Start Journey 进入页">
+      <div class="img-caption">Start Journey — Begin / Enter</div>
+    </div>
+  </div>
+</section>
+
+<section id="links" class="section-block">
+  <h2>参考链接</h2>
+  <div class="project-links">
+    <a href="https://github.com/Leonardolee351-LMX/robo_login_page" target="_blank" rel="noopener noreferrer" class="link-card">
+      <div class="link-icon">⌘</div>
+      <div class="link-info">
+        <span class="link-label">GitHub</span>
+        <span class="link-name">robo_login_page</span>
+      </div>
+    </a>
+    <a href="https://www.figma.com/design/43wFCRDQG7uGIQiwMsrCti/Light-Robitics?node-id=1-2" target="_blank" rel="noopener noreferrer" class="link-card">
+      <div class="link-icon">01</div>
+      <div class="link-info">
+        <span class="link-label">Figma</span>
+        <span class="link-name">03 情绪版</span>
+      </div>
+    </a>
+    <a href="https://www.figma.com/design/43wFCRDQG7uGIQiwMsrCti/Light-Robitics?node-id=288-1399" target="_blank" rel="noopener noreferrer" class="link-card">
+      <div class="link-icon">02</div>
+      <div class="link-info">
+        <span class="link-label">Figma</span>
+        <span class="link-name">04 Hero 分镜</span>
+      </div>
+    </a>
+    <a href="https://www.figma.com/design/43wFCRDQG7uGIQiwMsrCti/Light-Robitics?node-id=191-348" target="_blank" rel="noopener noreferrer" class="link-card">
+      <div class="link-icon">03</div>
+      <div class="link-info">
+        <span class="link-label">Figma</span>
+        <span class="link-name">02 设计资产</span>
+      </div>
+    </a>
+    <a href="https://www.figma.com/design/43wFCRDQG7uGIQiwMsrCti/Light-Robitics?node-id=0-1" target="_blank" rel="noopener noreferrer" class="link-card">
+      <div class="link-icon">04</div>
+      <div class="link-info">
+        <span class="link-label">Figma</span>
+        <span class="link-name">01 交付稿件</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER NAV -->
+<footer class="footer-nav" aria-label="项目翻页">
+  <a href="Stariver.html" class="footer-btn footer-btn--prev">
+    <span class="btn-label">上一个项目</span>
+    <span class="btn-title">← 渡星河</span>
+  </a>
+  <a href="Leke.html" class="footer-btn footer-btn--next">
+    <span class="btn-label">下一个项目</span>
+    <span class="btn-title">乐刻品牌分析 →</span>
+  </a>
+</footer>
+
+</main>
+</div>
+
+<script>
+(function(){
+  const observerOptions = { threshold: 0.1 };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.img-block, .result-item, .compare-item, .video-block').forEach(el => {
+    observer.observe(el);
+  });
+
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (pageYOffset >= sectionTop - 100) current = section.getAttribute('id');
+    });
+
+    tocLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href').substring(1) === current) link.classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>

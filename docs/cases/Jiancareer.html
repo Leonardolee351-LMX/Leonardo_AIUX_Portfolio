@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>简职 JianCareer · Leonardo Li</title>
+<title>简职 JianCareer Ver 1 · Leonardo Li</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -203,7 +203,7 @@ body {
 .project-hero {
   margin: -48px -64px 48px;
   padding: 100px 64px 60px;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  background: linear-gradient(135deg, #00d4c8 0%, #2b8cff 48%, #6a4cff 100%);
   border-bottom: 1px solid var(--border);
   position: relative;
   overflow: hidden;
@@ -213,7 +213,7 @@ body {
   position: absolute;
   top: -100px; right: -100px;
   width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(0,210,255,0.15), transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.28), transparent 70%);
   filter: blur(60px);
 }
 .project-hero h1 {
@@ -226,7 +226,7 @@ body {
 }
 .project-hero .subtitle {
   font-size: 18px;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.85);
   letter-spacing: 1px;
   position: relative;
 }
@@ -633,6 +633,29 @@ body {
   .compare-block { grid-template-columns: 1fr; }
   .results-grid { grid-template-columns: repeat(2, 1fr); }
 }
+.ver-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+.ver-switch a {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--bg-elevated);
+}
+.ver-switch a.is-current {
+  color: var(--text);
+  border-color: var(--link);
+  background: var(--link-soft);
+}
+.ver-switch a:hover { color: var(--text); }
+
 .back-wrap{max-width:900px;margin:14px auto 0;padding:0 18px;}
 .back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:var(--text-muted);text-decoration:none;transition:color .2s ease;}
 .back-work:hover{color:var(--text);}
@@ -676,7 +699,7 @@ body {
   color: var(--text);
 }
 </style>
-<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../site.css?v=20260909">
 <script src="../site.js" defer></script>
 </head>
 <body>
@@ -749,10 +772,15 @@ body {
     <li><a href="#context" class="active">背景与问题</a></li>
     <li><a href="#role">我的角色</a></li>
     <li><a href="#architecture">多入口架构</a></li>
+    <li><a href="#loops">重点要点闭环</a></li>
+    <li><a href="#loop-1" class="sub">01 简历适配</a></li>
+    <li><a href="#loop-2" class="sub">02 Agent 控制</a></li>
+    <li><a href="#loop-3" class="sub">03 投递飞轮</a></li>
     <li><a href="#process">关键交互决策</a></li>
     <li><a href="#process-1" class="sub">决策一：结构化引导</a></li>
     <li><a href="#process-2" class="sub">决策二：渐进式披露</a></li>
     <li><a href="#process-3" class="sub">决策三：设计系统重构</a></li>
+    <li><a href="#process-4" class="sub">决策四：失败原因手写</a></li>
     <li><a href="#result">成果与证据</a></li>
     <li><a href="#reflection">反思与收获</a></li>
     <li><a href="#interview">面试思考题 · B 端</a></li>
@@ -766,7 +794,12 @@ body {
 <!-- HERO -->
 <div class="project-hero">
   <h1>简职 JianCareer</h1>
-  <div class="subtitle">AI Agent 求职平台 · 从混乱 Demo 到可交付的多入口体验系统</div>
+  <div class="subtitle">Ver 1 · 2025 设计叙事：多入口架构、结构化 Mentor、从混乱 Demo 反推组件库</div>
+</div>
+
+<div class="ver-switch" role="navigation" aria-label="案例版本">
+  <a class="is-current" href="Jiancareer.html" aria-current="page">Ver 1 · 2025 设计叙事</a>
+  <a href="Jiancareer_ver2.html">Ver 2 · 2026 可演示闭环</a>
 </div>
 
 <!-- META BAR -->
@@ -777,7 +810,7 @@ body {
   </div>
   <div class="meta-group">
     <h4>Focus</h4>
-    <p>多入口 IA · AI 对话框架<br>设计系统 · Vibe Coding</p>
+    <p>三点闭环 · 多入口 IA<br>设计系统 · 可点原型</p>
   </div>
   <div class="meta-group">
     <h4>Time</h4>
@@ -787,25 +820,39 @@ body {
 
 <!-- QUICK LINKS -->
 <div class="project-links">
-  <a href="https://jiancareer.com/" target="_blank" class="link-card">
+  <a href="https://jiancareer.com/" target="_blank" rel="noopener noreferrer" class="link-card">
     <div class="link-icon">🌐</div>
     <div class="link-info">
       <span class="link-label">Preview</span>
       <span class="link-name">访问官网</span>
     </div>
   </a>
-  <a href="https://jian-career.lovable.app/" target="_blank" class="link-card">
+  <a href="https://leonardolee351-lmx.github.io/JianCareer_JobAppAgent/?v=ee8a5a8" target="_blank" rel="noopener noreferrer" class="link-card">
+    <div class="link-icon">▶</div>
+    <div class="link-info">
+      <span class="link-label">Demo</span>
+      <span class="link-name">在线演示</span>
+    </div>
+  </a>
+  <a href="../jiancareer/prototype/grounding-lab.html" class="link-card">
     <div class="link-icon">⚡</div>
     <div class="link-info">
       <span class="link-label">Prototype</span>
-      <span class="link-name">Lovable 预览</span>
+      <span class="link-name">Grounding Lab 可交互</span>
     </div>
   </a>
-  <a href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1&t=0TkLYv2ivkakbyUG-1" target="_blank" class="link-card">
+  <a href="../jiancareer/design-system/index.html" class="link-card">
+    <div class="link-icon">🧩</div>
+    <div class="link-info">
+      <span class="link-label">Design System</span>
+      <span class="link-name">组件库离线文档</span>
+    </div>
+  </a>
+  <a href="https://www.figma.com/design/N5JvV8Vpa1CCiXQuN9BRSk/Jiancareer-CODEX?node-id=1-2493" target="_blank" class="link-card">
     <div class="link-icon">🎨</div>
     <div class="link-info">
       <span class="link-label">Figma</span>
-      <span class="link-name">设计工程文件</span>
+      <span class="link-name">CODEX 设计文件</span>
     </div>
   </a>
 </div>
@@ -877,6 +924,38 @@ body {
   </div>
 </section>
 
+<section id="loops" class="section-block">
+  <h2>重点要点闭环：机制比页面数量更值得讲</h2>
+  <p>40+ 页证明覆盖面。面试真正要打穿的是四条证据链：Grounding、Mentor 记忆、投递飞轮、Design System。从 <a href="../jiancareer/prototype/grounding-lab.html">Grounding Lab</a> 开始亲手点。</p>
+
+  <h3 id="loop-1">01 经历锚定的简历适配（最基础）</h3>
+  <p>问题不是「AI 改简历」，而是：如何把已有资料快速适配到目标 JD，<strong>同时不伪造真实经历</strong>。</p>
+  <p>流程：Existing Profile → JD Evidence → Gap Analysis → Suggested Rewrite → User Review。Alignment 左栏拉出<strong>简历全文</strong>（基本信息 / 教育 / 工作 / 项目 / 校园），再在全文上标 match / gap；分析主战场是项目、工作与校园经历里「最值钱的工作量」，基本信息本阶段不深挖，只轻量提示可补奖项等真实条目。</p>
+  <div class="callout">
+    <div class="callout-icon">🔒</div>
+    <div class="callout-content">
+      <strong>Grounded / Span Evidence / Preserve Facts / Diff / Confirm</strong>。绿标是原文抽出的字段证据；橙是 JD 有、简历无。模型可以重排重点和对齐用语，不能发明转化率或升级职级。
+    </div>
+  </div>
+  <p><a href="../jiancareer/prototype/grounding-lab.html">打开 01 Grounding Lab →</a>（原文 span ↔ 字段审阅）</p>
+
+  <h3 id="loop-2">02 可控的 Agent 交互</h3>
+  <p>Agent 需要主动工作，但用户必须始终知道它在做什么、为什么。状态机是：Understand → Explain → Propose → Preview → Confirm → Act → Recover。</p>
+  <p>这里同时平衡两件事：<strong>职业成长</strong>（缺口要不要先补）和 <strong>Job Fit</strong>（这份 JD 现在能不能投、怎么投才真实）。没有 Preview 和 Undo，就不算可控 Agent。</p>
+  <p><a href="../jiancareer/mentor/index.html">打开 02 Mentor Lab →</a></p>
+
+  <h3 id="loop-3">03 投递反馈飞轮</h3>
+  <p>投递不是一次性动作。Action creates Record：Apply → Record → Track → Outcome → Feedback → Next Recommendation。</p>
+  <p>这里有一条关键边界：<strong>状态可以由系统记录</strong>（已投递 / 已沟通 / 已面试 / 未通过 / Offer）；但<strong>面试失败原因不能用预设下拉替用户「猜」</strong>——必须邀请用户用自己的话填写。这段话写入 Agent 记忆，再进入职场导师与简历修改，下一句建议才有事实依据，而不是模型脑补。</p>
+  <div class="callout">
+    <div class="callout-icon">🧠</div>
+    <div class="callout-content">
+      <strong>记忆从哪来</strong>：Tracker 的失败原因 = 用户主动贡献的事实。Mentor / 简历改写只读这段记忆，不把枚举选项当成真相。
+    </div>
+  </div>
+  <p><a href="../jiancareer/prototype/flywheel-lab.html">打开 03 Flywheel Lab →</a>（状态下拉 + 失败原因手写）</p>
+</section>
+
 <section id="process" class="section-block">
   <h2>关键交互决策</h2>
 
@@ -910,6 +989,20 @@ body {
   <div class="img-block">
     <img src="../img/projects/jiancareer/Jian_03.png" alt="Figma高保真原型展示">
     <div class="img-caption">覆盖官网、认证、填写、插件、Dashboard、分析与社区的完整求职周期</div>
+  </div>
+
+  <h3 id="process-4">决策四：Job Tracking 只给状态下拉；失败原因必须用户手写</h3>
+  <p>程序能可靠知道的，是投递进度：已投递 → 已沟通 → 已面试 → Offer / 未通过。面试为什么没过，系统没有上帝视角——若做成第二个下拉（「量化不足 / 方向过散…」），等于用选项替用户下结论，后续 Mentor 与简历修改会基于<strong>假记忆</strong>给建议。</p>
+  <p>正确分工：状态可选；失败原因用输入框邀请用户主动填写；写入后成为 Agent 记忆，再驱动「下一轮怎么改简历 / 导师说什么」。</p>
+  <div class="callout">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-content">
+      <strong>取舍</strong>：少一点「看起来智能的枚举」，多一点「用户愿意贡献的事实」。可点原型见 <a href="../jiancareer/prototype/flywheel-lab.html">Flywheel Lab</a>。
+    </div>
+  </div>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/04JIAN-投递进度.png" alt="投递进度 Tracker">
+    <div class="img-caption">Job Tracking — 状态是系统层；失败叙事必须来自用户</div>
   </div>
 
   <p>关键链路我用 <strong>Lovable</strong> 做了 Vibe Coding：设计稿转可点原型，用来验证对话节奏与跳转，而不是等工程排期后才发现交互不通。</p>
@@ -988,12 +1081,18 @@ body {
 
 <section id="assets" class="section-block">
   <h2>工程资料</h2>
-  <p>后期组件库与网页工程文件（工作记录归档），可用于面试追问时展示工程推进痕迹。</p>
+  <p>可点原型、组件库与 Figma 工程均可在面试追问时当场打开。</p>
   <div class="callout">
     <div class="callout-icon">🧩</div>
     <div class="callout-content">
-      <strong>Figma 工程文件</strong>：
-      <a href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1&t=0TkLYv2ivkakbyUG-1" target="_blank" rel="noopener noreferrer">简职工作记录（组件库 + 网页工程）</a>
+      <strong>本地 / 站点资产</strong>：
+      <a href="../jiancareer/index.html">演示入口</a> ·
+      <a href="../jiancareer/prototype/grounding-lab.html">Grounding Lab</a> ·
+      <a href="../jiancareer/design-system/index.html">组件库文档</a><br>
+      <strong>Figma CODEX</strong>：
+      <a href="https://www.figma.com/design/N5JvV8Vpa1CCiXQuN9BRSk/Jiancareer-CODEX?node-id=1-2493" target="_blank" rel="noopener noreferrer">Jiancareer-CODEX</a><br>
+      <strong>工作记录归档</strong>：
+      <a href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1" target="_blank" rel="noopener noreferrer">组件库 + 网页工程</a>
     </div>
   </div>
 </section>
@@ -1044,16 +1143,16 @@ body {
 </section>
 
 <!-- FOOTER NAV -->
-<div class="footer-nav">
-  <a href="Twin-City-Tale.html" class="footer-btn">
-    <span class="btn-label">Next Project</span>
+<footer class="footer-nav" aria-label="项目翻页">
+  <a href="Leke.html" class="footer-btn footer-btn--prev">
+    <span class="btn-label">上一个项目</span>
+    <span class="btn-title">← 乐刻品牌分析</span>
+  </a>
+  <a href="Twin-City-Tale.html" class="footer-btn footer-btn--next">
+    <span class="btn-label">下一个项目</span>
     <span class="btn-title">Twin City Tales →</span>
   </a>
-  <a href="../works.html" class="footer-btn">
-    <span class="btn-label">Back to</span>
-    <span class="btn-title">Works Index</span>
-  </a>
-</div>
+</footer>
 
 </main>
 </div>

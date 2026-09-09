@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>简职 JianCareer Ver 2 · Leonardo Li</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0f;
+  --bg-elevated: rgba(255,255,255,0.03);
+  --text: #e8e6e1;
+  --text-dim: #8a8580;
+  --text-muted: #5a5550;
+  --accent: #7c6fae;
+  --accent-soft: rgba(124,111,174,0.15);
+  --link: #00ff87;
+  --link-soft: rgba(0, 255, 135, 0.25);
+  --border: rgba(255,255,255,0.06);
+  --g-1: #1a0a2e;
+  --sidebar-bg: linear-gradient(to right, rgba(10,10,15,0.98), rgba(10,10,15,0.95));
+  --card-bg: rgba(255,255,255,0.02);
+}
+
+[data-theme="light"] {
+  --bg: #f5f3ef;
+  --bg-elevated: rgba(0,0,0,0.03);
+  --text: #1a1a1a;
+  --text-dim: #5a5a5a;
+  --text-muted: #8a8a8a;
+  --accent: #5b4fa0;
+  --accent-soft: rgba(91,79,160,0.1);
+  --link: #0066cc;
+  --link-soft: rgba(0, 102, 204, 0.22);
+  --border: rgba(0,0,0,0.08);
+  --g-1: #e8e0f0;
+  --sidebar-bg: linear-gradient(to right, rgba(245,243,239,0.98), rgba(245,243,239,0.95));
+  --card-bg: rgba(0,0,0,0.03);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+/* ===== BACKGROUND ORBS ===== */
+.bg-orbs {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.3;
+  mix-blend-mode: screen;
+  animation: moveOrb 20s infinite alternate ease-in-out;
+}
+
+[data-theme="light"] .orb {
+  mix-blend-mode: multiply;
+  opacity: 0.08;
+}
+
+.orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #00f2fe 0%, transparent 70%);
+  top: -10%; left: -10%;
+  animation-duration: 25s;
+}
+
+.orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #4facfe 0%, transparent 70%);
+  bottom: -5%; right: -5%;
+  animation-duration: 30s;
+  animation-delay: -5s;
+}
+
+.orb-3 {
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, #00ff87 0%, transparent 70%);
+  top: 40%; left: 30%;
+  animation-duration: 22s;
+  animation-delay: -10s;
+}
+
+@keyframes moveOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(100px, 50px) scale(1.1); }
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+/* ===== LAYOUT ===== */
+.page { display: flex; min-height: 100vh; }
+
+/* ===== LEFT SIDEBAR (TOC) ===== */
+.sidebar {
+  width: 260px;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  padding: 32px 24px;
+  overflow-y: auto;
+  z-index: 100;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.theme-toggle:hover {
+  background: var(--card-bg);
+  color: var(--text-dim);
+  border-color: var(--text-muted);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.theme-toggle .sun { display: none; }
+.theme-toggle .moon { display: block; }
+[data-theme="light"] .theme-toggle .sun { display: block; }
+[data-theme="light"] .theme-toggle .moon { display: none; }
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  margin-bottom: 32px;
+  transition: color 0.3s;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { width: 16px; height: 16px; }
+
+.toc-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 4px; }
+.toc-list a {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-left: 2px solid transparent;
+}
+.toc-list a:hover { color: var(--text); background: var(--bg-elevated); }
+.toc-list a.active { color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); }
+.toc-list a.sub { padding-left: 24px; font-size: 12px; }
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  margin-left: 260px;
+  flex: 1;
+  max-width: 900px;
+  padding: 48px 64px 120px;
+}
+
+/* ===== HERO BANNER ===== */
+.project-hero {
+  margin: -48px -64px 48px;
+  padding: 100px 64px 60px;
+  background: linear-gradient(135deg, #00d4c8 0%, #2b8cff 48%, #6a4cff 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.project-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(255,255,255,0.28), transparent 70%);
+  filter: blur(60px);
+}
+.project-hero h1 {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  position: relative;
+  color: #fff;
+}
+.project-hero .subtitle {
+  font-size: 18px;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 1px;
+  position: relative;
+}
+
+/* ===== META BAR ===== */
+.meta-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.meta-group h4 {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.meta-group p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+.meta-group a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+/* ===== CONTENT BLOCKS ===== */
+.section-block { margin-bottom: 64px; }
+
+.section-block h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.section-block h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 32px 0 16px;
+  letter-spacing: 1px;
+}
+
+.section-block p {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+.section-block p strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.section-block p a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid var(--link-soft);
+  transition: border-color 0.3s;
+}
+.section-block p a:hover { border-bottom-color: var(--link); }
+
+.callout-content a {
+  color: var(--link);
+  text-decoration: none;
+  border-bottom: 1px solid var(--link-soft);
+}
+.callout-content a:hover { border-bottom-color: var(--link); }
+
+/* ===== CALLOUT (Notion style) ===== */
+.callout {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin: 24px 0;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.callout-icon { font-size: 20px; flex-shrink: 0; }
+.callout-content { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+/* ===== IMAGE BLOCKS ===== */
+.img-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.img-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.img-block img {
+  width: 100%;
+  display: block;
+}
+.img-caption {
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+}
+
+/* ===== BEFORE/AFTER COMPARISON ===== */
+.compare-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 32px 0;
+}
+.compare-item {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.compare-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.compare-item img { width: 100%; display: block; }
+.compare-label {
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.compare-label.before { background: rgba(255,255,255,0.03); color: var(--text-muted); }
+.compare-label.after { background: var(--accent-soft); color: var(--accent); }
+
+/* ===== VIDEO BLOCK ===== */
+.video-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+  padding-bottom: 56.25%;
+  background: var(--bg-elevated);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.video-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.video-block iframe,
+.video-block video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+.video-placeholder {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ===== QUOTE ===== */
+.quote-block {
+  border-left: 3px solid var(--accent);
+  padding: 16px 24px;
+  margin: 32px 0;
+  font-style: italic;
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* ===== TAG LIST ===== */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+.tag-list span {
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 12px;
+  border-radius: 999px;
+  letter-spacing: 1px;
+}
+
+/* ===== RESULTS GRID ===== */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+.result-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.result-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.result-number {
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.result-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* ===== FOOTER NAV ===== */
+.footer-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 64px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 80px;
+  gap: 24px;
+}
+
+.footer-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 24px;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-btn .btn-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.footer-btn .btn-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Light Mode: Blue 系 */
+[data-theme="light"] .footer-btn {
+  background: #f0f7ff;
+  color: #0066cc;
+  border-color: #d0e7ff;
+}
+[data-theme="light"] .footer-btn:hover {
+  background: #0066cc;
+  color: #fff;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 102, 204, 0.15);
+  border-color: transparent;
+}
+
+/* Dark Mode: Green 系 */
+[data-theme="dark"] .footer-btn {
+  background: rgba(0, 255, 135, 0.03);
+  color: #00ff87;
+  border-color: rgba(0, 255, 135, 0.1);
+}
+[data-theme="dark"] .footer-btn:hover {
+  background: rgba(0, 255, 135, 0.1);
+  color: #00ff87;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 255, 135, 0.1);
+  border-color: rgba(0, 255, 135, 0.3);
+}
+
+/* ===== PROJECT LINK CARDS ===== */
+.project-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 0 0 48px;
+}
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.link-card:hover {
+  transform: translateY(-4px);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.link-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--accent);
+  font-size: 18px;
+}
+
+.link-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.link-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.link-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Top Navigation Bar Theme Toggle */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+}
+
+.nav-theme-toggle:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.nav-theme-toggle svg { width: 16px; height: 16px; }
+.nav-theme-toggle .sun { display: none; }
+.nav-theme-toggle .moon { display: block; }
+[data-theme="light"] .nav-theme-toggle .sun { display: block; }
+[data-theme="light"] .nav-theme-toggle .moon { display: none; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 24px; }
+  .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
+  .project-hero h1 { font-size: 28px; }
+  .meta-bar { grid-template-columns: 1fr; gap: 16px; }
+  .compare-block { grid-template-columns: 1fr; }
+  .results-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.ver-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+.ver-switch a {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--bg-elevated);
+}
+.ver-switch a.is-current {
+  color: var(--text);
+  border-color: var(--link);
+  background: var(--link-soft);
+}
+.ver-switch a:hover { color: var(--text); }
+
+.back-wrap{max-width:900px;margin:14px auto 0;padding:0 18px;}
+.back-work{display:inline-flex;align-items:center;gap:6px;font-size:13px;letter-spacing:.02em;color:var(--text-muted);text-decoration:none;transition:color .2s ease;}
+.back-work:hover{color:var(--text);}
+
+/* Top Navigation Bar */
+.unified-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 64px;
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .unified-topbar {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.unified-brand {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  text-decoration: none;
+}
+.unified-nav {
+  display: flex;
+  gap: 24px;
+}
+.unified-nav a {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.unified-nav a:hover, .unified-nav a.active {
+  color: var(--text);
+}
+</style>
+<link rel="stylesheet" href="../site.css?v=20260909">
+<script src="../site.js" defer></script>
+</head>
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Top Navigation -->
+<nav class="unified-topbar" style="position: fixed; top: 0; left: 0; right: 0; z-index: 200;">
+  <a href="../index.html" class="unified-brand" aria-label="LeonardoLi"><span class="brand-mark" aria-hidden="true"></span></a>
+  <div class="nav-actions">
+    <div class="unified-nav">
+      <a href="../index.html">Home</a>
+      <a href="../works.html" class="active">Work</a>
+<a href="../resume.html">Resume</a>
+      <a href="../about.html">About</a>
+    </div>
+    <button class="nav-theme-toggle" id="navThemeToggle" type="button" data-theme-toggle aria-label="切换主题">
+      <svg class="moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <svg class="sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+    <button class="nav-toggle" type="button" aria-label="打开菜单" aria-controls="mobileMenu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <div class="mobile-menu-section">
+    <a href="../index.html">Home</a>
+    <a href="../works.html">Work</a>
+<a href="../resume.html">Resume</a>
+    <a href="../about.html">About</a>
+  </div>
+  <div class="mobile-menu-section" data-mobile-toc></div>
+</div>
+
+<!-- Spacer for nav -->
+<div style="height: 64px;"></div>
+<div class="back-wrap"><a class="back-work" href="../works.html">&larr; Back to Work Page</a></div>
+
+<div class="page">
+
+<!-- SIDEBAR TOC -->
+<aside class="sidebar">
+  <a href="../works.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back to Index
+  </a>
+
+  <div class="toc-title">目录</div>
+  <ul class="toc-list">
+    <li><a href="#now" class="active">这轮对齐到哪</a></li>
+    <li><a href="#context">背景与问题</a></li>
+    <li><a href="#role">我的角色</a></li>
+    <li><a href="#homepage">产品首页是唯一默认</a></li>
+    <li><a href="#architecture">一份档案 · 三条入口</a></li>
+    <li><a href="#loops">四条可点证据链</a></li>
+    <li><a href="#loop-1" class="sub">01 Grounding</a></li>
+    <li><a href="#loop-2" class="sub">02 Mentor 记忆</a></li>
+    <li><a href="#loop-3" class="sub">03 投递飞轮</a></li>
+    <li><a href="#loop-4" class="sub">04 设计系统</a></li>
+    <li><a href="#dashboard">工作台：扫一眼再行动</a></li>
+    <li><a href="#process">关键交互决策</a></li>
+    <li><a href="#result">成果与证据</a></li>
+    <li><a href="#reflection">反思与收获</a></li>
+    <li><a href="#interview">面试思考题 · B 端</a></li>
+    <li><a href="#assets">工程资料</a></li>
+  </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- HERO -->
+<div class="project-hero">
+  <h1>简职 JianCareer</h1>
+  <div class="subtitle">Ver 2 · 和当前可点产品对齐：营销首页、建档路径、三实验室、工作台减法</div>
+</div>
+
+<div class="ver-switch" role="navigation" aria-label="案例版本">
+  <a href="Jiancareer.html">Ver 1 · 2025 设计叙事</a>
+  <a class="is-current" href="Jiancareer_ver2.html" aria-current="page">Ver 2 · 2026 可演示闭环</a>
+</div>
+
+<!-- META BAR -->
+<div class="meta-bar">
+  <div class="meta-group">
+    <h4>Role</h4>
+    <p>UI / Product Designer<br>后半段本地 HTML Vibe Coding</p>
+  </div>
+  <div class="meta-group">
+    <h4>Focus</h4>
+    <p>一份档案 · 三点闭环<br>营销首页 · 可亲手点的实验室</p>
+  </div>
+  <div class="meta-group">
+    <h4>Time</h4>
+    <p>2025.08 – 2026.09 迭代<br><a href="https://jiancareer.com/">jiancareer.com</a><br><a href="https://leonardolee351-lmx.github.io/JianCareer_JobAppAgent/?v=ee8a5a8" target="_blank" rel="noopener noreferrer">在线演示</a></p>
+  </div>
+</div>
+
+<!-- QUICK LINKS -->
+<div class="project-links">
+  <a href="https://jiancareer.com/" target="_blank" rel="noopener noreferrer" class="link-card">
+    <div class="link-icon">🌐</div>
+    <div class="link-info">
+      <span class="link-label">Preview</span>
+      <span class="link-name">访问官网</span>
+    </div>
+  </a>
+  <a href="https://leonardolee351-lmx.github.io/JianCareer_JobAppAgent/?v=ee8a5a8" target="_blank" rel="noopener noreferrer" class="link-card">
+    <div class="link-icon">▶</div>
+    <div class="link-info">
+      <span class="link-label">Demo</span>
+      <span class="link-name">在线演示</span>
+    </div>
+  </a>
+  <a href="../jiancareer/index.html" class="link-card">
+    <div class="link-icon">⚡</div>
+    <div class="link-info">
+      <span class="link-label">Prototype</span>
+      <span class="link-name">三点闭环入口</span>
+    </div>
+  </a>
+  <a href="../jiancareer/design-system/index.html" class="link-card">
+    <div class="link-icon">🧩</div>
+    <div class="link-info">
+      <span class="link-label">Design System</span>
+      <span class="link-name">组件库离线文档</span>
+    </div>
+  </a>
+  <a href="https://www.figma.com/design/N5JvV8Vpa1CCiXQuN9BRSk/Jiancareer-CODEX?node-id=1-2493" target="_blank" class="link-card">
+    <div class="link-icon">🎨</div>
+    <div class="link-info">
+      <span class="link-label">Figma</span>
+      <span class="link-name">CODEX 设计文件</span>
+    </div>
+  </a>
+</div>
+
+<!-- KEY RESULTS -->
+<section id="outcome-preview" class="section-block">
+  <h2>这轮要证明什么</h2>
+  <div class="results-grid">
+    <div class="result-item">
+      <div class="result-number">4</div>
+      <div class="result-label">面试必须亲手点的证据链</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">1</div>
+      <div class="result-label">默认产品首页（不再混淆实验室）</div>
+    </div>
+    <div class="result-item">
+      <div class="result-number">TOP 10%</div>
+      <div class="result-label">AI Agent 2025 toC 榜单</div>
+    </div>
+  </div>
+</section>
+
+<section id="now" class="section-block">
+  <h2>这轮对齐到哪</h2>
+  <p>Ver 1 讲的是 0→1：从混乱 Demo 反推多入口架构、结构化 Mentor 和组件库。那一版叙事仍然成立，但它停在「设计决策」。</p>
+  <p>2026 这轮迭代，我把简职从「看起来覆盖了 40+ 页」收到<strong>面试官能亲手点、判断我能不能设计复杂 AI 产品</strong>的状态。技术报告仍是 <strong>B07 0662</strong>（大模型多 Agent 架构的职业决策与智能行动系统）。作品集对外岗位口径是 <strong>AI Product Developer &amp; UX Researcher</strong>，简职是 Featured 主讲。</p>
+  <div class="callout">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-content">
+      <strong>现在的工作面</strong>：产品首页只认营销页「规划清楚，改好简历，一键投递」；登录 / 注册走通一份档案；Grounding / Mentor / Flywheel 三实验室共用 <code>jc_lab_v1</code>；设计系统从页面沉淀成 Component / Pattern，而不是只剩 tokens。
+    </div>
+  </div>
+</section>
+
+<section id="context" class="section-block">
+  <h2>背景与问题</h2>
+  <p>求职链路碎片化：简历重复填写、网申入口割裂、职业建议缺乏结构。传统平台给职位列表，很少帮用户走完「理解自己 → 匹配岗位 → 行动投递」。</p>
+  <p>简职要做成 <strong>AI Agent 驱动的一站式求职助手</strong>。我入场时，手里是一句话需求、草图，以及开发侧已经能跑、但页面不统一、交互断裂的演示原型。后来外部反馈更狠：<strong>交互和体验仍有巨量提升空间</strong>——拆开看，不是缺动效，而是入口语义打架、Agent 状态说不清、填写没有即时回报。</p>
+
+  <div class="callout">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong>这轮不再追求「看起来做完了」</strong>。作品集站点、V3 实验室、简职 hub、旧 FullFlow 绿框跳转，都不再冒充产品首页。访客进来只认一张营销页，再走登录或注册。
+    </div>
+  </div>
+
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/cover-shots/p2-landing.png" alt="简职产品营销首页">
+    <div class="img-caption">当前产品首页最终稿 — 主句「规划清楚，改好简历，一键投递」，右侧是工作台浮层 mock</div>
+  </div>
+</section>
+
+<section id="role" class="section-block">
+  <h2>我的角色</h2>
+  <p>作为 <strong>UI / Product Designer</strong>，我负责 0→1 体验与组件规范：拆产品框架、对齐三条入口的用户模型、把混乱 Demo 收成可协作的设计系统。这不是纯视觉美化。</p>
+  <p>后半段转到 <strong>Vibe Coding</strong>：先用 Lovable 验证关键链路，再落到本地 HTML 原型（营销首页、注册登录、建档、工作台，以及三间实验室）。现在面试讲简职，我打开的是能点的页面，不是只讲 Figma 帧。</p>
+</section>
+
+<section id="homepage" class="section-block">
+  <h2>产品首页是唯一默认</h2>
+  <p>访客顶栏只留 Logo、<strong>功能介绍</strong>、<strong>关于我们</strong>，以及 <strong>登录（实心青绿）/ 注册（白底描边）</strong>。不再放「修改简历 / 职业规划 / 快速投递 / 投递跟踪」五段导航——那些是登录后的工作，不是获客页该抢的注意力。</p>
+  <p>Hero 主句钉死：<strong>规划清楚，改好简历，一键投递</strong>。右侧是工作台浮层 mock（已投递 / 面试中 / Offer、Grounding、Mentor），不是实验室工作台本身。往下是信任条「深受各行业名企求职者信赖」、四列功能，以及「你的整个求职旅程仅需一份档案」。</p>
+  <p>退出登录必须回到这张首页，再走登录或注册：<br>
+  登录 → 工作台<br>
+  注册 → 上传简历 → 完善档案 → 工作台</p>
+  <p>在线可点的产品 Demo：<a href="https://leonardolee351-lmx.github.io/JianCareer_JobAppAgent/?v=ee8a5a8" target="_blank" rel="noopener noreferrer">leonardolee351-lmx.github.io/JianCareer_JobAppAgent</a>。官网仍是获客页；这条链接给面试官直接进产品流程。</p>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/cover-shots/p5-header.png" alt="简职访客顶栏与品牌 lockup">
+    <div class="img-caption">访客顶栏：品牌 lockup + 功能介绍 / 关于我们 + 登录 / 注册</div>
+  </div>
+</section>
+
+<section id="architecture" class="section-block">
+  <h2>一份档案 · 三条入口</h2>
+  <p>信息只录入一次。三条入口共用同一用户模型：</p>
+  <p>• <strong>注册建档</strong>：上传 → 核对档案 → 尽快进入可用简历状态<br>
+     • <strong>工作台</strong>：扫一眼进度，再决定改简历、问 Mentor、还是去 Tracker<br>
+     • <strong>浏览器插件</strong>：网申现场执行层——把已结构化资料送到真实表单，确认后再填</p>
+  <p>插件不是另起一套表单。若业务要加字段，先改用户模型契约，再三端同步。</p>
+
+  <div class="compare-block">
+    <div class="compare-item">
+      <img src="../img/projects/jiancareer/cover-shots/p4-register.png" alt="注册与一份档案">
+      <div class="compare-label before">建档 = 把经历收成一份档案</div>
+    </div>
+    <div class="compare-item">
+      <img src="../img/projects/jiancareer/cover-shots/ui-workbench.png" alt="登录后工作台">
+      <div class="compare-label after">工作台 = 扫一眼再行动</div>
+    </div>
+  </div>
+
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/Jian_01.png" alt="工作流梳理">
+    <div class="img-caption">先把 AI 交互与投递闭环钉死，再进入高保真——避免先画界面再补逻辑</div>
+  </div>
+</section>
+
+<section id="loops" class="section-block">
+  <h2>四条可点证据链</h2>
+  <p>40+ 页只证明覆盖面。面试真正要打穿的是下面四条。从 <a href="../jiancareer/index.html">四点证据链入口</a> 开始。</p>
+
+  <h3 id="loop-1">01 Grounding：经历锚定，不编造</h3>
+  <p>问题不是「AI 改简历」，而是：如何把已有资料快速适配到目标 JD，<strong>同时不伪造真实经历</strong>。目标是一键 apply 真实经历。</p>
+  <p>流程：Existing Profile → JD Evidence → Gap Analysis → Suggested Rewrite → User Review。Alignment 左栏拉出简历全文（基本信息 / 教育 / 工作 / 项目 / 校园），再在全文上标 match / gap。分析主战场是项目、工作与校园里最值钱的工作量；未抽到字段的句子收进折叠区，避免右栏被刷屏。最多 3–4 个 Alignment 追问。</p>
+  <div class="callout">
+    <div class="callout-icon">🔒</div>
+    <div class="callout-content">
+      <strong>Grounded / Span Evidence / Preserve Facts / Diff / Confirm</strong>。绿标是原文抽出的字段证据；橙是 JD 有、简历无。模型可以重排重点和对齐用语，不能发明转化率或升级职级。
+    </div>
+  </div>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/cover-shots/ui-alignment.png" alt="简历适配 Alignment：三态标注与刨根问底">
+    <div class="img-caption">Alignment — 先对齐事实再审核改写：命中 / 可提升 / 有缺口标在简历全文上，右栏只追问当前字段</div>
+  </div>
+  <p><a href="../jiancareer/prototype/grounding-lab.html">打开 01 Grounding Lab →</a></p>
+
+  <h3 id="loop-2">02 Mentor：可控 Agent，而且有记忆</h3>
+  <p>状态机：Understand → Explain → Propose → Preview → Confirm → Act → Recover。关键词是 State / Explainability / Preview / Confirm / Undo。</p>
+  <p>Mentor 同时平衡 <strong>职业成长</strong> 和 <strong>Job Fit</strong>：累积目标岗位后，要能分化大厂 / 中厂 vs 初创的成长路径与技能缺口。没有 Preview 和 Undo，就不算可控 Agent；没有记忆，就只是一次性对话框。</p>
+  <p>所以 Mentor 不做纯 ChatGPT 空白输入。每次只聚焦一个维度，结果可解释，脚本可回放、可交给运营改。</p>
+  <p><a href="../jiancareer/mentor/index.html">打开 02 Mentor Lab →</a></p>
+
+  <h3 id="loop-3">03 投递飞轮：Action creates Record</h3>
+  <p>Apply → Record → Track → Outcome → Feedback → Next Recommendation。Tracker 要能看投递成功率和面试通过率；Mentor 据此给下一句建议。</p>
+  <p>边界：<strong>状态可以由系统记录</strong>（已投递 / 已沟通 / 已面试 / 未通过 / Offer）；<strong>失败原因必须用户手写</strong>。预设下拉等于替用户下结论，后续改写会基于假记忆。</p>
+  <div class="callout">
+    <div class="callout-icon">🧠</div>
+    <div class="callout-content">
+      <strong>记忆从哪来</strong>：Tracker 的失败原因 = 用户主动贡献的事实。三实验室共用 localStorage <code>jc_lab_v1</code>，改完状态再回 Mentor，下一句建议必须能对上刚才的结果。
+    </div>
+  </div>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/cover-shots/ui-tracker.png" alt="求职跟踪：状态、失败原因与下一轮建议">
+    <div class="img-caption">Tracker — 投递进度可改状态；失败原因手写进 Agent 记忆，右侧下一句建议来自结果而不是空喊</div>
+  </div>
+  <p><a href="../jiancareer/prototype/flywheel-lab.html">打开 03 Flywheel Lab →</a></p>
+
+  <h3 id="loop-4">04 设计系统：页面沉淀为 Component / Pattern</h3>
+  <p>Token 分层是 Reference → Semantic → Component → Density，要同时吃 Web 与插件双密度。真正给面试官看的不是 tokens 表，而是视觉工作台：JobCard / MatchScore / AgentStatus / ApplicationStatus 这些业务组件从页面里长出来。</p>
+  <p><a href="../jiancareer/design-system/index.html">打开设计系统工作台 →</a>（<a href="../jiancareer/design-system/tokens.html">tokens 底层</a>）</p>
+</section>
+
+<section id="dashboard" class="section-block">
+  <h2>工作台：扫一眼再行动</h2>
+  <p>登录后的工作台做过一轮减法：问候 + 一个主按钮 + 能扫到的进度，而不是把实验室、社区、洞察一股脑铺上。用户先知道「这周投了什么、卡在哪」，再决定进 Grounding、Mentor 还是 Tracker。</p>
+  <p>品牌 lockup（箭头文件标 + 简职 / JianCareer）贯穿访客顶栏与登录后顶栏，注册 / 登录页用同一套青绿调性，避免「官网一套、产品一套」。</p>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/cover-shots/ui-workbench.png" alt="简职工作台">
+    <div class="img-caption">林晓舟工作台：问候 + 去适配 JD + 简历完成度 / 投递进度 / 下一步，先读状态再行动</div>
+  </div>
+</section>
+
+<section id="process" class="section-block">
+  <h2>关键交互决策</h2>
+
+  <h3 id="process-1">决策一：不用纯 ChatGPT 对话框，改用结构化引导</h3>
+  <p>AI Mentor 要帮用户挖优势、对照 JD、给成长路径。开放式对话框看起来「AI」，但在求职场景会放大不确定性：用户不知道该问什么，模型也容易跑偏。</p>
+  <div class="callout">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-content">
+      <strong>取舍</strong>：牺牲「任意闲聊」的自由度，换取可控的多轮状态机——每次对话只聚焦一个维度（技能 / 经历 / 目标），并明确意图反馈与结果展示模式，降低填写与决策的认知负荷。
+    </div>
+  </div>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/Jian_05.png" alt="AI Mentor界面">
+    <div class="img-caption">AI Mentor — 引导式对话，而不是空白输入框赌用户会提问</div>
+  </div>
+
+  <h3 id="process-2">决策二：个人信息用渐进式披露，而不是一页长表</h3>
+  <p>求职资料天然字段多。我把填写拆成可完成的小步，让用户始终看到「这一步为什么重要、完成后能解锁什么」（例如更准的匹配 / 插件可一键填）。目标是把完成率问题，从「愿不愿意填」转成「每一步都有即时回报」。</p>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/02JIAN-info.png" alt="信息填写">
+    <div class="img-caption">信息填写：分步推进，避免一次性长表劝退</div>
+  </div>
+
+  <h3 id="process-3">决策三：先重构规范，再堆页面数量</h3>
+  <p>面对开发交付的混乱 Demo，我没有直接「美化截图」，而是从 user flow 与组件层重建：色彩、字体、状态、业务模块组件化。40+ 页高保真是结果；真正交付物是<strong>后来实习生也能接着做的组件库与视觉规范</strong>。</p>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/JianCareer_05.png" alt="组件库">
+    <div class="img-caption">组件库与设计规范 —— 把「能演示」升级成「能协作迭代」</div>
+  </div>
+
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/Jian_03.png" alt="Figma高保真原型展示">
+    <div class="img-caption">覆盖官网、认证、填写、插件、Dashboard、分析与社区的完整求职周期</div>
+  </div>
+
+  <h3 id="process-4">决策四：Job Tracking 只给状态下拉；失败原因必须用户手写</h3>
+  <p>程序能可靠知道的，是投递进度：已投递 → 已沟通 → 已面试 → Offer / 未通过。面试为什么没过，系统没有上帝视角——若做成第二个下拉（「量化不足 / 方向过散…」），等于用选项替用户下结论，后续 Mentor 与简历修改会基于<strong>假记忆</strong>给建议。</p>
+  <p>正确分工：状态可选；失败原因用输入框邀请用户主动填写；写入后成为 Agent 记忆，再驱动「下一轮怎么改简历 / 导师说什么」。</p>
+  <div class="callout">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-content">
+      <strong>取舍</strong>：少一点「看起来智能的枚举」，多一点「用户愿意贡献的事实」。可点原型见 <a href="../jiancareer/prototype/flywheel-lab.html">Flywheel Lab</a>。
+    </div>
+  </div>
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/04JIAN-投递进度.png" alt="投递进度 Tracker">
+    <div class="img-caption">Job Tracking — 状态是系统层；失败叙事必须来自用户</div>
+  </div>
+
+  <p>关键链路先用 <strong>Lovable</strong> 验证对话节奏，再落到本地 HTML。这轮迭代不再等工程排期才发现跳转不通——营销首页、建档、工作台和三实验室都是我可以当场点开的。</p>
+</section>
+
+<section id="result" class="section-block">
+  <h2>成果与证据</h2>
+  <p>产品进入 <strong>AI Agent 2025 toC 软件榜单 TOP 10%</strong>，并在伯乐与千里马分榜取得 <strong>TOP 1</strong>。榜单证明垂直场景 + 可讲清的体验架构比堆功能有效。对我自己更硬的证据，是现在能当场打开：营销首页、一份档案路径、Grounding 不编造、Mentor 有记忆、Flywheel 反哺、组件库工作台。</p>
+
+  <div class="img-block">
+    <img src="../img/projects/jiancareer/JianCareer_01.png" alt="最终产出">
+    <div class="img-caption">核心功能模块的最终视觉呈现</div>
+  </div>
+</section>
+
+<section id="reflection" class="section-block">
+  <h2>反思与收获</h2>
+
+  <p><strong>交互体验的真正瓶颈</strong>：早期反馈里「交互与体验有巨量提升空间」——拆开看，往往不是缺动效，而是<strong>入口语义不一致、对话状态不清晰、填写没有即时回报</strong>。多入口对齐 + 结构化 Mentor，是我后来反复强调的两条主线。</p>
+
+  <p><strong>关于 AI 产品温度</strong>：过度结构化会像表单机器；过度开放会让用户迷路。Mentor 的价值在中间态：有边界的引导，外加可解释的结果展示。</p>
+
+  <p><strong>如果再做一次</strong>：更早做 3–5 名应届生可用性测试，专门测首次建档完成率、Grounding 确认率、失败原因是否真的被写下来。用任务成功率迭代脚本，而不是再加页面。</p>
+
+  <div class="callout">
+    <div class="callout-icon">🎯</div>
+    <div class="callout-content">
+      <strong>面试可追问点</strong>：为什么坚持三入口同一用户模型？为什么不做纯对话框？组件库如何从混乱 Demo 反推出来？——这三题对应本项目最硬的决策链。更完整的答题框架见下方「面试思考题」。
+    </div>
+  </div>
+</section>
+
+<section id="interview" class="section-block">
+  <h2>面试思考题 · 面向 B 端产品面试官</h2>
+  <p>简职表面是 toC 求职助手，但火山 / 字节类面试官常会把你往「系统、指标、协作、边界」上压。下面每题给<strong>答题骨架</strong>，面试时按自己的真实经历填充数字与反例。</p>
+
+  <h3>Q1 · 如果这是你们公司的 AI 求职产品，你怎么定义成功？</h3>
+  <p><strong>骨架</strong>：分层指标，而不是「用了 AI」。<br>
+  • 体验指标：首次资料完成率、Mentor 会话完成率、插件一键填成功率<br>
+  • 行为指标：7 日回访、投递动作转化（对话 → 投递）<br>
+  • 质量指标：推荐岗位点击后的「相关/不相关」轻反馈、Mentor 下一问是否被采纳<br>
+  • 明确<strong>不</strong>用：日活虚荣、模型回复长度、页面数量</p>
+
+  <h3>Q2 · 为什么不做纯 ChatGPT 对话框？这对「Agent 产品」意味着什么？</h3>
+  <p><strong>骨架</strong>：场景约束 &gt; 模型自由。<br>
+  求职是高认知负荷任务，开放闲聊会放大「不知道问什么」。结构化 Mentor = 有边界的状态机：每轮只挖一个维度，结果可解释。对 B 端表述：这是<strong>可控的 Agent 编排</strong>，不是套壳聊天——便于评测、可回放、可交给运营改脚本。</p>
+
+  <h3>Q3 · 三入口（注册 / Dashboard / 插件）如何证明是同一用户模型，而不是三套产品？</h3>
+  <p><strong>骨架</strong>：信息只录入一次；字段语义跨端一致；插件是「现场执行层」不是另起表单。<br>
+  追问防守：若业务要求插件加字段，先改用户模型契约，再三端同步——否则入口语义会再次撕裂。</p>
+
+  <h3>Q4 · 面对「开发 Demo 已能跑、但体验混乱」，你如何排优先级？</h3>
+  <p><strong>骨架</strong>：先 IA / 路径，再单页视觉；先组件规范，再堆页面数量。<br>
+  理由：演示能过会 ≠ 可协作交付。40+ 页是结果，组件库才是让实习生能接着做的资产。面试官爱听的是「你挡住了什么错误路径」。</p>
+
+  <h3>Q5 · 如果业务方要求「再多接三个 Agent 角色一起聊」，你怎么说不？</h3>
+  <p><strong>骨架</strong>：先问任务目标与验收标准。多 Agent 只有在「分工可解释、输出可拼接、可评测」时才值得上；否则增加延迟与幻觉面。简职阶段优先把单 Mentor 状态机做稳，再谈会诊式扩展。</p>
+
+  <h3>Q6 · 设计系统对工程协作的真实价值是什么？（防「只是好看」）</h3>
+  <p><strong>骨架</strong>：状态完备（空/加载/错误/权限）、业务模块组件化、命名与开发可对齐。<br>
+  证据链：从混乱 Demo → 规范 → Lovable 可点原型验证关键链路，缩短「设计稿好看但交互不通」的反馈环。</p>
+
+  <h3>Q7 · 若只能保留一个核心体验，你会留哪条？为什么？</h3>
+  <p><strong>骨架（选一个主答案并准备备选）</strong>：<br>
+  • 主推：多入口同一用户模型——没有它，后面 AI 再聪明也是重复填写<br>
+  • 备选：结构化 Mentor——没有它，对话无法验收<br>
+  说明取舍：插件炫技、社区热闹都可以后置。</p>
+
+  <div class="callout">
+    <div class="callout-icon">🧭</div>
+    <div class="callout-content">
+      <strong>对火山引擎表述习惯</strong>：少说「我负责了 UI」，多说「问题定义 → 约束 → 验证方式」。每题结尾准备一句：<em>如果指标不涨，我下一步会改什么</em>。
+    </div>
+  </div>
+</section>
+
+<section id="assets" class="section-block">
+  <h2>工程资料</h2>
+  <p>可点原型、组件库与 Figma 工程均可在面试追问时当场打开。</p>
+  <div class="callout">
+    <div class="callout-icon">🧩</div>
+    <div class="callout-content">
+      <strong>本地 / 站点资产</strong>：
+      <a href="../jiancareer/index.html">四点证据链</a> ·
+      <a href="../jiancareer/prototype/grounding-lab.html">Grounding</a> ·
+      <a href="../jiancareer/mentor/index.html">Mentor</a> ·
+      <a href="../jiancareer/prototype/flywheel-lab.html">Flywheel</a> ·
+      <a href="../jiancareer/design-system/index.html">组件库工作台</a><br>
+      <strong>Figma CODEX</strong>：
+      <a href="https://www.figma.com/design/N5JvV8Vpa1CCiXQuN9BRSk/Jiancareer-CODEX?node-id=1-2493" target="_blank" rel="noopener noreferrer">Jiancareer-CODEX</a><br>
+      <strong>工作记录归档</strong>：
+      <a href="https://www.figma.com/design/PuEJoNAkxRowAizlmc5VtN/%E7%AE%80%E8%81%8C%E7%83%82%E5%B0%BE%E6%A5%BC?node-id=0-1" target="_blank" rel="noopener noreferrer">组件库 + 网页工程</a>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED FILES -->
+<section id="files" class="section-block">
+  <h2>相关文件</h2>
+  <p>以下 PDF 为简职项目完整技术报告，涵盖大模型多 Agent 架构、职业决策算法与系统实现细节，可直接在线预览或下载。</p>
+  <div style="margin-top:16px;">
+    <embed src="../files/B07 0662 简职：基于大模型多Agent架构的职业决策与智能行动系统_20260424193803.pdf" 
+           type="application/pdf" 
+           width="100%" 
+           height="600px" 
+           style="border:1px solid var(--border); border-radius:8px;" />
+  </div>
+  <p style="margin-top:8px; font-size:12px; color:var(--text-muted);">
+    若浏览器无法预览，可<a href="../files/B07 0662 简职：基于大模型多Agent架构的职业决策与智能行动系统_20260424193803.pdf" download="简职_技术报告.pdf">点此下载</a>。
+  </p>
+</section>
+
+<!-- VISUAL ARCHIVE -->
+<section id="archive" class="section-block">
+  <h2>视觉资产存档</h2>
+  <p>项目全周期界面与过程资产。面试优先讲营销首页、建档、工作台截图，再翻旧版模块图。</p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:16px; margin-top:24px;">
+    <img src="../img/projects/jiancareer/01JIAN-REGISTER.png" alt="注册界面" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/02JIAN-info.png" alt="信息填写" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/04JIAN-投递进度.png" alt="投递进度1" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/04JIAN-投递进度2.png" alt="投递进度2" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/JianCareer_01.png" alt="详情1" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/JianCareer_02.png" alt="详情2" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/JianCareer_03.png" alt="详情3" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/JianCareer_04.png" alt="详情4" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/JianCareer_05.png" alt="详情5" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/JianCareer_06.png" alt="详情6" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/JianCareer_07.png" alt="详情7" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/Jian_01.png" alt="流程1" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/Jian_04.png" alt="流程4" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/Jian_06.png" alt="流程6" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/Jian_07.png" alt="流程7" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/Jian_08.png" alt="流程8" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/J1.png" alt="作品1" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/J2.png" alt="作品2" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/J3.png" alt="作品3" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/J4.png" alt="作品4" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+    <img src="../img/projects/jiancareer/登录前.png" alt="登录前" style="width:100%; border-radius:8px; border:1px solid var(--border);">
+  </div>
+</section>
+
+<!-- FOOTER NAV -->
+<footer class="footer-nav" aria-label="项目翻页">
+  <a href="Leke.html" class="footer-btn footer-btn--prev">
+    <span class="btn-label">上一个项目</span>
+    <span class="btn-title">← 乐刻品牌分析</span>
+  </a>
+  <a href="Twin-City-Tale.html" class="footer-btn footer-btn--next">
+    <span class="btn-label">下一个项目</span>
+    <span class="btn-title">Twin City Tales →</span>
+  </a>
+</footer>
+
+</main>
+</div>
+
+<script>
+// TOC Active State on Scroll
+const sections = document.querySelectorAll('section[id], h3[id]');
+const tocLinks = document.querySelectorAll('.toc-list a');
+
+function updateActiveToc() {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.getBoundingClientRect().top;
+    if (top < 200) current = section.id;
+  });
+  tocLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateActiveToc);
+
+// Scroll Animation (Intersection Observer)
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.img-block, .compare-item, .video-block, .result-item').forEach(el => {
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

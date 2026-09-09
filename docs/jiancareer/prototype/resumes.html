@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>我的简历 · JianCareer</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/dashboard.css?v=dash8">
+<link rel="stylesheet" href="assets/jc-nav.css?v=nav8">
+</head>
+<body>
+<header id="jc-nav" data-active="dashboard"></header>
+<script src="assets/session.js?v=auth4"></script>
+<script src="assets/jc-nav.js?v=nav8"></script>
+<main class="container dash">
+  <section class="dash-head">
+    <div>
+      <h1>我的简历</h1>
+      <p class="sub">上传新文件，或改已有档案。Agent 只整理你提供的事实，不会编造量化结果。</p>
+    </div>
+    <div class="dash-head-actions">
+      <input id="cv-file" type="file" hidden accept=".pdf,.docx,.doc,.jpg,.jpeg,.png">
+      <button class="btn btn-secondary" type="button" id="cv-upload">上传新简历</button>
+      <a class="btn btn-primary" href="../../../jiancareer/完整网页原型逐页实现/profile.html">修改当前档案</a>
+    </div>
+  </section>
+
+  <article class="card pad dash-card">
+    <div class="split">
+      <h2 class="dash-h">已保存的简历</h2>
+      <a class="dash-link" href="grounding-lab.html">对着 JD 改写</a>
+    </div>
+    <ul class="cv-list" id="cv-list"></ul>
+    <p class="small muted mt2">主简历用于工作台和投递。上传新文件会加入列表，不会覆盖你没选中的旧稿。</p>
+  </article>
+</main>
+<script src="assets/jc-cv.js?v=cv3"></script>
+<script>
+JCCv.renderList(document.getElementById("cv-list"), { manage: true });
+document.getElementById("cv-upload").addEventListener("click", function () {
+  document.getElementById("cv-file").click();
+});
+document.getElementById("cv-file").addEventListener("change", function () {
+  const file = this.files && this.files[0];
+  this.value = "";
+  if (!file) return;
+  JCCv.addFile(file);
+  JCCv.renderList(document.getElementById("cv-list"), { manage: true });
+});
+</script>
+</body>
+</html>

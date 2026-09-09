@@ -291,6 +291,30 @@ body {
   background: var(--bg-elevated);
 }
 
+.video-block {
+  margin: 32px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+  padding-bottom: 56.25%;
+  background: var(--bg-elevated);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.video-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.video-block video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+  background: #000;
+}
+
 /* ===== RESULTS GRID ===== */
 .results-grid {
   display: grid;
@@ -426,7 +450,7 @@ body {
 [data-theme="light"] .nav-theme-toggle .sun { display: block; }
 [data-theme="light"] .nav-theme-toggle .moon { display: none; }
 </style>
-<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../site.css?v=20260909">
 <script src="../site.js" defer></script>
 </head>
 <body>
@@ -508,6 +532,7 @@ body {
   <div class="toc-title">目录</div>
   <ul class="toc-list">
     <li><a href="#context" class="active">项目背景</a></li>
+    <li><a href="#demo" class="sub">在线演示 / 视频</a></li>
     <li><a href="#strategy">运作机制</a></li>
     <li><a href="#iterations">核心迭代</a></li>
     <li><a href="#result">最终结果</a></li>
@@ -546,6 +571,13 @@ body {
 <section id="context" class="section-block">
   <h2>项目背景</h2>
   <p>这个项目聚焦 2023-2025 年深港通勤体验。目标不是“做一张漂亮图”，而是把跨境生活中的人群迁徙、时间节奏与空间分层，转成可以被普通观众理解的叙事结构。</p>
+
+  <div id="demo" class="video-block">
+    <video controls playsinline preload="metadata" poster="../img/projects/twincity/presentation-poster.jpg" controlslist="nodownload">
+      <source src="../img/projects/twincity/presentation.mp4" type="video/mp4">
+    </video>
+  </div>
+  <p class="img-caption" style="margin-top:-20px;margin-bottom:24px;border-radius:0 0 12px 12px;">项目演示片（含声音）· 约 4 分钟 · <a href="https://leonardolee351-lmx.github.io/Visstory_Twincitytides/" target="_blank" rel="noopener noreferrer">打开在线叙事网站</a></p>
   
   <div class="callout">
     <div class="callout-icon">🌉</div>
@@ -608,7 +640,7 @@ body {
     <div class="callout-icon">🔗</div>
     <div class="callout-content">
       <strong>相关链接</strong>：<br>
-      • <a href="https://twincitytale-visstory2026.netlify.app/" target="_blank" rel="noopener noreferrer">在线演示 Demo</a><br>
+      • <a href="https://leonardolee351-lmx.github.io/Visstory_Twincitytides/" target="_blank" rel="noopener noreferrer">在线叙事网站 · Twin City Tales</a><br>
       • <a href="https://visstory.github.io/" target="_blank" rel="noopener noreferrer">PacificVis 2026 Contest 官方站点</a>
     </div>
   </div>
@@ -687,9 +719,15 @@ body {
 </section>
 
 <!-- FOOTER NAV -->
-<footer class="footer-nav">
-  <a href="MemoryLens.html">← 上一个项目: MemoryLens</a>
-  <a href="Toys.html">下一个项目: AI 启蒙代练屋 →</a>
+<footer class="footer-nav" aria-label="项目翻页">
+  <a href="MemoryLens.html" class="footer-btn footer-btn--prev">
+    <span class="btn-label">上一个项目</span>
+    <span class="btn-title">← MemoryLens</span>
+  </a>
+  <a href="Toys.html" class="footer-btn footer-btn--next">
+    <span class="btn-label">下一个项目</span>
+    <span class="btn-title">十万个为什么 →</span>
+  </a>
 </footer>
 
 </main>

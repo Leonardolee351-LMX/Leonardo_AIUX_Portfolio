@@ -401,6 +401,46 @@ body {
   font-weight: 500;
 }
 
+.video-block {
+  margin: 32px 0 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  position: relative;
+  padding-bottom: 56.25%;
+  background: var(--bg-elevated);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.video-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.video-block video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+  background: #000;
+}
+
+.pitch-frame {
+  margin: 24px 0 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #0c0c0b;
+  height: min(78vh, 720px);
+}
+.pitch-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #0c0c0b;
+}
+
 @media (max-width: 900px) {
   .compare-block { grid-template-columns: 1fr; }
   .results-grid { grid-template-columns: 1fr; }
@@ -551,7 +591,7 @@ body {
 [data-theme="light"] .nav-theme-toggle .sun { display: block; }
 [data-theme="light"] .nav-theme-toggle .moon { display: none; }
 </style>
-<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="../site.css?v=20260909">
 <script src="../site.js" defer></script>
 </head>
 <body>
@@ -639,6 +679,8 @@ body {
     <li><a href="#agent">Agent 架构决策</a></li>
     <li><a href="#system">设计系统 · 合规 · 评测</a></li>
     <li><a href="#outcome">当前进展</a></li>
+    <li><a href="#pitch">Pitch 演示</a></li>
+    <li><a href="#evidence">用户观察</a></li>
     <li><a href="#reflection">反思</a></li>
     <li><a href="#links">参考链接</a></li>
   </ul>
@@ -680,6 +722,13 @@ body {
     <div class="link-info">
       <span class="link-label">Repo</span>
       <span class="link-name">开源仓库</span>
+    </div>
+  </a>
+  <a href="../attunia/pitch/index.html" target="_blank" rel="noopener noreferrer" class="link-card">
+    <div class="link-icon">▶</div>
+    <div class="link-info">
+      <span class="link-label">Pitch</span>
+      <span class="link-name">全屏打开演示 Deck</span>
     </div>
   </a>
 </div>
@@ -881,6 +930,35 @@ body {
   </div>
 </section>
 
+<section id="pitch" class="section-block">
+  <h2>Pitch 演示</h2>
+  <p>下面嵌了 Attunia 的 pitch deck：封面可点击右侧画面轮播。需要全屏翻页时，用右上入口或这里的链接打开。</p>
+  <p><a href="../attunia/pitch/index.html" target="_blank" rel="noopener noreferrer">全屏打开 Pitch →</a></p>
+  <div class="pitch-frame">
+    <iframe src="../attunia/pitch/index.html" title="Attunia Pitch Deck" loading="lazy"></iframe>
+  </div>
+</section>
+
+<section id="evidence" class="section-block">
+  <h2>用户观察 · 一次真实使用</h2>
+  <p>这段录像来自一位实际使用 Attunia 原型的 ADHD 用户。ta 的个人反馈是：在倾听产品声景 / 音乐的过程中，专注会显著更容易进入——这对 ADHD 人群并不陌生，却很少被做成可感知的产品体验。</p>
+  <p>它不是临床试验，也不是诊断结论。作为一条真实使用观察，它说明这套体验可以把「专注与冥想训练」从抽象功能，落到用户自己能感到的状态变化上。</p>
+
+  <div class="video-block">
+    <video controls playsinline preload="metadata" controlslist="nodownload">
+      <source src="../img/projects/attunia/adhd-user.mp4" type="video/mp4">
+    </video>
+  </div>
+  <p class="img-caption" style="margin-top:0;border-radius:0 0 12px 12px;">实际用户使用原型（ADHD）· 倾听声景时的专注观察 · 含声音</p>
+
+  <div class="callout">
+    <div class="callout-icon">🎧</div>
+    <div class="callout-content">
+      <strong>补充说明</strong>：该用户对音乐倾听本身就会进入更显著的专注。Attunia 把这条通路接到短训 Session 的声景与引导里，让「专注 / 冥想训练」能被用户用自己的身体感觉到，而不是只停留在界面完成度。
+    </div>
+  </div>
+</section>
+
 <section id="reflection" class="section-block">
   <h2>反思</h2>
   <p><strong>Agent 产品的真正瓶颈</strong>往往不是「模型够不够聪明」，而是边界清不清楚：会诊禁止即兴，是为了让输出可追溯、可验收；思考可视化，是为了让信任可建立。</p>
@@ -889,7 +967,7 @@ body {
   <div class="callout">
     <div class="callout-icon">🎯</div>
     <div class="callout-content">
-      <strong>面试可追问点</strong>：为什么六景而不是内容库？为什么会诊只拼目录？脑电为什么不进 LLM？合规为何用弹层而不是勾选？——对应本项目最硬的决策链。Pitch 页到位后，本页叙事会再对照校准一版。
+      <strong>面试可追问点</strong>：为什么六景而不是内容库？为什么会诊只拼目录？脑电为什么不进 LLM？合规为何用弹层而不是勾选？——对应本项目最硬的决策链。Pitch 与用户观察录像可在本页直接点开。
     </div>
   </div>
 </section>
@@ -911,6 +989,13 @@ body {
         <span class="link-name">静态 UI 预览</span>
       </div>
     </a>
+    <a href="../attunia/pitch/index.html" target="_blank" rel="noopener noreferrer" class="link-card">
+      <div class="link-icon">▶</div>
+      <div class="link-info">
+        <span class="link-label">Pitch</span>
+        <span class="link-name">Attunia Soft Healthcare Deck</span>
+      </div>
+    </a>
     <a href="./Anxious-Kit.html" class="link-card">
       <div class="link-icon">↗</div>
       <div class="link-info">
@@ -928,9 +1013,15 @@ body {
 </section>
 
 <!-- FOOTER NAV -->
-<footer class="footer-nav">
-  <a href="Twin-City-Tale.html">← Twin City Tales</a>
-  <a href="../works.html">Back to Works →</a>
+<footer class="footer-nav" aria-label="项目翻页">
+  <a href="Twin-City-Tale.html" class="footer-btn footer-btn--prev">
+    <span class="btn-label">上一个项目</span>
+    <span class="btn-title">← Twin City Tales</span>
+  </a>
+  <a href="../works.html" class="footer-btn footer-btn--next">
+    <span class="btn-label">返回目录</span>
+    <span class="btn-title">Works →</span>
+  </a>
 </footer>
 
 

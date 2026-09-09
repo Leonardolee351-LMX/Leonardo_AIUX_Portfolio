@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>设定 · JianCareer</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/dashboard.css?v=dash7">
+<link rel="stylesheet" href="assets/jc-nav.css?v=nav8">
+<style>
+.set{max-width:640px;padding-bottom:48px}
+.set h1{margin:8px 0 6px;font-size:28px;letter-spacing:-.03em}
+.set .lead{margin:0 0 22px;color:#64748b}
+.set-card{padding:22px;margin-bottom:16px}
+.set-card h2{margin:0 0 16px;font-size:16px}
+.set-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.set-field label{font-size:13px;font-weight:700;color:#334155}
+.set-field input{border:1px solid #d4e6ed;border-radius:12px;padding:12px 14px;min-height:44px}
+.set-field input:focus{outline:2px solid #00a9bc;outline-offset:2px;border-color:#14b9c9}
+.set-check{display:flex;align-items:flex-start;gap:10px;margin:10px 0;font-size:14px;color:#334155}
+.set-check input{margin-top:3px;width:18px;height:18px}
+.set-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.set-out{color:#b62940}
+</style>
+</head>
+<body>
+<header id="jc-nav" data-active="dashboard"></header>
+<script src="assets/session.js?v=auth4"></script>
+<script src="assets/jc-nav.js?v=nav8"></script>
+<main class="container dash set">
+  <h1>设定</h1>
+  <p class="lead">账户与通知。退出后回到简职首页，工作台数据仍留在这台浏览器。</p>
+
+  <article class="card set-card">
+    <h2>账户</h2>
+    <div class="set-field"><label for="set-name">显示名称</label><input id="set-name" value="林晓舟" autocomplete="name"></div>
+    <div class="set-field"><label for="set-email">邮箱</label><input id="set-email" type="email" value="xiaozhou.lin@example.com" autocomplete="email"></div>
+    <div class="set-field"><label for="set-phone">手机号</label><input id="set-phone" value="138****2618" autocomplete="tel"></div>
+    <div class="set-actions">
+      <button class="btn btn-primary" type="button" id="save-account">保存账户信息</button>
+    </div>
+  </article>
+
+  <article class="card set-card">
+    <h2>密码</h2>
+    <div class="set-field"><label for="set-pw">新密码</label><input id="set-pw" type="password" placeholder="至少 8 位" autocomplete="new-password"></div>
+    <div class="set-field"><label for="set-pw2">确认新密码</label><input id="set-pw2" type="password" placeholder="再输入一次" autocomplete="new-password"></div>
+    <div class="set-actions">
+      <button class="btn btn-secondary" type="button" id="save-pw">更新密码</button>
+    </div>
+  </article>
+
+  <article class="card set-card">
+    <h2>通知</h2>
+    <label class="set-check"><input type="checkbox" id="n-mail" checked>投递状态变化时发邮件</label>
+    <label class="set-check"><input type="checkbox" id="n-mentor" checked>Mentor 有新的改写建议时提醒</label>
+    <label class="set-check"><input type="checkbox" id="n-promo">产品更新与活动（可关闭）</label>
+    <div class="set-actions">
+      <button class="btn btn-primary" type="button" id="save-note">保存通知偏好</button>
+    </div>
+  </article>
+
+  <article class="card set-card">
+    <h2>登录</h2>
+    <p class="small muted">退出后需要重新登录才能进入工作台。</p>
+    <div class="set-actions">
+      <a class="btn btn-secondary set-out" href="../../../jiancareer/完整网页原型逐页实现/index.html" data-jc-logout>退出登录</a>
+    </div>
+  </article>
+</main>
+<script>
+(function () {
+  const KEY = "jc_settings_v1";
+  function toast(msg) {
+    let el = document.getElementById("toast");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "toast";
+      el.className = "toast show";
+      el.setAttribute("role", "status");
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.className = "toast show";
+    setTimeout(function () { el.classList.remove("show"); }, 2400);
+  }
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { return {}; }
+  }
+  function save(partial) {
+    const next = Object.assign(load(), partial);
+    localStorage.setItem(KEY, JSON.stringify(next));
+  }
+  const s = load();
+  if (s.name) document.getElementById("set-name").value = s.name;
+  if (s.email) document.getElementById("set-email").value = s.email;
+  if (s.phone) document.getElementById("set-phone").value = s.phone;
+  if (typeof s.nMail === "boolean") document.getElementById("n-mail").checked = s.nMail;
+  if (typeof s.nMentor === "boolean") document.getElementById("n-mentor").checked = s.nMentor;
+  if (typeof s.nPromo === "boolean") document.getElementById("n-promo").checked = s.nPromo;
+
+  document.getElementById("save-account").addEventListener("click", function () {
+    save({
+      name: document.getElementById("set-name").value.trim(),
+      email: document.getElementById("set-email").value.trim(),
+      phone: document.getElementById("set-phone").value.trim()
+    });
+    toast("账户信息已保存在这台浏览器。");
+  });
+  document.getElementById("save-pw").addEventListener("click", function () {
+    const a = document.getElementById("set-pw").value;
+    const b = document.getElementById("set-pw2").value;
+    if (!a || a.length < 8) { toast("新密码至少 8 位。"); return; }
+    if (a !== b) { toast("两次输入的密码不一致。"); return; }
+    document.getElementById("set-pw").value = "";
+    document.getElementById("set-pw2").value = "";
+    toast("密码已更新（演示，未连真实账号服务）。");
+  });
+  document.getElementById("save-note").addEventListener("click", function () {
+    save({
+      nMail: document.getElementById("n-mail").checked,
+      nMentor: document.getElementById("n-mentor").checked,
+      nPromo: document.getElementById("n-promo").checked
+    });
+    toast("通知偏好已保存。");
+  });
+})();
+</script>
+</body>
+</html>

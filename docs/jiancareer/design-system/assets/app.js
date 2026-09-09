@@ -1,0 +1,1 @@
+const q=document.getElementById("search");q.addEventListener("input",()=>{const v=q.value.toLowerCase().trim();document.querySelectorAll("[data-search]").forEach(el=>el.classList.toggle("hidden",v&&!el.dataset.search.toLowerCase().includes(v)))})

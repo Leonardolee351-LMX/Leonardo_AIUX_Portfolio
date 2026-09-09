@@ -3,14 +3,18 @@
 本文档旨在记录 Leonardo Li 作品集核心项目的理解，基于 PDF、简历及方案文件总结。
 
 ## 1. 简职 JianCareer (AI 求职工具平台)
-- **核心定位**：AI Agent 驱动的一站式求职助手。
-- **背景/痛点**：应届生求职重复性高、缺乏个性化规划。
-- **我的角色**：体验设计师（0-1 体验设计）+ 前端开发（Vibe Coding）。
-- **核心功能**：
-    - **AI Mentor**：引导式对话挖掘优势，分析匹配度。
-    - **结构化引导**：拒绝纯对话框，采用“渐进式披露”模式。
-    - **设计系统**：带领实习生搭建 40+ 页高保真原型对应的组件库。
+- **核心定位**：AI Agent 驱动的一站式求职助手。技术报告 B07 0662（大模型多 Agent 架构）。
+- **背景/痛点**：应届生求职重复性高、网申入口割裂、职业建议缺乏结构。
+- **我的角色**：UI / Product Designer（0→1 体验与组件规范）+ 前端原型（Vibe Coding）。
+- **体验骨架**：三入口同一用户模型——注册建档 / Dashboard / 浏览器插件；信息只录入一次。
+- **重点三点闭环（面试必须可演示）**：
+    1. **经历锚定的简历适配**：Profile → JD Evidence → Gap → Suggested Rewrite → User Review。不编造经历，Diff + Confirm。
+    2. **可控 Agent 交互**：Understand → Explain → Propose → Preview → Confirm → Act → Recover。平衡适配度与真实性。
+    3. **投递反馈飞轮**：Apply → Record → Track → Outcome → Feedback → Next Rec。Tracker 看成功率 / 面试通过率，反哺 Mentor。
+- **核心功能**：结构化 AI Mentor（不做纯对话框）、渐进式建档、插件一键填写、Job Tracker、公司洞察。
+- **设计系统**：Token 驱动（Reference → Semantic → Component → Density），Web + Plugin 双密度，业务组件（JobCard / MatchScore / AgentStatus）。
 - **成就**：AI Agent 2025 toC 榜单 TOP 10%，伯乐与千里马分榜 TOP 1。
+- **资产路径**：`jiancareer/` 原型与组件库；`docs/cases/Jiancareer.html` 案例页；Figma CODEX `N5JvV8Vpa1CCiXQuN9BRSk`。
 
 ## 2. Anxious Kit (可穿戴情绪辅助系统)
 - **核心定位**：通过生理信号与 AI Agent 提供即时情绪反馈和长期管理。

@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>求职跟踪 · JianCareer</title>
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/lab.css">
+<link rel="stylesheet" href="assets/dashboard.css?v=dash7">
+<link rel="stylesheet" href="assets/jc-nav.css?v=nav8">
+</head>
+<body>
+<header id="jc-nav" data-active="flywheel"></header>
+<script src="assets/session.js?v=auth4"></script>
+<script src="assets/jc-nav.js?v=nav8"></script>
+<main class="container dash">
+  <section class="dash-head">
+    <div>
+      <span class="badge">Selected 03 · Product Loop</span>
+      <h1>求职跟踪</h1>
+      <p class="sub">程序只负责记下「投递走到哪一步」。未通过的原因必须由你亲自写下来——这段话会成为 Agent 记忆，再喂给职场导师与简历修改。</p>
+    </div>
+    <div class="row" style="gap:8px">
+      <button class="btn btn-secondary" id="seed" type="button">载入演示数据</button>
+      <a class="btn btn-primary" href="grounding-lab.html">从简历修改投递</a>
+    </div>
+  </section>
+
+  <section class="dash-kpis" id="kpis" aria-label="投递指标"></section>
+  <section class="feat-trio" id="feat" aria-label="本轮三封主投递"></section>
+
+  <section class="dash-grid" style="margin-top:20px">
+    <div class="dash-main">
+      <article class="card pad dash-card">
+        <div class="split">
+          <div>
+            <h2 class="dash-h">全部记录</h2>
+            <p class="small muted">状态下拉 = 系统能知道的进度。失败原因 = 你主动填写的记忆，不是预设选项。</p>
+          </div>
+        </div>
+        <div class="track-list mt3" id="list"></div>
+      </article>
+    </div>
+    <aside class="dash-side">
+      <article class="card pad dash-card" id="feedback"></article>
+      <article class="card pad dash-card" id="next"></article>
+    </aside>
+  </section>
+</main>
+<script src="assets/jc-lab.js?v=gd5"></script>
+<style>
+.reason-field{display:flex;flex-direction:column;gap:6px;margin-top:8px;width:100%;max-width:420px}
+.reason-field label{font-size:11px;color:var(--muted,#667);letter-spacing:.02em}
+.reason-field input{
+  width:100%;
+  min-height:40px;
+  padding:8px 12px;
+  border:1px solid var(--border,#e5e7eb);
+  border-radius:10px;
+  font:inherit;
+  background:#fff;
+}
+.reason-field input:focus{outline:2px solid rgba(7,143,164,.35);border-color:#078fa4}
+.reason-field .hint{font-size:11px;color:#078fa4;line-height:1.5}
+.track-card .row.mt2{align-items:flex-start}
+.track-card select{min-height:40px;border-radius:10px;padding:0 10px;border:1px solid var(--border,#e5e7eb);background:#fff}
+</style>
+<script>
+const $ = (s) => document.querySelector(s);
+const MENTOR = "../mentor/index.html";
+const STATUSES = [
+  ["applied","已投递"],
+  ["viewed","已沟通"],
+  ["interview","已面试"],
+  ["rejected","未通过"],
+  ["offer","Offer"]
+];
+const TONE = { "腾讯":"#1677ff", "字节跳动":"#111827", "美团":"#f5a623", "早期 Agent 团队":"#078fa4" };
+function tone(name) {
+  for (const k in TONE) if (String(name).indexOf(k) === 0 || String(name).includes(k)) return TONE[k];
+  return "#078fa4";
+}
+function apps() { return JCLab.state().apps || []; }
+
+$("#seed").onclick = () => {
+  JCLab.save({
+    apps: [
+      { id:"s1", company:"腾讯", role:"产品经理", match:86, status:"interview", reason:"", date:"2025-08-14", draft:[] },
+      { id:"s2", company:"字节跳动", role:"AI 产品经理", match:81, status:"rejected", reason:"面试反馈说经历里量化结果不够清楚", date:"2025-08-21", draft:[] },
+      { id:"s3", company:"美团", role:"高级产品经理", match:76, status:"viewed", reason:"", date:"2025-08-05", draft:[] },
+      { id:"s4", company:"早期 Agent 团队", role:"Founding Designer", match:90, status:"applied", reason:"", date:"2025-08-28", draft:[] }
+    ],
+    agentMemory: [
+      { id:"m1", source:"tracker", kind:"rejection", company:"字节跳动", text:"面试反馈说经历里量化结果不够清楚", at:"2025-08-21" }
+    ]
+  });
+  render();
+};
+
+function syncMemory(list) {
+  const notes = list
+    .filter((a) => a.status === "rejected" && String(a.reason || "").trim())
+    .map((a) => ({
+      id: "rej-" + a.id,
+      source: "tracker",
+      kind: "rejection",
+      company: a.company,
+      role: a.role,
+      text: String(a.reason).trim(),
+      at: a.date || ""
+    }));
+  JCLab.save({ apps: list, agentMemory: notes });
+}
+
+function update(id, patch) {
+  const list = apps().map((a) => a.id === id ? Object.assign({}, a, patch) : a);
+  // 切到非「未通过」时清空原因，避免假记忆
+  const next = list.map((a) => {
+    if (a.id === id && patch.status && patch.status !== "rejected") {
+      return Object.assign({}, a, { reason: "" });
+    }
+    return a;
+  });
+  syncMemory(next);
+  render();
+}
+
+const PIPE = ["已投递", "已沟通", "已面试", "Offer"];
+function pipeStep(status) {
+  if (status === "offer") return 4;
+  if (status === "interview") return 3;
+  if (status === "viewed") return 2;
+  if (status === "rejected") return 2;
+  return 1;
+}
+function pipeHtml(a) {
+  const done = pipeStep(a.status);
+  const pct = done <= 1 ? 0 : ((done - 1) / 3) * 100;
+  const nodes = PIPE.map((label, i) => {
+    const n = i + 1;
+    let cls = "node";
+    let text = label;
+    if (a.status === "rejected" && n === 4) { cls += " fail"; text = "需提升"; }
+    else if (a.status === "offer" && n === 4) cls += " offer on";
+    else if (n <= done) cls += " on";
+    return `<div class="${cls}"><i></i><small>${text}</small></div>`;
+  }).join("");
+  const tip = a.status === "rejected"
+    ? `<p class="gap-tip">没有 Offer · ${a.reason && a.reason.trim() ? ("你写的原因：" + a.reason.trim()) : "请在左侧写下失败原因，才会进入 Agent 记忆"}</p>` : "";
+  return `<div class="pipe"><div class="pipe-line"><i style="width:${pct}%"></i></div>${nodes}</div>${tip}`;
+}
+
+function stLabel(s) {
+  return (STATUSES.find(([k]) => k === s) || ["", s])[1];
+}
+
+function reasonField(a) {
+  if (a.status !== "rejected") return "";
+  const filled = String(a.reason || "").trim();
+  return `<div class="reason-field">
+    <label for="reason-${a.id}">失败原因（你来写 · 写入 Agent 记忆）</label>
+    <input id="reason-${a.id}" data-reason="${a.id}" type="text" maxlength="120"
+      placeholder="例如：面试官说项目缺少可验证的过程指标…"
+      value="${filled.replace(/"/g, "&quot;")}">
+    <span class="hint">${filled ? "已写入记忆 → 可供职场导师 / 简历修改调用" : "邀请你主动填写：系统不会替你猜为什么没过"}</span>
+  </div>`;
+}
+
+function render() {
+  const list = apps();
+  const r = JCLab.rates(list);
+  $("#kpis").innerHTML = [
+    ["已投递", r.n, "进入面试 " + r.success + "%"],
+    ["投递成功率", r.success + "%", "面试 / 投递"],
+    ["面试通过率", r.interviewPass + "%", "Offer / 面试"],
+    ["主拒绝原因", r.topReason, "来自你写的记忆"]
+  ].map(([k, n, hint]) => `
+    <div class="dash-kpi">
+      <div>
+        <div class="k">${k}</div>
+        <div class="n" style="font-size:${String(n).length>6?"16px":"26px"}">${n}</div>
+        <div class="hint">${hint}</div>
+      </div>
+    </div>`).join("");
+
+  const featured = list.slice(0, 3);
+  $("#feat").innerHTML = featured.length ? featured.map((a, i) => `
+    <article class="feat-card" style="background:${tone(a.company)}">
+      <div class="feat-idx">Selected 0${i + 1} · ${a.date || ""}</div>
+      <h3>${a.company}</h3>
+      <p>${a.role} · 匹配 ${a.match || "—"}%</p>
+      <div class="feat-foot">
+        <span>${stLabel(a.status)}</span>
+        <small>改状态在下方记录里</small>
+      </div>
+    </article>`).join("") : `<p class="small muted">还没有投递。载入演示数据，或从简历修改确认后投递。</p>`;
+
+  $("#list").innerHTML = list.length ? list.map((a) => `
+    <article class="track-card">
+      <div class="track-logo" style="background:${tone(a.company)};color:#fff">${(a.company || "岗").slice(0, 1)}</div>
+      <div>
+        <b>${a.company}</b>
+        <div class="small muted">${a.role} · ${a.date} · 匹配 ${a.match || "—"}%</div>
+        <div class="row mt2">
+          <select data-status="${a.id}" aria-label="投递状态">${STATUSES.map(([k,v])=>`<option value="${k}" ${a.status===k?"selected":""}>${v}</option>`).join("")}</select>
+        </div>
+        ${reasonField(a)}
+      </div>
+      <div>${pipeHtml(a)}</div>
+    </article>`).join("") : '<p class="small muted">还没有投递记录。</p>';
+
+  $("#list").onchange = (e) => {
+    if (e.target.dataset.status) update(e.target.dataset.status, { status: e.target.value });
+    if (e.target.dataset.reason) update(e.target.dataset.reason, { reason: e.target.value });
+  };
+  $("#list").onkeydown = (e) => {
+    if (e.target.dataset.reason && e.key === "Enter") {
+      e.preventDefault();
+      update(e.target.dataset.reason, { reason: e.target.value });
+      e.target.blur();
+    }
+  };
+  $("#list").onfocusout = (e) => {
+    if (e.target.dataset.reason) update(e.target.dataset.reason, { reason: e.target.value });
+  };
+
+  const top = String(r.topReason || "");
+  const rec = /量化|数字|指标/.test(top)
+    ? ["下一轮不要编数字。回简历修改，用 1 个过程指标补事实。", "grounding-lab.html", "去补证据"]
+    : /方向|过散|岗位/.test(top)
+    ? ["Mentor 会读你写下的失败记忆。先收窄目标岗位，再改话术。", MENTOR, "去收窄记忆"]
+    : top === "尚无拒绝样本" || top === "未标注"
+    ? ["把一条改成「未通过」，并用自己的话写下原因——Agent 才有记忆可调用。", "#", "先填写失败原因"]
+    : ["你写下的失败原因已成为记忆。继续投匹配度高的岗位，或去导师里复盘。", MENTOR, "去看下一轮推荐"];
+
+  const mem = (JCLab.state().agentMemory || []).filter((m) => m.kind === "rejection");
+  $("#feedback").innerHTML = `<h2 class="dash-h">结果为什么是这样</h2>
+    <p class="small muted">拒绝原因来自你亲手写的 Tracker 记忆，不是模型想象、也不是下拉预设。</p>
+    ${Object.keys(r.reasons).length?Object.entries(r.reasons).map(([k,v])=>`<div class="score-row mt2"><span>${k}</span><div class="scorebar"><span style="width:${Math.min(100,v*34)}%"></span></div><b>${v}</b></div>`).join(""):'<p class="small muted mt2">把一条改成「未通过」并填写原因，这里会出现分布。</p>'}
+    ${mem.length?`<p class="small muted mt3">Agent 记忆（${mem.length}）已可供职场导师 / 简历修改读取。</p>`:""}`;
+
+  $("#next").innerHTML = `<h2 class="dash-h">Next Recommendation</h2>
+    <div class="callout">${rec[0]}</div>
+    ${rec[1] === "#" ? `<button class="btn btn-primary mt3" type="button" disabled>${rec[2]}</button>` : `<a class="btn btn-primary mt3" href="${rec[1]}">${rec[2]}</a>`}`;
+}
+render();
+</script>
+</body>
+</html>

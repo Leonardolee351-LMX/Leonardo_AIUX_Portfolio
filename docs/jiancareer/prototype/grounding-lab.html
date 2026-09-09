@@ -1,0 +1,1252 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01 Grounding Lab · 网页投递</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/lab.css?v=cv2">
+<link rel="stylesheet" href="assets/jc-nav.css?v=nav8">
+<link rel="stylesheet" href="assets/resume-sheet.css?v=cv3">
+<link rel="stylesheet" href="assets/grounding.css?v=gd14">
+</head>
+<body class="gd">
+<header id="jc-nav" data-active="grounding"></header>
+<script src="assets/session.js?v=auth4"></script>
+<script src="assets/jc-nav.js?v=nav8"></script>
+<main class="gd-page" id="main">
+  <header class="gd-head">
+    <div>
+      <span class="pill"><span class="pill-dot"></span>简历适配 Agent</span>
+      <h1>先对齐事实，再审核改写</h1>
+      <p class="gd-lead">先读岗位（文本 / 截图 / 招聘链接），再选或上传简历。数字只保留原文，不编造量化结果。</p>
+    </div>
+    <div class="channel-seg" aria-label="投递入口">
+      <button class="on" type="button">网页</button>
+      <button type="button" disabled title="下一期：插件自动读当前招聘页">插件端</button>
+    </div>
+  </header>
+  <div class="gd-workspace">
+    <nav class="gd-steps" id="stepper" aria-label="简历适配步骤"></nav>
+    <div class="gd-flow-nav">
+      <button class="btn btn-ghost" id="goPrev" type="button">上一步</button>
+      <p class="gd-progress" id="labProgress"></p>
+      <button class="btn btn-primary" id="goNext" type="button">下一步：选择简历</button>
+    </div>
+    <section id="view"></section>
+  </div>
+</main>
+<div class="gd-mask" id="gdMask" hidden aria-hidden="true">
+  <div class="gd-agent" role="status" aria-live="polite">
+    <header>
+      <span class="gd-kicker">AI</span>
+      <div>
+        <h2 id="gdMaskTitle">Agent 正在处理</h2>
+        <p id="gdMaskSub">只读取原文，不补数字</p>
+      </div>
+    </header>
+    <ol id="gdMaskSteps"></ol>
+  </div>
+</div>
+<script src="assets/jc-lab.js?v=gd9"></script>
+<script>
+const $ = (s, p=document) => p.querySelector(s);
+const boot = JCLab.state();
+const FRESH = boot.flowVersion !== 5;
+if (FRESH) JCLab.save({ mmQuestions: [] });
+const EMPTY_PROFILE = { name: "", project: "", role: "", time: "", packId: "", bullets: [] };
+let step = FRESH ? 1 : (boot.labStep || 1);
+let unlocked = FRESH ? 1 : (boot.labUnlocked || 1);
+let jdRaw = FRESH ? "" : (boot.jdRaw || "");
+let jdUrl = FRESH ? "" : (boot.jdUrl || "");
+let jdImage = sessionStorage.getItem("jc_jd_image") || "";
+let jdTab = jdImage ? "shot" : (jdUrl ? "url" : "text");
+let parsedJD = jdRaw ? JCLab.parseJD(jdRaw) : null;
+let resumeId = FRESH ? "" : (boot.resumeId || "");
+let resumeText = FRESH ? "" : (boot.resumeText || "");
+let resumeImage = sessionStorage.getItem("jc_resume_image") || "";
+let cvMeta = null;
+try { cvMeta = JSON.parse(sessionStorage.getItem("jc_cv_meta") || "null"); } catch (err) { cvMeta = null; }
+let profile = FRESH ? Object.assign({}, EMPTY_PROFILE) : JSON.parse(JSON.stringify(boot.profile || EMPTY_PROFILE));
+let answers = FRESH ? {} : Object.assign({}, boot.answers || {});
+let qIndex = FRESH ? 0 : (boot.labQIndex || 0);
+let dropIds = FRESH ? new Set() : new Set(boot.dropIds || []);
+let picks = FRESH ? {} : Object.assign({}, boot.picks || {});
+let parseStatus = "";
+let cvPipe = { lines: [], active: -1, done: false, keywords: [] };
+let parsing = false;
+let reviewSel = "";
+let statusTab = FRESH ? "hit" : (boot.statusTab || "hit");
+let probeSecId = FRESH ? "" : (boot.probeSecId || "");
+let probePhase = FRESH ? "idle" : (boot.probePhase || "idle");
+let probeQ = FRESH ? 0 : (boot.probeQ || 0);
+let probeAns = FRESH ? {} : Object.assign({}, boot.probeAns || {});
+let probeProposal = FRESH ? null : (boot.probeProposal || null);
+let lineEdits = FRESH ? {} : Object.assign({}, boot.lineEdits || {});
+let alignChat = FRESH ? {} : Object.assign({}, boot.alignChat || {});
+if (step > 4) step = 4;
+if (unlocked > 4) unlocked = 4;
+
+function persist() {
+  JCLab.save({
+    flowVersion: 5,
+    labStep: step,
+    labUnlocked: unlocked,
+    labQIndex: qIndex,
+    jdRaw,
+    jdUrl,
+    resumeId,
+    resumeText,
+    profile,
+    answers,
+    dropIds: [...dropIds],
+    picks,
+    alignChat,
+    lineEdits,
+    statusTab,
+    probeSecId,
+    probePhase,
+    probeQ,
+    probeAns,
+    probeProposal
+  });
+  try {
+    if (jdImage) sessionStorage.setItem("jc_jd_image", jdImage);
+    else sessionStorage.removeItem("jc_jd_image");
+    if (resumeImage) sessionStorage.setItem("jc_resume_image", resumeImage);
+    else sessionStorage.removeItem("jc_resume_image");
+    if (cvMeta) sessionStorage.setItem("jc_cv_meta", JSON.stringify({
+      name: cvMeta.name, size: cvMeta.size, type: cvMeta.type, kind: cvMeta.kind,
+      excerpt: (cvMeta.excerpt || "").slice(0, 400), url: cvMeta.url || ""
+    }));
+    else sessionStorage.removeItem("jc_cv_meta");
+  } catch (err) {
+    parseStatus = parseStatus || "截图较大，仅在本页内存中使用。";
+  }
+}
+
+function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+function fmtSize(n) {
+  const x = Number(n) || 0;
+  if (x < 1024) return x + " B";
+  if (x < 1024 * 1024) return Math.round(x / 102.4) / 10 + " KB";
+  return Math.round(x / 104857.6) / 10 + " MB";
+}
+function keywordsOf(p) {
+  const text = ((p && p.bullets) || []).map((b) => b.text).join(" ");
+  const keys = ["召回", "排序", "AUC", "RAG", "PRD", "EVT", "BOM", "Figma", "留存", "校招", "Agent", "用户研究", "供应链", "可用性"];
+  return keys.filter((k) => text.includes(k)).slice(0, 6);
+}
+function pipeHtml() {
+  const lines = cvPipe.lines || [];
+  if (!lines.length) return "";
+  return `<ol class="gd-pipe">${lines.map((line, i) => {
+    const cls = i < cvPipe.active ? "done" : i === cvPipe.active ? "is-on" : "";
+    const mark = i < cvPipe.active ? "✓" : (i + 1);
+    return `<li class="${cls}"><b>${mark}</b>${line}</li>`;
+  }).join("")}</ol>${
+    (cvPipe.keywords || []).length
+      ? `<div class="tag-row">${cvPipe.keywords.map((k) => `<span class="tag">${k}</span>`).join("")}</div>`
+      : ""
+  }`;
+}
+
+function jd() { return parsedJD || JCLab.parseJD(jdRaw); }
+function qs() {
+  const bullets = (profile.bullets || []).filter((b) => !b.dropped);
+  return JCLab.questionsFor(jd(), Object.assign({}, profile, { bullets }));
+}
+function draft() {
+  const bullets = (profile.bullets || []).filter((b) => !b.dropped);
+  return JCLab.buildDraft(jd(), Object.assign({}, profile, { bullets }), answers).map((r) => {
+    if (dropIds.has(r.id)) return Object.assign({}, r, { status: "reject", source: "已从投递稿移除" });
+    return r;
+  });
+}
+
+function setStep(n) {
+  if (n > unlocked) return;
+  step = n;
+  render();
+}
+
+function canGoNext() {
+  if (step === 1) return !!(String(jdRaw || "").trim() || jdImage || String(jdUrl || "").trim());
+  if (step === 2) return (profile.bullets || []).some((b) => !b.dropped);
+  return true;
+}
+
+function nextLabel() {
+  if (step === 1) return "下一步：选择简历";
+  if (step === 2) return "下一步：Alignment";
+  if (step === 3) return "下一步：审核核对";
+  if (step === 4) return "下一步：写入飞轮";
+  return "下一步：投递飞轮";
+}
+
+function showMask(title, lines, active) {
+  const mask = $("#gdMask");
+  if (!mask) return;
+  $("#gdMaskTitle").textContent = title;
+  $("#gdMaskSteps").innerHTML = lines.map((line, i) =>
+    `<li class="${i === active ? "is-on" : i < active ? "done" : ""}"><b>${i + 1}</b>${line}</li>`
+  ).join("");
+  mask.hidden = false;
+  mask.setAttribute("aria-hidden", "false");
+}
+function hideMask() {
+  const mask = $("#gdMask");
+  if (mask) {
+    mask.hidden = true;
+    mask.setAttribute("aria-hidden", "true");
+  }
+}
+
+function renderNext() {
+  const names = ["岗位 JD", "选择简历", "Alignment", "审核核对"];
+  const prev = $("#goPrev");
+  const next = $("#goNext");
+  const prog = $("#labProgress");
+  prev.disabled = step === 1;
+  next.textContent = nextLabel();
+  prog.textContent = `${step} / 4 · ${names[step - 1]}${canGoNext() ? "" : " · 先完成这一页"}`;
+  prev.onclick = () => { if (step > 1) setStep(step - 1); };
+  next.onclick = goNext;
+}
+
+async function goNext() {
+  if (step === 1) {
+    jdRaw = ($("#jdInput") && $("#jdInput").value) || jdRaw;
+    jdUrl = ($("#jdUrlInput") && $("#jdUrlInput").value.trim()) || jdUrl;
+    if (!(String(jdRaw || "").trim() || jdImage)) {
+      if (jdUrl) {
+        await readJobUrl(jdUrl);
+        if (!parsedJD) return;
+      } else {
+        parseStatus = "先贴岗位文本、上传截图，或粘贴招聘链接。";
+        render();
+        return;
+      }
+    }
+    if (!parsedJD) {
+      try {
+        parsedJD = await JCLab.mmParseJD({ text: jdRaw, image: jdImage });
+        jdRaw = parsedJD.raw || jdRaw;
+      } catch (err) {
+        if (String(jdRaw || "").trim()) parsedJD = JCLab.parseJD(jdRaw);
+        else { parseStatus = err.message; render(); return; }
+      }
+    }
+    unlocked = Math.max(unlocked, 2);
+    setStep(2);
+    return;
+  }
+  if (step === 2) {
+    const facts = (profile.bullets || []).filter((b) => !b.dropped);
+    if (!facts.length) { parseStatus = "先选一份简历。"; render(); return; }
+    profile.bullets = facts;
+    unlocked = Math.max(unlocked, 3);
+    setStep(3);
+    return;
+  }
+  if (step === 3) {
+    unlocked = 4;
+    setStep(4);
+    return;
+  }
+  if (step === 4) {
+    const s = JCLab.state();
+    s.apps = s.apps || [];
+    s.apps.unshift({
+      id: "a" + Date.now(),
+      company: jd().titleLine.split(/[·\-]/)[0].trim(),
+      role: jd().titleLine,
+      match: JCLab.alignReport(jd(), profile, resumeText).score,
+      status: "applied",
+      reason: "",
+      date: new Date().toISOString().slice(0, 10),
+      draft: finalRows().map((r) => r.text)
+    });
+    JCLab.save({ apps: s.apps });
+    persist();
+    location.href = "flywheel-lab.html";
+    return;
+  }
+  location.href = "flywheel-lab.html";
+}
+
+function renderStepper() {
+  const names = ["岗位 JD", "选择简历", "Alignment", "审核核对"];
+  $("#stepper").innerHTML = names.map((name, i) => {
+    const n = i + 1;
+    const cls = n === step ? "is-on" : n < step ? "done" : "";
+    const ico = n < step
+      ? '<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : n;
+    return `<button ${n > unlocked ? "disabled" : ""} class="gd-step ${cls}" type="button" ${n === step ? 'aria-current="step"' : ""}>
+      <span class="gd-ico">${ico}</span>
+      <span>${name}</span>
+    </button>`;
+  }).join("");
+  [...$("#stepper").children].forEach((btn, i) => btn.onclick = () => setStep(i + 1));
+}
+
+function view1() {
+  const parsed = jdRaw || jdImage ? jd() : { titleLine: "尚未读取岗位", evidence: [], signals: [] };
+  const jobs = JCLab.SAMPLE_POSTINGS || [];
+  return `<div class="gd-layout wide">
+    <article class="gd-card">
+      <h3><span class="gd-kicker is-fill">JD</span>岗位 Input</h3>
+      <p class="gd-sub">读的是招聘岗位，不是候选人简历。可贴文本、丢截图，或让 Agent 从招聘链接抽取原文。</p>
+      <div class="gd-seg is-3" role="tablist" aria-label="岗位输入方式">
+        <button class="gd-seg-btn ${jdTab==="text"?"on":""}" data-jdtab="text" type="button">贴文本</button>
+        <button class="gd-seg-btn ${jdTab==="shot"?"on":""}" data-jdtab="shot" type="button">上传截图</button>
+        <button class="gd-seg-btn ${jdTab==="url"?"on":""}" data-jdtab="url" type="button">粘贴链接</button>
+      </div>
+      <div class="field" ${jdTab!=="text"?"hidden":""}>
+        <label for="jdInput">JD 文本</label>
+        <textarea id="jdInput" class="gd-jd-area" placeholder="粘贴岗位描述，不要粘贴个人简历">${(jdRaw||"").replace(/</g,"&lt;")}</textarea>
+      </div>
+      <div class="dropzone" id="jdDrop" ${jdTab!=="shot"?"hidden":""}>
+        ${jdImage ? `<img class="preview" src="${jdImage}" alt="JD 截图">` : "<p>把招聘页截图拖到这里，或点击上传 / Ctrl+V</p>"}
+        <input id="jdFile" type="file" accept="image/*" hidden>
+      </div>
+      <div class="field" ${jdTab!=="url"?"hidden":""}>
+        <label for="jdUrlInput">招聘页 URL</label>
+        <div class="url-row">
+          <input id="jdUrlInput" type="url" placeholder="https:// 或点下方同源示例链接" value="${(jdUrl||"").replace(/"/g,"&quot;")}">
+          <button class="btn btn-primary" id="fetchJd" type="button">从链接读取</button>
+        </div>
+        <p class="small muted" style="margin-top:8px">正式版由服务端抓取招聘站。本页可爬同源示例；跨域站点会改用对应岗位示例演示。</p>
+      </div>
+      <div class="sample-block">
+        <div class="sample-k">岗位示例 · 不是简历</div>
+        <div class="sample-row">
+          ${jobs.map((j) => `<button class="sample-chip" data-job="${j.id}" type="button">${j.label}</button>`).join("")}
+        </div>
+        <div class="sample-row">
+          ${jobs.map((j) => `<button class="gd-text-link" data-joburl="${j.path}" type="button">${j.path}</button>`).join("")}
+        </div>
+      </div>
+      <div class="gd-jd-bar">
+        <span class="small muted">读取后右侧只出现岗位证据</span>
+        <button class="btn btn-primary" id="parseJd" type="button">读取岗位</button>
+      </div>
+      <p class="small muted" id="jdStatus" style="margin-top:10px">${parseStatus}</p>
+    </article>
+    <aside class="gd-card">
+      <h3><span class="gd-kicker is-line">证</span>已抽取证据</h3>
+      <p class="gd-sub">${parsed.titleLine}</p>
+      <div class="tag-row">${(parsed.signals||[]).map(s=>`<span class="tag">${s.label}</span>`).join("") || '<span class="tag">尚未读取</span>'}</div>
+      <div class="evidence-stack">${(parsed.evidence||[]).map(e=>`<div class="evidence">${e}</div>`).join("")}</div>
+      <div class="callout">这里只放岗位原文。下一步才选 / 上传候选人简历。</div>
+    </aside>
+  </div>`;
+}
+
+function resumeCards() {
+  const list = JCLab.ACCOUNT_RESUMES;
+  return list.map((r) => `
+    <button class="resume-card ${resumeId===r.id?"on":""}" data-resume="${r.id}" type="button">
+      <span class="resume-track">${r.track || ""}</span>
+      <b>${r.name}</b>
+      <span class="small muted">${r.role} · 更新 ${r.updated}</span>
+    </button>`).join("");
+}
+
+function fileCardHtml() {
+  if (!cvMeta) return "";
+  const kind = cvMeta.kind === "image" ? "图片" : cvMeta.kind === "url" ? "链接" : "文本";
+  const preview = resumeImage
+    ? `<img class="preview" src="${resumeImage}" alt="已上传简历预览">`
+    : (cvMeta.excerpt ? `<pre class="file-excerpt">${escapeHtml(cvMeta.excerpt)}</pre>` : "");
+  return `<div class="file-card">
+    <div class="file-ico">${kind}</div>
+    <div>
+      <b>${escapeHtml(cvMeta.name || "已上传简历")}</b>
+      <small>${cvMeta.size ? fmtSize(cvMeta.size) + " · " : ""}${kind} · 已留在本页</small>
+      ${cvMeta.url ? `<small class="file-url">${escapeHtml(cvMeta.url)}</small>` : ""}
+    </div>
+  </div>${preview}`;
+}
+
+function view2() {
+  const facts = profile.bullets || [];
+  const showPipe = (cvPipe.lines || []).length > 0;
+  return `<div class="gd-layout wide">
+    <article class="gd-card">
+      <h3><span class="gd-kicker">档</span>选择简历</h3>
+      <p class="gd-sub">账户里预置了产品 / 算法 / 运营 / 设计 / 行政。也可上传文件或粘贴在线简历链接。</p>
+      ${fileCardHtml()}
+      <div class="resume-list">${resumeCards()}</div>
+      <div class="sample-k" style="margin-top:18px">上传简历</div>
+      <div class="dropzone" id="cvDrop">
+        <p>上传图片 / .txt / .md。上传后会留在本页，并在右侧看到解析步骤。</p>
+        <input id="cvFile" type="file" accept="image/*,.txt,.md,.pdf" hidden>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label for="cvUrlInput">或从链接导入简历</label>
+        <div class="url-row">
+          <input id="cvUrlInput" type="url" placeholder="同源示例 samples/cv-wu-design.html">
+          <button class="btn btn-ghost" id="fetchCv" type="button">读取链接</button>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="parseCv" type="button" style="margin-top:16px">${parsing ? "正在解析…" : "解析选中 / 已上传的简历"}</button>
+      <p class="small muted" id="cvStatus" style="margin-top:10px">${parseStatus}</p>
+    </article>
+    <aside class="gd-card">
+      <div class="split"><h3><span class="gd-kicker">事</span>${showPipe && !cvPipe.done ? "Agent 正在解析" : "解析出的事实"}</h3><span class="fact-lock">只读 · 点选排除</span></div>
+      <p class="gd-sub">${showPipe && !cvPipe.done ? "后台抽取关键词与原文事实，不编造数字。" : (profile.project ? `${profile.project} · ${profile.role}` : "还没有简历。")}</p>
+      <div id="cvPipe">${showPipe ? pipeHtml() : ""}</div>
+      <div class="verify">${facts.map((b,i)=>`
+        <label class="fact-chip ${b.dropped?"off":""}">
+          <input type="checkbox" data-keep="${i}" ${b.dropped?"":"checked"}>
+          <span>${b.text}</span>
+        </label>`).join("") || (showPipe ? "" : '<p class="small muted">选一份账户简历，或上传后等待解析。</p>')}</div>
+    </aside>
+  </div>`;
+}
+
+function renderBulletSpans(text, spans, activeField, activeBullet) {
+  const src = String(text || "");
+  const list = (spans || []).slice().sort((a, b) => a.start - b.start);
+  if (!list.length) return escapeHtml(src);
+  let html = "";
+  let cursor = 0;
+  list.forEach((s) => {
+    if (s.start < cursor) return;
+    html += escapeHtml(src.slice(cursor, s.start));
+    const on = activeField && s.fieldId === activeField ? " is-on" : "";
+    html += `<mark class="al-span is-hit${on}" data-field="${escapeHtml(s.fieldId)}" data-line="${escapeHtml(activeBullet)}" title="${escapeHtml(s.label)}">${escapeHtml(src.slice(s.start, s.end))}</mark>`;
+    cursor = s.end;
+  });
+  html += escapeHtml(src.slice(cursor));
+  return html;
+}
+
+function bucketOf(report, n) {
+  if (!n) return "";
+  if (n.kind === "gap") return "gap";
+  if (n.kind === "value") return "lift";
+  if (n.kind === "match") {
+    const c = (report.comments || []).find((x) => x.id === n.bulletId);
+    if (c && c.value && c.value.tier !== "high") return "lift";
+    return "hit";
+  }
+  return "lift";
+}
+
+function splitNotes(report) {
+  const evidence = report.evidenceNotes || [];
+  const gaps = report.gapNotes || [];
+  const valueNotes = report.valueNotes || [];
+  const hit = evidence.filter((n) => bucketOf(report, n) === "hit").map((n) => Object.assign({}, n, { bucket: "hit" }));
+  const liftHits = evidence.filter((n) => bucketOf(report, n) === "lift");
+  const liftVals = valueNotes.filter((n) => !liftHits.some((h) => h.bulletId === n.bulletId) && !hit.some((h) => h.bulletId === n.bulletId));
+  const lift = liftHits.concat(liftVals).map((n) => Object.assign({}, n, { bucket: "lift" }));
+  const gap = gaps.map((n) => Object.assign({}, n, { bucket: "gap" }));
+  return { hit, lift, gap };
+}
+
+function applyEdits(doc) {
+  const copy = JSON.parse(JSON.stringify(doc || { sections: [] }));
+  (copy.sections || []).forEach((sec) => {
+    (sec.lines || []).forEach((ln) => {
+      if (lineEdits[ln.id]) ln.text = lineEdits[ln.id];
+    });
+  });
+  return copy;
+}
+
+function view3() {
+  const report = JCLab.alignReport(jd(), profile, resumeText);
+  const rawDoc = report.doc || JCLab.buildAlignDoc(profile, resumeText);
+  const doc = applyEdits(rawDoc);
+  const buckets = splitNotes(report);
+  const gaps = report.gapNotes || [];
+  const notes = buckets.hit.concat(buckets.lift).concat(buckets.gap);
+  if (!["hit", "lift", "gap"].includes(statusTab)) statusTab = "hit";
+  const tabNotes = buckets[statusTab] || [];
+  if (!reviewSel || !notes.some((n) => n.id === reviewSel)) {
+    reviewSel = (tabNotes[0] && tabNotes[0].id) || (notes[0] && notes[0].id) || "";
+  }
+  const selected = notes.find((n) => n.id === reviewSel) || notes[0];
+  const activeField = selected && selected.fieldId ? selected.fieldId : ((selected && selected.fieldIds) || [])[0] || "";
+  const activeBullet = selected
+    ? (selected.bulletId || (selected.kind === "neutral" || selected.kind === "value" ? selected.id : "") || "")
+    : "";
+  const focusSecs = (doc.sections || []).filter((s) => s.focus);
+  if (!probeSecId || !(doc.sections || []).some((s) => s.id === probeSecId)) {
+    const fromLine = selected && selected.bulletId
+      ? (doc.sections || []).find((s) => (s.lines || []).some((l) => l.id === selected.bulletId))
+      : null;
+    probeSecId = (fromLine && fromLine.id) || (focusSecs[0] && focusSecs[0].id) || "";
+  }
+  const probeSec = (doc.sections || []).find((s) => s.id === probeSecId) || focusSecs[0];
+  const probeQs = probeSec ? JCLab.probeQuestions(probeSec, report) : [];
+  const qNow = probeQs[probeQ] || probeQs[0];
+  const noteHtml = (n) => {
+    const bucket = n.bucket || bucketOf(report, n);
+    const cls = bucket === "hit" ? "is-hit" : bucket === "gap" ? "is-miss" : "is-lift";
+    const on = n.id === reviewSel ? " is-on" : "";
+    const tag = bucket === "hit" ? "命中" : bucket === "gap" ? "有缺口" : "可提升";
+    const title = tag + " · " + ((n.labels || []).join("、") || "经历句");
+    const quote = n.kind === "gap"
+      ? [
+          n.jdQuote ? `<em class="al-quote is-jd">JD：「${escapeHtml(n.jdQuote)}」</em>` : "",
+          n.resumeQuote ? `<em class="al-quote is-cv">相邻原文：「${escapeHtml(n.resumeQuote)}${n.resumeQuote.length >= 42 ? "…" : ""}」</em>` : `<em class="al-quote is-cv">经历区没有可对齐的原句，只标明缺口。</em>`
+        ].join("")
+      : (n.resumeQuote ? `<em class="al-quote is-cv">简历：「${escapeHtml(n.resumeQuote)}」</em>` : "");
+    return `<button class="al-note ${cls}${on}" data-line="${n.id}" data-field="${escapeHtml(n.fieldId || "")}" type="button">
+      <b>${title}</b>
+      ${quote}
+      <small>${escapeHtml(n.suggest)}</small>
+    </button>`;
+  };
+  const emptyHint = statusTab === "hit"
+    ? "还没有抽到可直接映射的 JD 字段。"
+    : statusTab === "gap"
+      ? "没有缺口。JD 字段都能在经历区找到相邻原文。"
+      : "经历句已经比较充实。仍可点左侧项目，追问最值钱的环节。";
+  const docHtml = (doc.sections || []).map((sec) => {
+    const focusCls = sec.focus ? " is-focus" : " is-soft";
+    const probing = probeSec && sec.id === probeSec.id ? " is-probe" : "";
+    const lines = (sec.lines || []).map((ln) => {
+      const c = (report.comments || []).find((x) => x.id === ln.id);
+      const spanList = c ? c.spans : [];
+      const lineGaps = gaps.filter((g) => g.bulletId === ln.id);
+      const gapOn = selected && selected.kind === "gap" && selected.bulletId === ln.id;
+      const isHitLine = !!(c && c.kind === "match" && (!c.value || c.value.tier === "high"));
+      const isLift = !!(ln.focus && !isHitLine && (!lineGaps.length || (c && c.kind === "match")));
+      const kind = lineGaps.length && !isHitLine && !isLift ? "gap" : (isHitLine ? "match" : (ln.focus ? "lift" : "soft"));
+      const linked = activeBullet === ln.id
+        || gapOn
+        || (activeField && c && (c.fieldIds || []).includes(activeField));
+      const gapMarks = lineGaps.map((g) => {
+        const on = g.id === reviewSel ? " is-on" : "";
+        return `<mark class="al-span is-miss${on}" data-gap="${escapeHtml(g.id)}" data-field="${escapeHtml(g.fieldId || "")}" title="有缺口：${escapeHtml((g.labels || []).join("、"))}">缺 · ${escapeHtml((g.labels || [])[0] || "字段")}</mark>`;
+      }).join("");
+      const chips = [];
+      if (isHitLine) chips.push('<span class="al-st is-hit">命中</span>');
+      if (isLift) chips.push('<span class="al-st is-lift">可提升</span>');
+      if (lineGaps.length) chips.push('<span class="al-st is-miss">有缺口</span>');
+      const body = ln.focus
+        ? renderBulletSpans(ln.text, spanList, activeField, ln.id) + (gapMarks ? " " + gapMarks : "")
+        : escapeHtml(ln.text) + (gapMarks ? " " + gapMarks : "");
+      if (!ln.focus) return `<p class="al-soft-line${linked ? " is-on" : ""}" data-line="${ln.id}">${body}</p>`;
+      const edge = kind === "match" ? "is-hit" : (kind === "gap" ? "is-miss" : "is-lift");
+      return `<li><button class="al-sent ${edge}${linked ? " is-on" : ""}" data-line="${ln.id}" type="button"><span class="al-sent-body">${body}</span><span class="al-sent-meta">${chips.join("")}</span></button></li>`;
+    }).join("");
+    return `<section class="al-sec${focusCls}${probing}" data-sec="${escapeHtml(sec.type)}" data-probe-sec="${escapeHtml(sec.id)}">
+      <header class="al-sec-h">
+        <h4>${escapeHtml(sec.title)}</h4>
+        <span>${sec.focus ? (probing ? "正在刨根问底" : "点此追问") : "轻量"}</span>
+      </header>
+      ${sec.focus ? `<ol class="al-sents">${lines || '<li class="small muted">本段暂无条目</li>'}</ol>` : `<div class="al-soft-block">${lines}</div>`}
+    </section>`;
+  }).join("") || '<p class="small muted">还没有简历全文。请回上一步选择或上传。</p>';
+
+  const chainHtml = ["看清", "追问", "提案", "确认"].map((lab, i) => {
+    const keys = ["see", "ask", "propose", "done"];
+    const phase = probePhase === "idle" ? "" : probePhase;
+    let cls = "";
+    if (phase === "see" && i === 0) cls = "is-on";
+    else if (phase === "ask" && i === 1) cls = "is-on";
+    else if (phase === "propose" && i === 2) cls = "is-on";
+    else if (phase === "done" && i === 3) cls = "is-on";
+    else if ((phase === "ask" && i === 0) || (phase === "propose" && i < 2) || (phase === "done" && i < 3)) cls = "is-done";
+    return `<li class="${cls}">${i + 1} ${lab}</li>`;
+  }).join("");
+
+  let probeBody = "";
+  if (!probeSec) {
+    probeBody = '<p class="small muted">左侧还没有项目 / 工作段可追问。</p>';
+  } else if (probePhase === "idle" || probePhase === "see") {
+    const facts = (probeSec.lines || []).filter((l) => l.focus).slice(0, 4)
+      .map((l) => `<li>${escapeHtml(l.text)}</li>`).join("") || "<li>暂无经历句</li>";
+    const liftN = (probeSec.lines || []).filter((l) => l.focus && l.value && l.value.tier !== "high").length;
+    const gapN = gaps.filter((g) => (probeSec.lines || []).some((l) => l.id === g.bulletId)).length;
+    probeBody = `
+      <p class="al-probe-lead">只根据已发生事实追问。这段里：可提升 ${liftN} · 有缺口 ${gapN}。</p>
+      <p class="small muted">原文里我看到的事实：</p>
+      <ul class="al-probe-facts">${facts}</ul>
+      <button class="btn btn-primary" id="probeStart" type="button">开始追问最值钱的环节</button>`;
+  } else if (probePhase === "ask" && qNow) {
+    const choices = (qNow.choices || []).map((c) => {
+      const on = probeAns[qNow.id] === c ? " is-on" : "";
+      return `<button class="al-choice${on}" type="button" data-probe-choice="${escapeHtml(c)}">${escapeHtml(c)}</button>`;
+    }).join("");
+    probeBody = `
+      <p class="al-probe-lead">追问 ${probeQ + 1} / ${probeQs.length} · ${escapeHtml(qNow.title || "")}</p>
+      <p class="al-probe-q">${escapeHtml(qNow.q)}</p>
+      <p class="small muted">${escapeHtml(qNow.hint || "")}</p>
+      <div class="al-choices">${choices}</div>
+      <div class="al-chat-row">
+        <input id="probeExtra" type="text" placeholder="或自己写一句已发生的事实。有数字必须来自原简历。" autocomplete="off" value="${escapeHtml(probeAns._extra || "")}">
+        <button class="btn btn-primary" id="probeNext" type="button">${probeQ + 1 >= probeQs.length ? "去看提案" : "下一问"}</button>
+      </div>`;
+  } else if (probePhase === "propose" && probeProposal) {
+    const blocked = probeProposal.blocked ? '<p class="al-probe-block">' + escapeHtml(probeProposal.why) + "</p>" : "";
+    probeBody = `
+      <p class="al-probe-lead">最值钱的环节落在这句原文上。改写不编数字。</p>
+      ${blocked}
+      <div class="al-probe-diff">
+        <div><h5>原文</h5><p>${escapeHtml(probeProposal.original || "—")}</p></div>
+        <div><h5>建议</h5><p>${escapeHtml(probeProposal.next || "—")}</p></div>
+      </div>
+      <p class="small muted">${escapeHtml(probeProposal.why || "")}</p>
+      <div class="al-probe-acts">
+        <button class="btn btn-primary" id="probeConfirm" type="button" ${probeProposal.blocked ? "disabled" : ""}>写入这句改写</button>
+        <button class="btn btn-ghost" id="probeKeep" type="button">保留原文</button>
+        <button class="btn btn-ghost" id="probeBack" type="button">回到追问改补充</button>
+      </div>`;
+  } else if (probePhase === "done") {
+    probeBody = '<p class="al-probe-lead">这轮追问已确认。可以换下一段项目，或去审核核对看 Diff。</p><button class="btn btn-ghost" id="probeAgain" type="button">再追问这一段</button>';
+  } else {
+    probeBody = '<p class="small muted">点上方项目，从看清这一段开始。</p><button class="btn btn-primary" id="probeStart" type="button">开始追问最值钱的环节</button>';
+  }
+
+  return `<div class="al-page">
+    <header class="al-scorebar">
+      <div>
+        <h3>匹配度 <span class="al-score">${report.score}</span><button class="al-tip" type="button" id="scoreTip" aria-label="匹配度怎么算" title="${escapeHtml(report.formula)}">?</button></h3>
+        <p class="gd-sub">三种状态：<b>命中</b>有原文证据 · <b>可提升</b>有相邻事实但工作量没写锋利 · <b>有缺口</b>JD 有、简历无。点缺口或可提升，左侧原文对齐出现。</p>
+      </div>
+      <div class="al-legend" role="tablist" aria-label="字段状态">
+        <button type="button" class="al-leg is-hit${statusTab === "hit" ? " is-on" : ""}" data-tab="hit">命中 ${buckets.hit.length}</button>
+        <button type="button" class="al-leg is-lift${statusTab === "lift" ? " is-on" : ""}" data-tab="lift">可提升 ${buckets.lift.length}</button>
+        <button type="button" class="al-leg is-miss${statusTab === "gap" ? " is-on" : ""}" data-tab="gap">有缺口 ${buckets.gap.length}</button>
+      </div>
+      <p class="al-formula" id="scoreExplain" hidden>${escapeHtml(report.formula)}</p>
+    </header>
+    <div class="al-review">
+      <article class="gd-card al-doc">
+        <h3><span class="gd-kicker is-line">稿</span>简历全文 · 三态标注</h3>
+        <p class="gd-sub">${escapeHtml(report.person)}${report.role ? " · " + escapeHtml(report.role) : ""} · 绿命中 / 琥珀可提升 / 橙有缺口。点项目标题开始刨根问底。</p>
+        <div class="al-fulldoc">${docHtml}</div>
+      </article>
+      <aside class="gd-card al-pane">
+        <h3><span class="gd-kicker is-fill">阅</span>字段审阅</h3>
+        <div class="al-notes">
+          ${tabNotes.map(noteHtml).join("") || `<p class="small muted">${emptyHint}</p>`}
+        </div>
+        <section class="al-probe" id="alProbe">
+          <header>
+            <h4><span class="gd-kicker">挖</span>刨根问底</h4>
+            <p>${probeSec ? escapeHtml(probeSec.title) : "选一段项目"}</p>
+          </header>
+          <div class="al-proj-switch">
+            ${focusSecs.map((s) => `<button type="button" class="${probeSec && s.id === probeSec.id ? "is-on" : ""}" data-pick-sec="${escapeHtml(s.id)}">${escapeHtml(s.title)}</button>`).join("")}
+          </div>
+          <ol class="al-chain">${chainHtml}</ol>
+          ${probeBody}
+        </section>
+      </aside>
+    </div>
+  </div>`;
+}
+
+function pickOf(r) {
+  if (picks[r.id]) return picks[r.id];
+  if (dropIds.has(r.id) || r.status === "reject") return "drop";
+  if (r.status === "keep") return "keep";
+  return "accept";
+}
+
+function escapeHtml(s) {
+  return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function diffPair(oldT, newT) {
+  const a = [...(oldT || "")];
+  const b = [...(newT || "")];
+  if (!a.length && !b.length) return { oldHtml: "—", newHtml: "—", inlineHtml: "—" };
+  if (oldT === newT) {
+    const same = escapeHtml(newT);
+    return { oldHtml: same, newHtml: same, inlineHtml: same };
+  }
+  if (a.length * b.length > 12000) {
+    const oldHtml = `<span class="del">${escapeHtml(oldT)}</span>`;
+    const newHtml = `<span class="ins">${escapeHtml(newT)}</span>`;
+    return { oldHtml, newHtml, inlineHtml: oldHtml + newHtml };
+  }
+  const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] + 1 : Math.max(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  const oldTok = [];
+  const newTok = [];
+  const inlineTok = [];
+  const push = (arr, type, ch) => {
+    const last = arr[arr.length - 1];
+    if (last && last.type === type) last.s += ch;
+    else arr.push({ type, s: ch });
+  };
+  let i = a.length, j = b.length;
+  while (i > 0 || j > 0) {
+    if (i > 0 && j > 0 && a[i - 1] === b[j - 1]) {
+      push(oldTok, "eq", a[i - 1]);
+      push(newTok, "eq", b[j - 1]);
+      push(inlineTok, "eq", a[i - 1]);
+      i--; j--;
+    } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+      push(newTok, "ins", b[j - 1]);
+      push(inlineTok, "ins", b[j - 1]);
+      j--;
+    } else {
+      push(oldTok, "del", a[i - 1]);
+      push(inlineTok, "del", a[i - 1]);
+      i--;
+    }
+  }
+  const toHtml = (toks) => toks.slice().reverse().map((t) => {
+    const s = escapeHtml([...t.s].reverse().join(""));
+    if (t.type === "del") return `<span class="del">${s}</span>`;
+    if (t.type === "ins") return `<span class="ins">${s}</span>`;
+    return s;
+  }).join("");
+  return { oldHtml: toHtml(oldTok), newHtml: toHtml(newTok), inlineHtml: toHtml(inlineTok) };
+}
+
+function origRows() {
+  return draft().map((r) => Object.assign({}, r, { text: r.original || r.text }));
+}
+
+function view4() {
+  const rows = draft().map((r) => Object.assign({}, r, { pick: pickOf(r) }));
+  const orig = origRows().map((r) => Object.assign({}, r, { pick: pickOf(r) }));
+  const report = JCLab.alignReport(jd(), profile, resumeText);
+  return `<article class="gd-card">
+    <div class="split">
+      <h3><span class="gd-kicker">核</span>审核核对 · Before / After</h3>
+      <div class="rev-actions">
+        <span class="status info">对齐分 ${report.score}</span>
+        <button class="btn btn-primary" id="downloadNow" type="button">下载</button>
+      </div>
+    </div>
+    <p class="gd-sub">左边原文，右边改后稿。浅蓝 +「已改」标出动过的局部。悬停改后句：保留原文 / 用改写 / 删除。</p>
+    <div class="compare-pair">
+      <div class="compare-col">
+        <h4>Before · 原文</h4>
+        <p class="small muted hint">不在这里改字。右边改过的句子，左边会淡蓝提示。</p>
+        ${JCLab.renderSheet(JCLab.resumeDoc(profile, jd(), "left", orig))}
+      </div>
+      <div class="compare-col">
+        <h4>After · 已改稿</h4>
+        <p class="small muted hint">已改位置带「已改」角标。数字只保留原简历。</p>
+        ${JCLab.renderSheet(JCLab.resumeDoc(profile, jd(), "right", rows, true))}
+      </div>
+    </div>
+  </article>`;
+}
+
+function view5() {
+  const rows = finalRows();
+  const score = JCLab.matchScore(jd(), rows);
+  const sheet = JCLab.renderSheet(JCLab.resumeDoc(profile, jd(), "right", rows));
+  return `<div class="gd-layout wide">
+    <div class="cv-preview-wrap">${sheet}</div>
+    <aside class="gd-card">
+      <h3><span class="gd-kicker">出</span>套入密集模板</h3>
+      <p class="gd-sub">版式对齐桌面简历 PDF：居中姓名、衬线章节、字段密排。内容少则一页，超出打印自动第二页。</p>
+      <div class="metric" style="margin:16px 0"><div class="label">岗位匹配（已确认稿）</div><div class="num">${score}</div></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-primary" id="printCv" type="button">打印 / 存 PDF</button>
+        <button class="btn btn-ghost" id="downloadNow" type="button">下载 HTML</button>
+      </div>
+      <button class="btn btn-ghost" id="applyNow" type="button" style="margin-top:10px;width:100%">写入 Tracker 并去飞轮</button>
+      <div class="callout">浏览器打印选「另存为 PDF」。A4，页数随内容走，不强制两页。</div>
+    </aside>
+  </div>`;
+}
+
+function readFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    if (/^image\//.test(file.type)) reader.readAsDataURL(file);
+    else reader.readAsText(file);
+    reader.onload = () => resolve({ name: file.name, type: file.type, size: file.size, data: reader.result });
+  });
+}
+
+function bindDrop(zoneId, fileId, onFile) {
+  const zone = $(zoneId);
+  const input = $(fileId);
+  if (!zone || !input) return;
+  zone.onclick = () => input.click();
+  zone.ondragover = (e) => { e.preventDefault(); zone.classList.add("over"); };
+  zone.ondragleave = () => zone.classList.remove("over");
+  zone.ondrop = async (e) => {
+    e.preventDefault();
+    zone.classList.remove("over");
+    if (e.dataTransfer.files[0]) onFile(await readFile(e.dataTransfer.files[0]));
+  };
+  input.onchange = async () => { if (input.files[0]) onFile(await readFile(input.files[0])); };
+}
+
+async function tickPipe(title, lines, work) {
+  cvPipe = { lines, active: 0, done: false, keywords: cvPipe.keywords || [] };
+  const paint = (i) => {
+    showMask(title, lines, i);
+    cvPipe.active = i;
+    const host = $("#cvPipe");
+    if (host) host.innerHTML = pipeHtml();
+  };
+  paint(0);
+  for (let i = 0; i < lines.length; i++) {
+    paint(i);
+    await sleep(420);
+  }
+  const out = await work();
+  cvPipe.active = lines.length;
+  cvPipe.done = true;
+  hideMask();
+  return out;
+}
+
+async function applyJobSample(id) {
+  const job = (JCLab.SAMPLE_POSTINGS || []).find((j) => j.id === id);
+  if (!job) return;
+  jdTab = "text";
+  jdRaw = job.raw;
+  jdUrl = "";
+  jdImage = "";
+  parsedJD = JCLab.parseJD(jdRaw);
+  unlocked = Math.max(unlocked, 2);
+  parseStatus = "已载入岗位示例「" + job.label + "」，不是候选人简历。";
+  persist();
+  render();
+}
+
+async function readJobUrl(url) {
+  const status = $("#jdStatus");
+  jdUrl = url;
+  if (status) status.textContent = "正在打开链接…";
+  const lines = ["打开招聘链接", "识别岗位结构", "抽取职责与要求", "列出可核对证据"];
+  showMask("Agent 正在读取岗位", lines, 0);
+  try {
+    for (let i = 0; i < lines.length; i++) {
+      showMask("Agent 正在读取岗位", lines, i);
+      await sleep(360);
+    }
+    const got = await JCLab.resolveJobFromUrl(url);
+    jdRaw = got.text;
+    jdImage = "";
+    parsedJD = await JCLab.mmParseJD({ text: jdRaw });
+    jdRaw = parsedJD.raw || jdRaw;
+    jdTab = "text";
+    unlocked = Math.max(unlocked, 2);
+    parseStatus = got.note || "已从链接抽取岗位原文。";
+    persist();
+    hideMask();
+    render();
+  } catch (err) {
+    hideMask();
+    if (status) status.textContent = (err && err.message) || "读取失败";
+  }
+}
+
+async function applyAccountResume(item) {
+  resumeId = item.id;
+  resumeText = item.text;
+  resumeImage = "";
+  cvMeta = null;
+  profile = JCLab.profileFromResume(item);
+  cvPipe = { lines: ["读取账户简历", "锁定原文事实"], active: 2, done: true, keywords: keywordsOf(profile) };
+  unlocked = Math.max(unlocked, 3);
+  parseStatus = "已选「" + item.name + " · " + (item.track || "") + "」。";
+  persist();
+  render();
+}
+
+async function parseCurrentResume() {
+  const status = $("#cvStatus");
+  const lines = ["读取上传内容", "识别版式与字段", "抽取关键词", "锁定原文事实（不编数字）"];
+  parsing = true;
+  if (status) status.textContent = "Agent 正在解析简历…";
+  if ($("#parseCv")) $("#parseCv").disabled = true;
+  try {
+    const kept = (profile.bullets || []).filter((b) => !b.dropped);
+    const next = await tickPipe("Agent 正在读取简历", lines, async () => {
+      if (resumeId !== "upload" && resumeId) {
+        const item = JCLab.ACCOUNT_RESUMES.find((r) => r.id === resumeId);
+        if (item) return JCLab.profileFromResume(item);
+      }
+      return JCLab.mmParseResume({ text: resumeText, image: resumeImage });
+    });
+    if (kept.length && resumeId !== "upload") {
+      next.bullets = kept.concat((next.bullets || []).filter((b) => !kept.some((k) => k.text === b.text))).slice(0, 8);
+    }
+    profile = next;
+    cvPipe.keywords = keywordsOf(profile);
+    cvPipe.done = true;
+    unlocked = Math.max(unlocked, 3);
+    parseStatus = "事实已锁定。点底部「下一步」进入 Alignment。";
+    persist();
+  } catch (err) {
+    hideMask();
+    parseStatus = (err && err.message) || "解析失败";
+    cvPipe.done = false;
+  }
+  parsing = false;
+  render();
+}
+
+async function bind() {
+  if (step === 1) {
+    document.querySelectorAll("[data-jdtab]").forEach((btn) => btn.onclick = () => { jdTab = btn.dataset.jdtab; render(); });
+    bindDrop("#jdDrop", "#jdFile", (f) => { jdImage = f.data; jdTab = "shot"; render(); });
+    document.querySelectorAll("[data-job]").forEach((btn) => {
+      btn.onclick = () => applyJobSample(btn.dataset.job);
+    });
+    document.querySelectorAll("[data-joburl]").forEach((btn) => {
+      btn.onclick = () => {
+        jdTab = "url";
+        jdUrl = btn.dataset.joburl;
+        persist();
+        render();
+        readJobUrl(jdUrl);
+      };
+    });
+    if ($("#fetchJd")) $("#fetchJd").onclick = () => {
+      jdUrl = ($("#jdUrlInput") && $("#jdUrlInput").value.trim()) || jdUrl;
+      readJobUrl(jdUrl);
+    };
+    $("#parseJd").onclick = async () => {
+      const status = $("#jdStatus");
+      if (jdTab === "url") {
+        jdUrl = ($("#jdUrlInput") && $("#jdUrlInput").value.trim()) || jdUrl;
+        return readJobUrl(jdUrl);
+      }
+      jdRaw = ($("#jdInput") && $("#jdInput").value) || jdRaw;
+      if (!(String(jdRaw || "").trim() || jdImage)) {
+        parseStatus = "先贴岗位文本、上传截图，或粘贴招聘链接。";
+        render();
+        return;
+      }
+      status.textContent = "正在读取岗位…";
+      const lines = ["识别岗位结构", "抽取职责与要求", "列出可核对证据"];
+      showMask("Agent 正在读取岗位", lines, 0);
+      try {
+        for (let i = 0; i < lines.length; i++) { showMask("Agent 正在读取岗位", lines, i); await sleep(320); }
+        parsedJD = await JCLab.mmParseJD({ text: jdRaw, image: jdImage });
+        jdRaw = parsedJD.raw || jdRaw;
+        persist();
+        unlocked = Math.max(unlocked, 2);
+        parseStatus = "已抽取岗位证据。点底部「下一步」。";
+        hideMask();
+        render();
+      } catch (err) {
+        hideMask();
+        status.textContent = (err && err.message) || "读取失败。可改用文本。";
+      }
+    };
+  }
+  if (step === 2) {
+    document.querySelectorAll("[data-resume]").forEach((btn) => {
+      btn.onclick = () => {
+        const item = JCLab.ACCOUNT_RESUMES.find((r) => r.id === btn.dataset.resume);
+        if (item) applyAccountResume(item);
+      };
+    });
+    bindDrop("#cvDrop", "#cvFile", async (f) => {
+      if (/\.pdf$/i.test(f.name) || f.type === "application/pdf") {
+        cvMeta = { name: f.name, size: f.size, type: f.type, kind: "pdf", excerpt: "" };
+        parseStatus = "PDF 请先导出成图片或 txt。网页端优先让模型读截图。";
+        render();
+        return;
+      }
+      resumeId = "upload";
+      if (/^image\//.test(f.type)) {
+        resumeImage = f.data;
+        resumeText = "";
+        cvMeta = { name: f.name, size: f.size, type: f.type, kind: "image", excerpt: "" };
+      } else {
+        resumeText = f.data;
+        resumeImage = "";
+        cvMeta = { name: f.name, size: f.size, type: f.type, kind: "text", excerpt: String(f.data || "").slice(0, 400) };
+      }
+      persist();
+      render();
+      await parseCurrentResume();
+    });
+    if ($("#fetchCv")) $("#fetchCv").onclick = async () => {
+      const url = ($("#cvUrlInput") && $("#cvUrlInput").value.trim()) || "samples/cv-wu-design.html";
+      const status = $("#cvStatus");
+      if (status) status.textContent = "正在打开简历链接…";
+      try {
+        const got = await JCLab.resolveResumeFromUrl(url);
+        resumeId = "upload";
+        resumeText = got.text;
+        resumeImage = "";
+        cvMeta = { name: url, size: got.text.length, type: "text/plain", kind: "url", excerpt: got.text.slice(0, 400), url };
+        parseStatus = got.note;
+        persist();
+        render();
+        await parseCurrentResume();
+      } catch (err) {
+        parseStatus = (err && err.message) || "读取失败";
+        render();
+      }
+    };
+    document.querySelectorAll("[data-keep]").forEach((box) => {
+      box.onchange = () => {
+        profile.bullets[+box.dataset.keep].dropped = !box.checked;
+        persist();
+      };
+    });
+    $("#parseCv").onclick = () => parseCurrentResume();
+  }
+  if (step === 3) {
+    const report = JCLab.alignReport(jd(), profile, resumeText);
+    const rawDoc = report.doc || JCLab.buildAlignDoc(profile, resumeText);
+    const doc = applyEdits(rawDoc);
+    const buckets = splitNotes(report);
+    const notes = buckets.hit.concat(buckets.lift).concat(buckets.gap);
+    const selectLine = (id) => {
+      reviewSel = id;
+      const n = notes.find((x) => x.id === id);
+      if (n) {
+        statusTab = n.bucket || bucketOf(report, n) || statusTab;
+        const sec = (doc.sections || []).find((s) => (s.lines || []).some((l) => l.id === n.bulletId));
+        if (sec && sec.focus && sec.id !== probeSecId) {
+          probeSecId = sec.id;
+          probePhase = "see";
+          probeQ = 0;
+          probeAns = {};
+          probeProposal = null;
+        }
+      }
+      persist();
+      render();
+    };
+    const alignPanes = () => {
+      const docEl = document.querySelector(".al-fulldoc");
+      const notesEl = document.querySelector(".al-notes");
+      const sent = document.querySelector(".al-sent.is-on, .al-soft-line.is-on");
+      const note = document.querySelector(".al-note.is-on");
+      const pin = (box, el, targetTop) => {
+        if (!box || !el) return;
+        const r = el.getBoundingClientRect();
+        const dest = targetTop != null ? targetTop : (box.getBoundingClientRect().top + 8);
+        box.scrollTop += r.top - dest;
+      };
+      requestAnimationFrame(() => {
+        pin(docEl, sent);
+        requestAnimationFrame(() => {
+          const target = sent ? sent.getBoundingClientRect().top : null;
+          pin(notesEl, note, target);
+        });
+      });
+    };
+    const currentSec = () => (doc.sections || []).find((s) => s.id === probeSecId) || (doc.sections || []).find((s) => s.focus);
+    const goPropose = () => {
+      const sec = currentSec();
+      probeProposal = JCLab.localProbePropose(sec, probeAns);
+      probePhase = "propose";
+      persist();
+      render();
+    };
+    document.querySelectorAll("[data-tab]").forEach((el) => {
+      el.onclick = () => {
+        statusTab = el.getAttribute("data-tab");
+        const first = (buckets[statusTab] || [])[0];
+        if (first) reviewSel = first.id;
+        persist();
+        render();
+      };
+    });
+    document.querySelectorAll("[data-pick-sec]").forEach((el) => {
+      el.onclick = () => {
+        probeSecId = el.getAttribute("data-pick-sec");
+        probePhase = "see";
+        probeQ = 0;
+        probeAns = {};
+        probeProposal = null;
+        persist();
+        render();
+      };
+    });
+    document.querySelectorAll(".al-sec[data-probe-sec]").forEach((el) => {
+      const head = el.querySelector(".al-sec-h");
+      if (!head || !el.classList.contains("is-focus")) return;
+      head.onclick = () => {
+        probeSecId = el.getAttribute("data-probe-sec");
+        probePhase = probePhase === "idle" ? "see" : probePhase;
+        persist();
+        render();
+      };
+    });
+    document.querySelectorAll(".al-note[data-line]").forEach((el) => {
+      el.onclick = () => selectLine(el.dataset.line);
+    });
+    document.querySelectorAll(".al-span[data-gap]").forEach((el) => {
+      el.onclick = (ev) => {
+        ev.stopPropagation();
+        selectLine(el.dataset.gap);
+      };
+    });
+    document.querySelectorAll(".al-sent[data-line]").forEach((el) => {
+      el.onclick = (ev) => {
+        const span = ev.target.closest(".al-span");
+        if (span && span.dataset.gap) { selectLine(span.dataset.gap); return; }
+        if (span && span.dataset.field) {
+          const hitNote = (report.evidenceNotes || []).find((n) => n.fieldId === span.dataset.field);
+          if (hitNote) { selectLine(hitNote.id); return; }
+        }
+        const bulletId = el.dataset.line;
+        const sec = (doc.sections || []).find((s) => (s.lines || []).some((l) => l.id === bulletId));
+        if (sec && sec.focus && sec.id !== probeSecId) {
+          probeSecId = sec.id;
+          probePhase = "see";
+          probeQ = 0;
+          probeAns = {};
+          probeProposal = null;
+        }
+        const hitNote = (report.evidenceNotes || []).find((n) => n.bulletId === bulletId);
+        const gapNote = (report.gapNotes || []).find((n) => n.bulletId === bulletId);
+        const valNote = (report.valueNotes || []).find((n) => n.bulletId === bulletId);
+        selectLine((hitNote && hitNote.id) || (gapNote && gapNote.id) || (valNote && valNote.id) || bulletId);
+      };
+    });
+    document.querySelectorAll(".al-span[data-field]").forEach((el) => {
+      el.onclick = (ev) => {
+        ev.stopPropagation();
+        if (el.dataset.gap) { selectLine(el.dataset.gap); return; }
+        const hitNote = (report.evidenceNotes || []).find((n) => n.fieldId === el.dataset.field);
+        if (hitNote) selectLine(hitNote.id);
+      };
+    });
+    const tip = $("#scoreTip");
+    const explain = $("#scoreExplain");
+    if (tip && explain) tip.onclick = () => { explain.hidden = !explain.hidden; };
+    if ($("#probeStart")) $("#probeStart").onclick = () => {
+      probePhase = "ask";
+      probeQ = 0;
+      persist();
+      render();
+    };
+    document.querySelectorAll("[data-probe-choice]").forEach((el) => {
+      el.onclick = () => {
+        const extra = $("#probeExtra");
+        if (extra && extra.value.trim()) probeAns._extra = extra.value.trim();
+        const qs = JCLab.probeQuestions(currentSec(), report);
+        const q = qs[probeQ] || qs[0];
+        if (q) probeAns[q.id] = el.getAttribute("data-probe-choice");
+        persist();
+        render();
+      };
+    });
+    if ($("#probeNext")) $("#probeNext").onclick = () => {
+      const extra = $("#probeExtra");
+      if (extra && extra.value.trim()) probeAns._extra = extra.value.trim();
+      const qs = JCLab.probeQuestions(currentSec(), report);
+      const q = qs[probeQ];
+      if (q && !probeAns[q.id] && extra && extra.value.trim()) probeAns[q.id] = extra.value.trim();
+      if (probeQ + 1 >= qs.length) goPropose();
+      else {
+        probeQ += 1;
+        persist();
+        render();
+      }
+    };
+    if ($("#probeExtra")) $("#probeExtra").onkeydown = (e) => {
+      if (e.key === "Enter") { e.preventDefault(); $("#probeNext") && $("#probeNext").click(); }
+    };
+    if ($("#probeConfirm")) $("#probeConfirm").onclick = () => {
+      if (probeProposal && probeProposal.lineId && probeProposal.next && !probeProposal.blocked) {
+        lineEdits[probeProposal.lineId] = probeProposal.next;
+      }
+      probePhase = "done";
+      persist();
+      render();
+    };
+    if ($("#probeKeep")) $("#probeKeep").onclick = () => {
+      probePhase = "done";
+      persist();
+      render();
+    };
+    if ($("#probeBack")) $("#probeBack").onclick = () => {
+      probePhase = "ask";
+      const qs = JCLab.probeQuestions(currentSec(), report);
+      probeQ = Math.max(0, qs.length - 1);
+      persist();
+      render();
+    };
+    if ($("#probeAgain")) $("#probeAgain").onclick = () => {
+      probePhase = "see";
+      probeQ = 0;
+      probeAns = {};
+      probeProposal = null;
+      persist();
+      render();
+    };
+    alignPanes();
+  }
+  if (step === 4) {
+    $("#view").onclick = (e) => {
+      const btn = e.target.closest("[data-act]");
+      if (!btn) return;
+      const id = btn.closest("[data-id]").dataset.id;
+      picks[id] = btn.dataset.act;
+      if (btn.dataset.act === "drop") dropIds.add(id);
+      else dropIds.delete(id);
+      persist();
+      render();
+    };
+    if ($("#downloadNow")) $("#downloadNow").onclick = async () => {
+      const css = await fetch("assets/resume-sheet.css?v=cv2").then((r) => r.text()).catch(() => "");
+      const sheet = JCLab.renderSheet(JCLab.resumeDoc(profile, jd(), "right", finalRows()));
+      const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>简历</title>
+<style>${css}
+body{margin:0;background:#fff}
+.cv-sheet{border:0;max-width:840px;margin:0 auto;box-shadow:none}
+.cv-float,.cv-flag{display:none!important}
+@page{size:A4;margin:10mm}
+</style></head><body>${sheet}</body></html>`;
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([html], { type: "text/html;charset=utf-8" }));
+      a.download = (profile.name || "简历") + "-改后稿.html";
+      a.click();
+    };
+  }
+}
+
+function finalRows() {
+  return draft().map((r) => {
+    const pick = pickOf(r);
+    if (pick === "drop") return null;
+    return Object.assign({}, r, { text: pick === "keep" ? (r.original || r.text) : r.text });
+  }).filter(Boolean);
+}
+
+function render() {
+  try { persist(); } catch (err) {}
+  if (!parsing) hideMask();
+  renderStepper();
+  $("#view").innerHTML = [view1, view2, view3, view4][step - 1]();
+  bind();
+  renderNext();
+}
+
+function onPasteJd(e) {
+  if (step !== 1) return;
+  const item = [...(e.clipboardData && e.clipboardData.items || [])].find((i) => i.type.startsWith("image/"));
+  if (!item) return;
+  const file = item.getAsFile();
+  const reader = new FileReader();
+  reader.onload = () => { jdImage = reader.result; jdTab = "shot"; render(); };
+  reader.readAsDataURL(file);
+}
+
+document.addEventListener("paste", onPasteJd);
+render();
+</script>
+</body>
+</html>

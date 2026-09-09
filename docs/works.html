@@ -176,7 +176,8 @@ body {
 }
 
 .works-head {
-  padding-bottom: 12px;
+  padding-top: 88px;
+  padding-bottom: 16px;
 }
 
 .works-note {
@@ -215,18 +216,344 @@ body {
   transition: transform 1s ease;
 }
 
-.bleed-panel:hover img {
+.bleed-panel:hover > img:first-of-type {
   transform: scale(1.03);
 }
 
 .bleed-panel::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.2) 100%),
-    radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.35) 100%);
+  inset: auto 0 0 0;
+  height: 28%;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.22) 58%, rgba(0,0,0,0) 100%);
   pointer-events: none;
+}
+
+.bleed-panel--attunia::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(0,0,0,0.48) 0%, rgba(0,0,0,0.12) 46%, transparent 72%);
+  pointer-events: none;
+}
+
+.bleed-copy {
+  position: absolute;
+  left: 5vw;
+  top: 22%;
+  z-index: 2;
+  max-width: 36rem;
+  color: #f3f1ea;
+}
+
+.bleed-agents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.bleed-agents img {
+  position: static;
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+a.bleed-cta {
+  color: #fff;
+  text-decoration: none;
+}
+
+.bleed-kicker-lg {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+.bleed-brand-title {
+  margin: 8px 0 0;
+  font-size: clamp(42px, 6vw, 72px);
+  letter-spacing: -0.045em;
+  font-weight: 600;
+}
+
+.bleed-lead {
+  margin-top: 12px;
+  max-width: 32ch;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.72);
+}
+
+.bleed-foot {
+  margin-top: 18px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+}
+
+.bleed-phone-wrap {
+  position: absolute;
+  right: 5vw;
+  top: 50%;
+  transform: translateY(-58%);
+  z-index: 2;
+  width: min(32vw, 320px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.bleed-phone {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  max-height: min(62vh, 560px);
+  border: 0;
+  padding: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #0c0c0b;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 22px 48px rgba(0,0,0,0.45);
+  cursor: pointer;
+}
+
+.bleed-phone img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.bleed-phone img.on { opacity: 1; }
+
+.bleed-phone-cap {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 2;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(0,0,0,0.4);
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+
+.bleed-phone-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.bleed-phone-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.28);
+}
+
+.bleed-phone-dots span.on {
+  background: #fff;
+  transform: scaleX(1.7);
+}
+
+.bleed-phone-hint {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+
+.bleed-screen-wrap {
+  position: absolute;
+  right: 5vw;
+  top: 50%;
+  transform: translateY(-52%);
+  z-index: 2;
+  width: min(46vw, 680px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.bleed-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: min(52vh, 420px);
+  border: 0;
+  padding: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #0c0c0b;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 22px 48px rgba(0,0,0,0.45);
+  cursor: pointer;
+}
+
+.bleed-screen img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.bleed-screen img.on { opacity: 1; }
+
+.bleed-laptop-wrap {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: min(84vw, 1280px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.bleed-laptop-stage {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1600px;
+}
+
+.bleed-float {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bleed-float img {
+  position: static;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 1;
+  transform: none;
+}
+
+.bleed-float-a {
+  left: -2%;
+  top: 8%;
+  width: min(24vw, 300px);
+  transform: rotateY(16deg) rotateZ(-8deg);
+  transform-origin: right center;
+}
+
+.bleed-float-b {
+  right: -2%;
+  top: 18%;
+  width: min(20vw, 240px);
+  transform: rotateY(-16deg) rotateZ(7deg);
+  transform-origin: left center;
+}
+
+.bleed-laptop {
+  position: relative;
+  z-index: 2;
+  width: min(68vw, 1080px);
+  margin: 0 auto;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transform: none;
+}
+
+.bleed-laptop-lid {
+  border-radius: 16px;
+  padding: 0;
+  background: transparent;
+  box-shadow: 0 28px 64px rgba(0,0,0,0.45);
+}
+
+.bleed-laptop-screen {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+  border: 1px solid rgba(255,255,255,0.16);
+}
+
+.bleed-laptop-screen img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.bleed-laptop-screen img.on { opacity: 1; }
+
+.bleed-laptop-hinge,
+.bleed-laptop-chin {
+  display: none;
+}
+
+.bleed-shots {
+  display: none;
+}
+
+.bleed-shots figure {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.3);
+}
+
+.bleed-shots img {
+  position: static;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  transform: none;
+}
+
+@media (min-width: 900px) {
+  .bleed-phone-wrap,
+  .bleed-screen-wrap,
+  .bleed-laptop-wrap { display: flex; }
+  .bleed-copy { display: block; }
+}
+
+@media (max-width: 899px) {
+  .bleed-copy { display: none; }
 }
 
 .bleed-meta {
@@ -300,9 +627,54 @@ body {
   white-space: nowrap;
 }
 
+.bleed-cta--demo {
+  min-height: 52px;
+  padding: 0 22px;
+  border-color: transparent;
+  background: #12c4a2;
+  color: #06241d;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  box-shadow: 0 10px 28px rgba(18, 196, 162, 0.4);
+}
+.bleed-cta--demo:hover,
+.bleed-panel:hover .bleed-cta--demo {
+  border-color: transparent;
+  background: #1ee0ba;
+  color: #06241d;
+  transform: scale(1.04);
+}
+.bleed-cta--demo .play {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #06241d;
+  color: #12c4a2;
+  font-size: 10px;
+}
+
 .bleed-panel:hover .bleed-cta {
   border-color: rgba(255,255,255,0.5);
   background: rgba(255,255,255,0.18);
+}
+
+.bleed-panel--split:hover img {
+  transform: none;
+}
+
+.bleed-screen-wrap--bottom {
+  top: auto;
+  transform: none;
+  bottom: min(20vh, 152px);
+  width: min(38vw, 560px);
+}
+
+.bleed-screen-wrap--bottom .bleed-screen {
+  max-height: min(30vh, 260px);
 }
 
 .bleed-scroll-hint {
@@ -318,6 +690,66 @@ body {
   pointer-events: none;
 }
 
+.bleed-panel--more-entry {
+  background:
+    radial-gradient(ellipse 70% 60% at 8% 42%, rgba(150, 204, 196, 0.32), transparent 58%),
+    linear-gradient(100deg, #e7eeea 0%, #f3f1eb 48%, #f6f4ef 100%);
+  color: #111;
+}
+.bleed-panel--more-entry::after {
+  display: none;
+}
+.bleed-panel--more-entry:hover > img:first-of-type {
+  transform: none;
+}
+
+.more-entry {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 80px 24px 96px;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
+.more-entry h2 {
+  margin: 0;
+  font-size: clamp(40px, 6.4vw, 84px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: #111;
+}
+.more-entry p {
+  margin: 0;
+  font-size: clamp(13px, 1.4vw, 16px);
+  color: #6a6a6a;
+  letter-spacing: 0.02em;
+}
+.more-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+.more-pills span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.45);
+  color: #555;
+  font-size: 13px;
+}
+
 .more-wrap {
   padding-top: 28px;
 }
@@ -326,7 +758,8 @@ body[data-works-filter="selected"] .more-wrap {
   display: none;
 }
 
-body[data-works-filter="more"] .selected-bleed {
+body[data-works-filter="more"] .selected-bleed,
+body[data-works-filter="all"] .selected-bleed {
   display: none;
 }
 
@@ -344,9 +777,9 @@ body[data-works-filter="selected"] .view-switcher {
 }
 
 .heading {
-  margin: 8px 0 20px;
+  margin: 0 0 16px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
 }
@@ -359,11 +792,12 @@ body[data-works-filter="selected"] .view-switcher {
 
 .heading h1 {
   font-size: clamp(38px, 8vw, 82px);
-  line-height: 0.95;
+  line-height: 1.08;
   font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--text);
   opacity: 0.25;
+  overflow: visible;
 }
 
 [data-theme="light"] .heading h1 {
@@ -421,6 +855,7 @@ body[data-works-filter="selected"] .view-switcher {
 }
 
 .card-primary-link {
+  position: relative;
   display: block;
   width: 100%;
   height: 100%;
@@ -460,31 +895,78 @@ body[data-works-filter="selected"] .view-switcher {
   border: none;
   border-radius: 0;
   background: transparent;
-  padding: 24px 0;
+  padding: 0;
   border-bottom: 1px solid var(--border);
-  transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+  overflow: hidden;
+  transition: border-color 0.35s ease, border-radius 0.35s ease;
 }
 
 .grid.view-list .card:last-child {
   border-bottom: none;
 }
 
-.grid.view-list .card:hover {
-  transform: scale(1.02);
+.grid.view-list .card:hover,
+.grid.view-list .card:focus-within {
+  transform: none;
   box-shadow: none;
-  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.15), transparent 80%);
+  background: transparent;
+  border-radius: 16px;
+  border-bottom-color: transparent;
   z-index: 5;
 }
 
-[data-theme="light"] .grid.view-list .card:hover {
-  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08), transparent 80%);
+.grid.view-list .card-primary-link {
+  position: relative;
+  display: block;
+  height: auto;
+  overflow: hidden;
+  border-radius: 16px;
+  isolation: isolate;
 }
 
 .grid.view-list .thumb {
-  display: none;
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  background: #111;
+  transform: scale(1.04);
+  transition: opacity 0.45s cubic-bezier(0.2, 1, 0.3, 1), transform 0.7s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-.grid.view-list .card:hover .meta {
+.grid.view-list .thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.42) 48%, rgba(0,0,0,0.72) 100%);
+}
+
+.grid.view-list .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.08);
+  transition: transform 0.9s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.grid.view-list .card:hover .thumb,
+.grid.view-list .card:focus-within .thumb {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.grid.view-list .card:hover .thumb img,
+.grid.view-list .card:focus-within .thumb img {
+  transform: scale(1);
+}
+
+.grid.view-list .card:hover .meta,
+.grid.view-list .card:focus-within .meta {
   opacity: 1 !important;
   transform: none !important;
   display: flex !important;
@@ -492,14 +974,15 @@ body[data-works-filter="selected"] .view-switcher {
 }
 
 .grid.view-list .meta {
-  position: static;
+  position: relative;
+  z-index: 1;
   opacity: 1 !important;
   visibility: visible !important;
   transform: none !important;
   background: transparent !important;
   backdrop-filter: none !important;
   border: none !important;
-  padding: 40px 0;
+  padding: 40px 24px;
   display: flex !important;
   flex-direction: column;
   align-items: center;
@@ -515,14 +998,6 @@ body[data-works-filter="selected"] .view-switcher {
   justify-content: center;
 }
 
-.grid.view-list .card:hover .title {
-  color: var(--text) !important;
-  transform: scale(1.05);
-  text-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
-  display: block !important;
-  opacity: 1 !important;
-}
-
 .grid.view-list .title {
   display: block !important;
   opacity: 1 !important;
@@ -532,12 +1007,32 @@ body[data-works-filter="selected"] .view-switcher {
   margin-bottom: 20px;
   letter-spacing: -0.04em;
   color: var(--text) !important;
-  transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+  transition: color 0.35s ease, text-shadow 0.35s ease;
   line-height: 1;
 }
 
+.grid.view-list .card:hover .title,
+.grid.view-list .card:focus-within .title {
+  color: #fff !important;
+  transform: none;
+  text-shadow: 0 2px 28px rgba(0,0,0,0.55);
+  display: block !important;
+  opacity: 1 !important;
+}
+
 .grid.view-list .desc {
-  display: none; /* Hide description in list view to keep it clean */
+  display: block;
+  max-width: 42ch;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  transition: color 0.35s ease;
+}
+
+.grid.view-list .card:hover .desc,
+.grid.view-list .card:focus-within .desc {
+  color: rgba(255,255,255,0.86);
 }
 
 .grid.view-list .tags {
@@ -554,14 +1049,30 @@ body[data-works-filter="selected"] .view-switcher {
   padding: 4px 16px;
   border-radius: 6px;
   color: var(--text-dim);
+  transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
 }
 
 [data-theme="light"] .grid.view-list .tag {
   background: rgba(0,0,0,0.03);
 }
 
+.grid.view-list .card:hover .tag,
+.grid.view-list .card:focus-within .tag {
+  background: rgba(0,0,0,0.28);
+  border-color: rgba(255,255,255,0.28);
+  color: rgba(255,255,255,0.92);
+}
+
 .grid.view-list .status {
   display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid.view-list .thumb,
+  .grid.view-list .thumb img {
+    transition: opacity 0.2s ease;
+    transform: none;
+  }
 }
 
 /* View Switcher */
@@ -614,6 +1125,22 @@ body[data-works-filter="selected"] .view-switcher {
   object-fit: cover;
 }
 
+.thumb img.cover-ui {
+  object-position: center 8%;
+}
+
+.thumb img.cover-map {
+  object-position: center 42%;
+}
+
+.thumb img.cover-duck {
+  object-position: center 55%;
+}
+
+.thumb img.cover-gym {
+  object-position: center 40%;
+}
+
 .meta {
   position: absolute;
   left: 10px;
@@ -624,8 +1151,8 @@ body[data-works-filter="selected"] .view-switcher {
   border: 1px solid var(--border);
   background: var(--bg-elevated);
   backdrop-filter: blur(10px);
-  opacity: 0;
-  transform: translateY(10px);
+  opacity: 1;
+  transform: none;
   transition: opacity 220ms ease, transform 220ms ease;
 }
 
@@ -830,8 +1357,34 @@ body[data-works-filter="selected"] .view-switcher {
     </div>
 
     <section class="selected-bleed" id="selectedBleed" aria-label="Selected works">
-      <a class="bleed-panel" href="./cases/Jiancareer.html" style="z-index:1">
+      <article class="bleed-panel" style="z-index:1">
         <img src="./project_cover/jiancareer.jpg" alt="" loading="eager">
+        <div class="bleed-laptop-wrap">
+          <div class="bleed-laptop-stage">
+            <div class="bleed-float bleed-float-a">
+              <img src="./img/projects/jiancareer/cover-shots/ui-workbench-16x9.jpg" alt="">
+            </div>
+            <div class="bleed-float bleed-float-b">
+              <img src="./img/projects/jiancareer/cover-shots/p4-register-16x9.jpg" alt="">
+            </div>
+            <button type="button" class="bleed-laptop" id="jianCarousel" aria-label="点击切换产品画面">
+              <div class="bleed-laptop-lid">
+                <div class="bleed-laptop-screen">
+                  <img class="on" src="./img/projects/jiancareer/cover-shots/p2-landing-16x9.jpg" alt="" data-cap="P2 · 官网落地">
+                  <img src="./img/projects/jiancareer/cover-shots/ui-workbench-16x9.jpg" alt="" data-cap="工作台 · 林晓舟">
+                  <img src="./img/projects/jiancareer/cover-shots/ui-alignment-16x9.jpg" alt="" data-cap="Alignment · 先对齐事实">
+                  <img src="./img/projects/jiancareer/cover-shots/ui-tracker-16x9.jpg" alt="" data-cap="Tracker · 投递飞轮">
+                  <img src="./img/projects/jiancareer/cover-shots/p4-register-16x9.jpg" alt="" data-cap="P4 · 一份档案">
+                  <span class="bleed-phone-cap" id="jianCap">P2 · 官网落地</span>
+                </div>
+              </div>
+              <div class="bleed-laptop-hinge"></div>
+              <div class="bleed-laptop-chin"></div>
+            </button>
+          </div>
+          <div class="bleed-phone-dots" id="jianDots" aria-hidden="true"></div>
+          <p class="bleed-phone-hint" id="jianHint">点击画面切换 · P2 →</p>
+        </div>
         <div class="bleed-meta">
           <div>
             <div class="bleed-kicker">
@@ -839,15 +1392,29 @@ body[data-works-filter="selected"] .view-switcher {
               <span class="bleed-year">2025</span>
             </div>
             <h2 class="bleed-title">JianCareer · AI 求职助手</h2>
-            <p class="bleed-desc">0→1 产品搭建 · AI 对话界面 · 设计系统</p>
+            <p class="bleed-desc">经历锚定 · 可控 Agent · 投递飞轮</p>
           </div>
-          <span class="bleed-cta">View case →</span>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="bleed-cta bleed-cta--demo" href="https://leonardolee351-lmx.github.io/JianCareer_JobAppAgent/?v=ee8a5a8" target="_blank" rel="noopener noreferrer"><span class="play" aria-hidden="true">▶</span>在线演示 · 亲手点</a>
+            <a class="bleed-cta" href="https://jiancareer.com/" target="_blank" rel="noopener noreferrer">打开官网</a>
+            <a class="bleed-cta" href="./cases/Jiancareer_ver2.html">View case →</a>
+          </div>
         </div>
         <span class="bleed-scroll-hint">Scroll</span>
-      </a>
+      </article>
 
-      <a class="bleed-panel" href="./cases/StoryVibe.html" style="z-index:2">
+      <article class="bleed-panel" style="z-index:2">
         <img src="./project_cover/storyvibe.jpg" alt="" loading="lazy">
+        <div class="bleed-screen-wrap">
+          <button type="button" class="bleed-screen" id="storyCarousel" aria-label="点击切换产品画面">
+            <img class="on" src="./img/projects/storyvibe/cover-shots/home.jpg" alt="" data-cap="Home · 灵感入口">
+            <img src="./img/projects/storyvibe/cover-shots/guided-chat.png" alt="" data-cap="Guided · 引导对话">
+            <img src="./img/projects/storyvibe/cover-shots/script-workspace.png" alt="" data-cap="Script · 镜头工作区">
+            <span class="bleed-phone-cap" id="storyCap">Home · 灵感入口</span>
+          </button>
+          <div class="bleed-phone-dots" id="storyDots" aria-hidden="true"></div>
+          <p class="bleed-phone-hint" id="storyHint">点击画面切换 · Home →</p>
+        </div>
         <div class="bleed-meta">
           <div>
             <div class="bleed-kicker">
@@ -857,13 +1424,28 @@ body[data-works-filter="selected"] .view-switcher {
             <h2 class="bleed-title">StoryVibe</h2>
             <p class="bleed-desc">AIGC 视频叙事中间层 · 生成可控的故事节奏</p>
           </div>
-          <span class="bleed-cta">View case →</span>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="bleed-cta" href="https://xyk4vninj5wnq.ok.kimi.link/" target="_blank" rel="noopener noreferrer">打开原型</a>
+            <a class="bleed-cta" href="https://github.com/murphlu19-png/StoryVibe-demo" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="bleed-cta" href="./cases/StoryVibe.html">View case →</a>
+          </div>
         </div>
         <span class="bleed-scroll-hint">Scroll</span>
-      </a>
+      </article>
 
-      <a class="bleed-panel" href="./cases/Twin-City-Tale.html" style="z-index:3">
-        <img src="./project_cover/twincity.jpg" alt="" loading="lazy">
+      <article class="bleed-panel bleed-panel--split" style="z-index:3">
+        <img src="./project_cover/twincity-bg.jpg" alt="" loading="lazy">
+        <div class="bleed-screen-wrap bleed-screen-wrap--bottom">
+          <button type="button" class="bleed-screen" id="twinCarousel" aria-label="点击切换叙事界面">
+            <img class="on" src="./img/projects/twincity/cover-shots/p3-isochrone.jpg" alt="" data-cap="Isochrone · 等时圈">
+            <img src="./img/projects/twincity/cover-shots/p4-dashboard.png" alt="" data-cap="Traffic · 客流波形">
+            <img src="./img/projects/twincity/cover-shots/p5-chapter2.jpg" alt="" data-cap="Chapter 2 · 折叠城市">
+            <img src="./img/projects/twincity/cover-shots/p6-persona.jpg" alt="" data-cap="Personas · 通勤者">
+            <span class="bleed-phone-cap" id="twinCap">Isochrone · 等时圈</span>
+          </button>
+          <div class="bleed-phone-dots" id="twinDots" aria-hidden="true"></div>
+          <p class="bleed-phone-hint" id="twinHint">点击画面切换 · Isochrone →</p>
+        </div>
         <div class="bleed-meta">
           <div>
             <div class="bleed-kicker">
@@ -873,13 +1455,43 @@ body[data-works-filter="selected"] .view-switcher {
             <h2 class="bleed-title">Twin City Tales</h2>
             <p class="bleed-desc">深港双城数据叙事 · PacificVis Shortlist</p>
           </div>
-          <span class="bleed-cta">View case →</span>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="bleed-cta" href="https://leonardolee351-lmx.github.io/Visstory_Twincitytides/" target="_blank" rel="noopener noreferrer">打开叙事网站</a>
+            <a class="bleed-cta" href="./cases/Twin-City-Tale.html">View case →</a>
+          </div>
         </div>
         <span class="bleed-scroll-hint">Scroll</span>
-      </a>
+      </article>
 
-      <a class="bleed-panel" href="./cases/Attunia.html" style="z-index:4">
+      <article class="bleed-panel bleed-panel--attunia" style="z-index:4">
         <img src="./project_cover/attunia.jpg" alt="" loading="lazy">
+        <div class="bleed-copy">
+          <div class="bleed-agents" aria-label="专家 Agent">
+            <img src="./img/projects/attunia/friends/tuno.png" alt="Tuno">
+            <img src="./img/projects/attunia/friends/mira.png" alt="Mira">
+            <img src="./img/projects/attunia/friends/chen.png" alt="Chen">
+            <img src="./img/projects/attunia/friends/kai.png" alt="Kai">
+            <img src="./img/projects/attunia/friends/vega.png" alt="Vega">
+            <img src="./img/projects/attunia/friends/sona.png" alt="Sona">
+          </div>
+          <p class="bleed-kicker-lg">VITAL · Soft Healthcare</p>
+          <p class="bleed-brand-title">Attunia</p>
+          <p class="bleed-lead">帮助用户克服工作脑雾与 WLB 切换中的大脑状态真空期——心理调适 Agent。</p>
+          <p class="bleed-foot">Tune out work. Tune in life.</p>
+        </div>
+        <div class="bleed-phone-wrap">
+          <button type="button" class="bleed-phone" id="attuniaCarousel" aria-label="点击切换产品画面">
+            <img class="on" src="./img/projects/attunia/pitch/purpose.png" alt="" data-cap="P2 · 开屏">
+            <img src="./img/projects/attunia/pitch/p3-sell.png" alt="" data-cap="P3 · Soft Healthcare">
+            <img src="./img/projects/attunia/07-home-rec.png" alt="" data-cap="Home · 此刻脑状态">
+            <img src="./img/projects/attunia/11-scene-path.png" alt="" data-cap="Explore · 场景路径">
+            <img src="./img/projects/attunia/13-chat-tuno.png" alt="" data-cap="Tuno · 对话">
+            <img src="./img/projects/attunia/14-consult.png" alt="" data-cap="Friends · 会诊">
+            <span class="bleed-phone-cap" id="attuniaCap">P2 · 开屏</span>
+          </button>
+          <div class="bleed-phone-dots" id="attuniaDots" aria-hidden="true"></div>
+          <p class="bleed-phone-hint" id="attuniaHint">点击画面切换 · P2 →</p>
+        </div>
         <div class="bleed-meta">
           <div>
             <div class="bleed-kicker">
@@ -889,140 +1501,217 @@ body[data-works-filter="selected"] .view-switcher {
             <h2 class="bleed-title">Attunia</h2>
             <p class="bleed-desc">AI Agent · Soft Healthcare · WLB 调节</p>
           </div>
-          <span class="bleed-cta">View case →</span>
+          <a class="bleed-cta" href="./cases/Attunia.html">View case →</a>
         </div>
-      </a>
+        <span class="bleed-scroll-hint">Scroll</span>
+      </article>
+
+      <article class="bleed-panel bleed-panel--more-entry" style="z-index:5" aria-label="View more projects">
+        <a class="more-entry" href="#moreWrap" id="viewMoreProjects">
+          <h2>View More Projects</h2>
+          <p>小品 · 硬件 · 新媒体 · 研究</p>
+          <div class="more-pills">
+            <span>#More</span>
+            <span>#Archive</span>
+          </div>
+        </a>
+      </article>
     </section>
 
     <div class="container more-wrap" id="moreWrap">
       <section class="grid" id="moreGrid">
+      <article class="card card--sm" data-category="selected product">
+        <a class="card-primary-link" href="./cases/Jiancareer_ver2.html">
+          <div class="thumb">
+            <img class="cover-ui" src="./img/projects/more-covers/jiancareer-ui.jpg" alt="JianCareer">
+          </div>
+          <div class="meta">
+            <div class="title">JianCareer</div>
+            <div class="desc">0→1 产品搭建 · AI 对话界面 · 设计系统</div>
+            <div class="tags"><span class="tag">#Selected</span><span class="tag">#Product</span></div>
+          </div>
+        </a>
+      </article>
+
+      <article class="card card--sm" data-category="selected product">
+        <a class="card-primary-link" href="./cases/StoryVibe.html">
+          <div class="thumb">
+            <img src="./project_cover/storyvibe.jpg" alt="StoryVibe">
+          </div>
+          <div class="meta">
+            <div class="title">StoryVibe</div>
+            <div class="desc">AIGC 视频叙事中间层 · 生成可控的故事节奏</div>
+            <div class="tags"><span class="tag">#Selected</span><span class="tag">#Product</span></div>
+          </div>
+        </a>
+      </article>
+
+      <article class="card card--sm" data-category="selected product">
+        <a class="card-primary-link" href="./cases/Twin-City-Tale.html">
+          <div class="thumb">
+            <img class="cover-map" src="./img/projects/twincity/cover-shots/p3-isochrone.jpg" alt="Twin City Tales">
+          </div>
+          <div class="meta">
+            <div class="title">Twin City Tales</div>
+            <div class="desc">深港双城数据叙事 · PacificVis Shortlist</div>
+            <div class="tags"><span class="tag">#Selected</span><span class="tag">#Viz</span></div>
+          </div>
+        </a>
+      </article>
+
+      <article class="card card--sm" data-category="selected product">
+        <a class="card-primary-link" href="./cases/Attunia.html">
+          <div class="thumb">
+            <img src="./project_cover/attunia.jpg" alt="Attunia">
+          </div>
+          <div class="meta">
+            <div class="title">Attunia</div>
+            <div class="desc">AI Agent · Soft Healthcare · WLB 调节</div>
+            <div class="tags"><span class="tag">#Selected</span><span class="tag">#Product</span></div>
+          </div>
+        </a>
+      </article>
+
       <article class="card card--sm" data-category="more product">
         <a class="card-primary-link" href="./cases/MemoryLens.html">
-        <div class="thumb">
-          <img src="./project_cover/memorylens.jpg" alt="MemoryLens">
+          <div class="thumb">
+            <img src="./project_cover/memorylens.jpg" alt="MemoryLens">
+          </div>
           <div class="meta">
             <div class="title">MemoryLens</div>
             <div class="desc">VisionPro · 多模态寻物 · 黑客松</div>
             <div class="tags"><span class="tag">#More</span><span class="tag">#MR</span></div>
           </div>
-        </div>
         </a>
       </article>
 
       <article class="card card--sm" data-category="more product">
         <a class="card-primary-link" href="./cases/Toys.html">
-        <div class="thumb">
-          <img src="./project_cover/toys.png" alt="AI 启蒙代练屋">
-          <div class="meta">
-            <div class="title">AI 启蒙代练屋</div>
-            <div class="desc">用户研究 · 多模态儿童交互</div>
-            <div class="tags"><span class="tag">#More</span><span class="tag">#Research</span></div>
+          <div class="thumb">
+            <img class="cover-duck" src="./img/projects/more-covers/why-duck.jpg" alt="十万个为什么">
           </div>
-        </div>
+          <div class="meta">
+            <div class="title">十万个为什么</div>
+            <div class="desc">基于过家家的儿童早教硬件 Agent</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#Hardware</span></div>
+          </div>
         </a>
       </article>
 
       <article class="card card--sm" data-category="more product">
         <a class="card-primary-link" href="./cases/Anxious-Kit.html">
-        <div class="thumb">
-          <img src="./project_cover/anxious.jpg" alt="Anxious Kit">
+          <div class="thumb">
+            <img src="./project_cover/anxious.jpg" alt="Anxious Kit">
+          </div>
           <div class="meta">
             <div class="title">Anxious Kit</div>
             <div class="desc">可穿戴情绪辅助 · Attunia 前序探索</div>
             <div class="tags"><span class="tag">#More</span><span class="tag">#Wearable</span></div>
           </div>
-        </div>
         </a>
       </article>
 
       <article class="card card--sm" data-category="more product">
         <a class="card-primary-link" href="./cases/Leke.html">
-        <div class="thumb">
-          <img src="./project_cover/leke.jpg" alt="乐刻新手成长系统">
+          <div class="thumb">
+            <img class="cover-gym" src="./img/projects/more-covers/leke-gym.jpg" alt="乐刻新手成长系统">
+          </div>
           <div class="meta">
             <div class="title">乐刻新手成长系统</div>
             <div class="desc">留存体验 · 服务设计分析</div>
             <div class="tags"><span class="tag">#More</span><span class="tag">#UX</span></div>
           </div>
-        </div>
         </a>
       </article>
 
       <article class="card card--sm" data-category="more product">
         <a class="card-primary-link" href="./cases/Stariver.html">
-        <div class="thumb">
-          <img src="./project_cover/stariver.jpg" alt="渡星河交互界面设计">
+          <div class="thumb">
+            <img src="./project_cover/stariver.jpg" alt="渡星河交互界面设计">
+          </div>
           <div class="meta">
             <div class="title">渡星河界面设计</div>
             <div class="desc">界面快设 · IP 并行交付</div>
             <div class="tags"><span class="tag">#More</span><span class="tag">#UI</span></div>
           </div>
-        </div>
+        </a>
+      </article>
+
+      <article class="card card--sm" data-category="more product">
+        <a class="card-primary-link" href="./cases/Light-Robotics.html">
+          <div class="thumb">
+            <img src="./img/projects/more-covers/light-robotics.jpg" alt="Light Robotics 登录注册界面">
+          </div>
+          <div class="meta">
+            <div class="title">Light Robotics</div>
+            <div class="desc">情绪版 · 分镜 · 机器人登录注册</div>
+            <div class="tags"><span class="tag">#More</span><span class="tag">#UI</span></div>
+          </div>
         </a>
       </article>
 
       <article class="card card--sm" data-category="more creative">
         <a class="card-primary-link" href="./cases/CO-EVO.html">
-        <div class="thumb">
-          <img src="./project_cover/coevo.jpg" alt="CO-EVO">
-          <div class="meta">
-            <div class="title">CO-EVO 互动剧场</div>
-            <div class="desc">实时装置 · 创意向小品</div>
-            <div class="tags"><span class="tag">#More</span><span class="tag">#Install</span></div>
+          <div class="thumb">
+            <img src="./project_cover/coevo.jpg" alt="CO-EVO">
           </div>
-        </div>
+          <div class="meta">
+            <div class="title">CO-EVO 沉浸式展演剧场</div>
+            <div class="desc">大型新媒体展演 · 人类与智能体共同进化</div>
+            <div class="tags"><span class="tag">#新媒体</span><span class="tag">#Theater</span></div>
+          </div>
         </a>
       </article>
 
       <article class="card card--sm" data-category="more creative">
         <a class="card-primary-link" href="./art/looming-dreamer.html">
-        <div class="thumb">
-          <img src="./img/art/portfolio/looming-dreamer/page_03.png" alt="Looming Dreamer">
+          <div class="thumb">
+            <img src="./img/art/portfolio/looming-dreamer/page_03.png" alt="Looming Dreamer">
+          </div>
           <div class="meta">
             <div class="title">Looming Dreamer</div>
             <div class="desc">新媒体 · 公共空间交互装置</div>
             <div class="tags"><span class="tag">#More</span><span class="tag">#Art</span></div>
           </div>
-        </div>
         </a>
       </article>
 
       <article class="card card--sm" data-category="more creative">
         <a class="card-primary-link" href="./art/luminous-and-silhouette.html">
-        <div class="thumb">
-          <img src="./img/art/portfolio/luminous-and-silhouette/page_09.png" alt="Luminous & Silhouette">
+          <div class="thumb">
+            <img src="./img/art/portfolio/luminous-and-silhouette/page_09.png" alt="Luminous & Silhouette">
+          </div>
           <div class="meta">
             <div class="title">Luminous &amp; Silhouette</div>
             <div class="desc">新媒体 · 视听互动 VJ</div>
             <div class="tags"><span class="tag">#More</span><span class="tag">#Art</span></div>
           </div>
-        </div>
         </a>
       </article>
 
       <article class="card card--sm" data-category="more creative">
         <a class="card-primary-link" href="./art/fingertip-praying.html">
-        <div class="thumb">
-          <img src="./img/art/portfolio/fingertip-praying/page_15.png" alt="FingerTip praying">
+          <div class="thumb">
+            <img src="./img/art/portfolio/fingertip-praying/page_15.png" alt="FingerTip praying">
+          </div>
           <div class="meta">
             <div class="title">FingerTip praying</div>
             <div class="desc">新媒体 · 手势互动装置</div>
             <div class="tags"><span class="tag">#More</span><span class="tag">#Art</span></div>
           </div>
-        </div>
         </a>
       </article>
 
       <article class="card card--sm" data-category="more creative">
         <a class="card-primary-link" href="./art/surreal-wanderer.html">
-        <div class="thumb">
-          <img src="./img/art/portfolio/surreal-wanderer/page_21.png" alt="Surreal Wanderer">
+          <div class="thumb">
+            <img src="./img/art/portfolio/surreal-wanderer/page_21.png" alt="Surreal Wanderer">
+          </div>
           <div class="meta">
             <div class="title">Surreal Wanderer</div>
             <div class="desc">新媒体 · 空间叙事实验</div>
             <div class="tags"><span class="tag">#More</span><span class="tag">#Art</span></div>
           </div>
-        </div>
         </a>
       </article>
       </section>
@@ -1037,8 +1726,8 @@ body[data-works-filter="selected"] .view-switcher {
       const viewListBtn = document.getElementById('viewList');
       const notes = {
         selected: 'Selected 全屏翻页浏览；点封面进入案例。今晚起主攻简职与 StoryVibe。',
-        more: '小品与新媒体作品；不进主投递叙事。',
-        all: '上方 Selected 全屏翻页，下方为 More 网格。'
+        more: '全部项目以小卡片呈现；点卡片进入案例。',
+        all: '全部项目以小卡片呈现；点卡片进入案例。'
       };
 
       function updateGridUnit() {
@@ -1065,6 +1754,16 @@ body[data-works-filter="selected"] .view-switcher {
         });
       });
 
+      const viewMore = document.getElementById('viewMoreProjects');
+      if (viewMore) {
+        viewMore.addEventListener('click', (event) => {
+          event.preventDefault();
+          const moreChip = chips.find((chip) => chip.dataset.filter === 'more');
+          if (moreChip) moreChip.click();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
       viewGridBtn.addEventListener('click', () => {
         grid.classList.remove('view-list');
         viewGridBtn.classList.add('active');
@@ -1080,6 +1779,48 @@ body[data-works-filter="selected"] .view-switcher {
 
       window.addEventListener('resize', updateGridUnit);
       applyFilter('selected');
+
+      const phone = document.getElementById('attuniaCarousel');
+      if (phone) {
+        bindCoverCarousel(phone, 'attuniaDots', 'attuniaCap', 'attuniaHint');
+      }
+      const jian = document.getElementById('jianCarousel');
+      if (jian) {
+        bindCoverCarousel(jian, 'jianDots', 'jianCap', 'jianHint');
+      }
+      const story = document.getElementById('storyCarousel');
+      if (story) {
+        bindCoverCarousel(story, 'storyDots', 'storyCap', 'storyHint');
+      }
+      const twin = document.getElementById('twinCarousel');
+      if (twin) {
+        bindCoverCarousel(twin, 'twinDots', 'twinCap', 'twinHint');
+      }
+      function bindCoverCarousel(root, dotsId, capId, hintId) {
+        const frames = [...root.querySelectorAll('img')];
+        const dotsEl = document.getElementById(dotsId);
+        const cap = document.getElementById(capId);
+        const hint = document.getElementById(hintId);
+        let idx = 0;
+        frames.forEach((_, i) => {
+          const dot = document.createElement('span');
+          if (i === 0) dot.classList.add('on');
+          dotsEl?.appendChild(dot);
+        });
+        const show = (n) => {
+          idx = (n + frames.length) % frames.length;
+          frames.forEach((img, i) => img.classList.toggle('on', i === idx));
+          if (dotsEl) [...dotsEl.children].forEach((d, i) => d.classList.toggle('on', i === idx));
+          const label = frames[idx].getAttribute('data-cap') || '';
+          if (cap) cap.textContent = label;
+          if (hint) hint.textContent = `点击画面切换 · ${label.split('·')[0].trim()} →`;
+        };
+        root.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          show(idx + 1);
+        });
+      }
     })();
   </script>
 </body>
