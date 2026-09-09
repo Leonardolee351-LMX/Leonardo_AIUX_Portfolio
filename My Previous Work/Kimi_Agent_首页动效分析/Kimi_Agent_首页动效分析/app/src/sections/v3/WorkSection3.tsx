@@ -84,10 +84,14 @@ const selected = [
   },
 ];
 
-function BottomShade() {
+function BottomShade({ strong = false }: { strong?: boolean }) {
   return (
     <div
-      className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[26%] bg-gradient-to-t from-black/72 via-black/22 to-transparent"
+      className={
+        strong
+          ? "pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[48%] bg-gradient-to-t from-black/90 via-black/50 to-transparent"
+          : "pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[26%] bg-gradient-to-t from-black/72 via-black/22 to-transparent"
+      }
       aria-hidden="true"
     />
   );
@@ -480,7 +484,7 @@ export function WorkSection3() {
                   ariaLabel="点击切换叙事界面"
                   anchor="bottom"
                 />
-                <BottomShade />
+                <BottomShade strong />
                 <CoverMeta
                   project={project}
                   extra={
