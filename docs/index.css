@@ -201,7 +201,7 @@ body {
 }
 
 .section-kicker {
-  font-size: 0.85rem;
+  font-size: 13px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -209,7 +209,7 @@ body {
 }
 
 .section-title {
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(52px, 6.8vw, 92px);
   font-weight: 600;
   margin: 0 0 10px 0;
   line-height: 1.1;
@@ -248,7 +248,7 @@ body {
 }
 
 .hero-label {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 6px;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -256,7 +256,7 @@ body {
 }
 
 .hero-title {
-  font-size: clamp(42px, 6.5vw, 84px);
+  font-size: clamp(52px, 6.8vw, 92px);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -280,7 +280,7 @@ body {
 
 .hero-desc {
   max-width: 680px;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text-secondary);
   line-height: 1.85;
   letter-spacing: 0.15px;
@@ -378,7 +378,7 @@ body {
   align-items: center;
   gap: 8px;
   color: var(--text-muted);
-  font-size: 0.75rem;
+  font-size: 13px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -426,7 +426,7 @@ body {
 }
 
 .work-year {
-  font-size: 0.75rem;
+  font-size: 13px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -435,14 +435,14 @@ body {
 }
 
 .work-title {
-  font-size: 1.3rem;
+  font-size: 18px;
   font-weight: 600;
   margin: 0 0 10px 0;
   line-height: 1.25;
 }
 
 .work-desc {
-  font-size: 0.95rem;
+  font-size: 16px;
   color: var(--text-secondary);
   line-height: 1.65;
   margin: 0;
@@ -465,7 +465,7 @@ body {
 }
 
 .about-body {
-  font-size: 1.05rem;
+  font-size: 16px;
   line-height: 1.82;
   color: var(--text-secondary);
   margin: 0 0 20px 0;
@@ -489,7 +489,7 @@ body {
   display: inline-flex;
   align-items: center;
   padding: 8px 18px;
-  font-size: 0.85rem;
+  font-size: 13px;
   color: var(--text-secondary);
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -526,14 +526,14 @@ body {
 }
 
 .contact-title {
-  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-size: clamp(52px, 6.8vw, 92px);
   font-weight: 600;
   line-height: 1.1;
   margin: 0 0 20px 0;
 }
 
 .contact-subtitle {
-  font-size: 1.1rem;
+  font-size: 18px;
   color: var(--text-secondary);
   line-height: 1.7;
   margin: 0 0 40px 0;
@@ -545,7 +545,7 @@ body {
   justify-content: center;
   height: 56px;
   padding: 0 40px;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 500;
   color: var(--text-primary);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
@@ -593,7 +593,7 @@ body {
   justify-content: space-between;
   align-items: center;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 13px;
 }
 
 .footer-links {

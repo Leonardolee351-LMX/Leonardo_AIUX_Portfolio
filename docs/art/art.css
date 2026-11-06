@@ -148,7 +148,7 @@ body {
 }
 
 .art-hero h1 {
-  font-size: clamp(34px, 4.6vw, 54px);
+  font-size: clamp(52px, 6.8vw, 92px);
   letter-spacing: -0.02em;
   margin: 0;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.72));
@@ -204,7 +204,7 @@ body {
 }
 
 .art-kicker {
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -236,13 +236,13 @@ body {
 
 .art-page-hero h1 {
   margin: 0;
-  font-size: clamp(30px, 4.2vw, 46px);
+  font-size: clamp(52px, 6.8vw, 92px);
   letter-spacing: -0.02em;
 }
 
 .art-page-hero .art-sub {
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .art-gallery {

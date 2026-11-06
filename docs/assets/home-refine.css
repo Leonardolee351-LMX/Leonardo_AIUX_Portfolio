@@ -1,0 +1,171 @@
+/* Portfolio type scale — exactly five sizes.
+   display / title / lead / body / meta */
+:root {
+  --type-display: clamp(52px, 6.8vw, 92px);
+  --type-title: clamp(28px, 2.8vw, 36px);
+  --type-lead: 18px;
+  --type-body: 16px;
+  --type-meta: 13px;
+}
+
+.text-\[10px\],
+.text-\[11px\],
+.text-\[12px\],
+.text-\[13px\],
+.section-label {
+  font-size: var(--type-meta) !important;
+  letter-spacing: 0.08em !important;
+}
+
+.text-\[14px\],
+.text-\[15px\] {
+  font-size: var(--type-body) !important;
+}
+
+h2[style*="font-size"],
+h3[style*="font-size"] {
+  font-size: var(--type-title) !important;
+}
+
+p[style*="font-size"] {
+  font-size: var(--type-body) !important;
+}
+
+/* Hero: the name is the only display line. Role steps down to title, slogan to lead. */
+#home p.mb-5 {
+  margin-bottom: 0 !important;
+  font-size: var(--type-meta) !important;
+  line-height: 1.2 !important;
+  color: rgba(255, 255, 255, 0.62) !important;
+}
+
+#home .font-serif {
+  display: block;
+  margin-top: 8px;
+  font-size: var(--type-display) !important;
+  font-style: italic;
+  font-weight: 520;
+  letter-spacing: -0.045em !important;
+  line-height: 0.92;
+  color: #fff !important;
+}
+
+#home h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.35em;
+  row-gap: 0.1em;
+  max-width: 40rem;
+  margin-top: 18px;
+  font-weight: 500;
+}
+
+#home h1 > span {
+  display: inline !important;
+  width: auto !important;
+  margin-top: 0 !important;
+  font-size: var(--type-title) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.25 !important;
+  text-transform: none !important;
+  white-space: normal !important;
+  background-image: none !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.78) !important;
+  color: rgba(255, 255, 255, 0.78) !important;
+}
+
+#home p.max-w-\[34rem\] {
+  font-size: var(--type-lead) !important;
+  line-height: 1.65 !important;
+  color: rgba(255, 255, 255, 0.62) !important;
+}
+
+p[style*="72px"] {
+  font-size: var(--type-display) !important;
+  line-height: 0.95 !important;
+}
+
+/* Liquid glass only on the three hero actions.
+   Solid fill when the user asks the OS to reduce transparency. */
+#home a[href="./works.html"],
+#home a[href="./resume.html"] {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  box-sizing: border-box;
+  min-width: 168px;
+  min-height: 48px;
+  padding: 0 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.1) 42%, rgba(255, 255, 255, 0.05) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.12),
+    0 10px 26px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px) saturate(1.7);
+  -webkit-backdrop-filter: blur(18px) saturate(1.7);
+  color: rgba(255, 255, 255, 0.94) !important;
+  font-size: var(--type-meta) !important;
+  font-weight: 600;
+  letter-spacing: 0.04em !important;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+#home a[href="./works.html"]::before,
+#home a[href="./resume.html"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.08) 30%, transparent 52%);
+  pointer-events: none;
+}
+
+#home a[href="./works.html"] .absolute,
+#home a[href="./works.html"] span[class*="h-px"] {
+  display: none !important;
+}
+
+#home a[href="./works.html"]:hover,
+#home a[href="./resume.html"]:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.72);
+  color: #fff !important;
+}
+
+#home a[href="./works.html"]:focus-visible,
+#home a[href="./resume.html"]:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  #home a[href="./works.html"],
+  #home a[href="./resume.html"] {
+    background: rgba(18, 22, 28, 0.94);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #home a[href="./works.html"],
+  #home a[href="./resume.html"] {
+    transition: none;
+  }
+
+  #home a[href="./works.html"]:hover,
+  #home a[href="./resume.html"]:hover {
+    transform: none;
+  }
+}

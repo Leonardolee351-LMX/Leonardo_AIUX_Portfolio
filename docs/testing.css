@@ -122,7 +122,7 @@ header {
   padding: 0 var(--space-5);
   font-weight: 700;
   letter-spacing: 0.12em;
-  font-size: 0.95rem;
+  font-size: 16px;
   text-transform: uppercase;
   border-radius: 999px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.72);
@@ -162,7 +162,7 @@ header {
   text-decoration: none;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  font-size: 0.85rem;
+  font-size: 13px;
   letter-spacing: 0.02em;
   user-select: none;
 }
@@ -181,7 +181,7 @@ header {
   height: calc(var(--hit-area-min) - 10px);
   min-width: 104px;
   padding: 0 var(--space-5);
-  font-size: 0.88rem;
+  font-size: 16px;
   letter-spacing: 0.02em;
   cursor: pointer;
   user-select: none;
@@ -228,7 +228,7 @@ main {
 h1 {
   margin: 0 0 var(--space-3) 0;
   font-weight: 260;
-  font-size: clamp(2.2rem, 4.2vw, 3.6rem);
+  font-size: clamp(52px, 6.8vw, 92px);
   line-height: 1.06;
   letter-spacing: -0.02em;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
@@ -242,7 +242,7 @@ p {
   margin: 0;
   color: var(--text-secondary);
   line-height: 1.65;
-  font-size: 0.98rem;
+  font-size: 16px;
   text-wrap: pretty;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.78);
 }
@@ -275,7 +275,7 @@ p {
 
 .glass-card h2 {
   margin: 0 0 var(--space-2) 0;
-  font-size: 0.92rem;
+  font-size: 16px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.86);
@@ -304,7 +304,7 @@ footer {
   justify-content: space-between;
   gap: var(--space-4);
   color: var(--text-muted);
-  font-size: 0.86rem;
+  font-size: 13px;
 }
 
 .footer-right {
@@ -316,7 +316,7 @@ footer {
 .footer-hint {
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 0.78rem;
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.54);
 }
 

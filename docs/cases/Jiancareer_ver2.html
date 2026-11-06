@@ -167,7 +167,7 @@ body {
 .back-link svg { width: 16px; height: 16px; }
 
 .toc-title {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -189,7 +189,7 @@ body {
 }
 .toc-list a:hover { color: var(--text); background: var(--bg-elevated); }
 .toc-list a.active { color: var(--accent); background: var(--accent-soft); border-left-color: var(--accent); }
-.toc-list a.sub { padding-left: 24px; font-size: 12px; }
+.toc-list a.sub { padding-left: 24px; font-size: 13px; }
 
 /* ===== MAIN CONTENT ===== */
 .main {
@@ -217,7 +217,7 @@ body {
   filter: blur(60px);
 }
 .project-hero h1 {
-  font-size: 56px;
+  font-size: clamp(52px, 6.8vw, 92px);
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: 16px;
@@ -241,7 +241,7 @@ body {
   margin-bottom: 48px;
 }
 .meta-group h4 {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -263,7 +263,7 @@ body {
 
 .section-block h2 {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 28px;
+  font-size: clamp(28px, 2.8vw, 36px);
   font-weight: 400;
   color: var(--text);
   margin-bottom: 24px;
@@ -279,7 +279,7 @@ body {
 }
 
 .section-block p {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text-dim);
   line-height: 1.9;
   margin-bottom: 16px;
@@ -316,8 +316,8 @@ body {
   gap: 16px;
   align-items: flex-start;
 }
-.callout-icon { font-size: 20px; flex-shrink: 0; }
-.callout-content { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+.callout-icon { font-size: 18px; flex-shrink: 0; }
+.callout-content { font-size: 16px; color: var(--text-dim); line-height: 1.7; }
 
 /* ===== IMAGE BLOCKS ===== */
 .img-block {
@@ -339,7 +339,7 @@ body {
 }
 .img-caption {
   padding: 12px 16px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   background: var(--bg-elevated);
 }
@@ -366,7 +366,7 @@ body {
 .compare-item img { width: 100%; display: block; }
 .compare-label {
   padding: 10px 14px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -405,7 +405,7 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* ===== QUOTE ===== */
@@ -415,7 +415,7 @@ body {
   margin: 32px 0;
   font-style: italic;
   color: var(--text-dim);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.8;
 }
 
@@ -427,7 +427,7 @@ body {
   margin: 16px 0;
 }
 .tag-list span {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--accent);
   background: var(--accent-soft);
   padding: 4px 12px;
@@ -457,13 +457,13 @@ body {
   transform: translateY(0);
 }
 .result-number {
-  font-size: 32px;
+  font-size: clamp(28px, 2.8vw, 36px);
   font-weight: 300;
   color: var(--accent);
   margin-bottom: 8px;
 }
 .result-label {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   letter-spacing: 1px;
 }
@@ -495,7 +495,7 @@ body {
 }
 
 .footer-btn .btn-label {
-  font-size: 12px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 1px;
   opacity: 0.8;
@@ -579,14 +579,14 @@ body {
 }
 
 .link-label {
-  font-size: 10px;
+  font-size: 13px;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .link-name {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text);
 }
@@ -628,7 +628,7 @@ body {
   .sidebar { display: none; }
   .main { margin-left: 0; padding: 24px; }
   .project-hero { margin: -24px -24px 32px; padding: 60px 24px 32px; }
-  .project-hero h1 { font-size: 28px; }
+  .project-hero h1 { font-size: clamp(28px, 2.8vw, 36px); }
   .meta-bar { grid-template-columns: 1fr; gap: 16px; }
   .compare-block { grid-template-columns: 1fr; }
   .results-grid { grid-template-columns: repeat(2, 1fr); }
@@ -640,7 +640,7 @@ body {
   margin: 0 0 28px;
 }
 .ver-switch a {
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.04em;
   text-decoration: none;
   padding: 6px 12px;
@@ -1160,7 +1160,7 @@ body {
            height="600px" 
            style="border:1px solid var(--border); border-radius:8px;" />
   </div>
-  <p style="margin-top:8px; font-size:12px; color:var(--text-muted);">
+  <p style="margin-top:8px; font-size: 13px; color:var(--text-muted);">
     若浏览器无法预览，可<a href="../files/B07 0662 简职：基于大模型多Agent架构的职业决策与智能行动系统_20260424193803.pdf" download="简职_技术报告.pdf">点此下载</a>。
   </p>
 </section>
